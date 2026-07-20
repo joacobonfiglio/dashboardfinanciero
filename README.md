@@ -4,7 +4,7 @@ Aplicación web para consultar saldos, ingresos y gastos familiares en ARS, USD 
 
 ## Estado actual
 
-La aplicación utiliza Supabase para el acceso con usuario y contraseña, el espacio familiar compartido y los movimientos. La importación de CSV se procesa como un único lote y rechaza archivos duplicados.
+La aplicación utiliza Supabase para el acceso del administrador, el espacio familiar compartido y los movimientos. La importación de CSV se procesa como un único lote y rechaza archivos duplicados. El administrador puede generar y revocar un enlace familiar de solo lectura, sin cuentas adicionales.
 
 ## Desarrollo local
 
@@ -67,8 +67,13 @@ Ejecuta desde **Supabase > SQL Editor**, en este orden:
 
 1. `supabase/schema.sql`
 2. `supabase/002_import_csv.sql`
+3. `supabase/003_readonly_share_link.sql`
 
-Ambos scripts terminan correctamente con el mensaje `Success. No rows returned`.
+Los tres scripts terminan correctamente con el mensaje `Success. No rows returned`.
+
+## Compartir el dashboard
+
+Inicia sesión como administrador y pulsa **Compartir > Generar enlace**. Cada enlace contiene un token aleatorio y permite consultar el dashboard sin iniciar sesión, pero no modificar ni importar datos. Al generar otro enlace, el anterior queda invalidado; también puede revocarse manualmente.
 
 ## Formato del CSV
 

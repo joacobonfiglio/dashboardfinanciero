@@ -27,6 +27,8 @@
     }
 
     * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       background: var(--bg);
@@ -195,6 +197,11 @@
     .logout-btn { border: 0; padding: 0; }
     .cloud-status { color: #d5dfd1; }
     .spinner { opacity: .65; pointer-events: none; }
+    .mobile-nav { display: none; }
+    .share-link-box { display: none; gap: 9px; margin-top: 18px; }
+    .share-link-box.open { display: grid; }
+    .share-link-box input { width: 100%; padding: 12px 13px; border: 1px solid var(--line); border-radius: 11px; background: #f7f4ed; color: var(--ink); }
+    #resumen, #categorias, #cuentas, #movimientos { scroll-margin-top: 20px; }
 
     @media (max-width: 1050px) {
       .shell { grid-template-columns: 82px 1fr; }
@@ -207,13 +214,22 @@
     @media (max-width: 780px) {
       .shell { display: block; }
       .sidebar { display: none; }
-      main { padding: 24px 16px 40px; }
+      main { padding: 24px 16px calc(104px + env(safe-area-inset-bottom)); }
       .topbar { align-items: flex-start; }
-      .actions .btn:not(.primary) { display: none; }
+      .actions #sampleBtn, .actions #shareBtn { display: none; }
       .balances { grid-template-columns: 1fr; }
       .balance-card { min-height: 135px; }
       .grid { grid-template-columns: 1fr; }
       .updated { width: 100%; margin: 0; }
+      .mobile-nav {
+        position: fixed; z-index: 8; left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom));
+        display: grid; grid-template-columns: repeat(4, 1fr); padding: 8px; border: 1px solid rgba(255,255,255,.12);
+        border-radius: 18px; background: rgba(41,49,40,.96); box-shadow: 0 14px 38px rgba(26,30,25,.24); backdrop-filter: blur(12px);
+      }
+      .mobile-nav a { display: grid; place-items: center; gap: 4px; min-height: 52px; border-radius: 12px; color: #c5ccc2; text-decoration: none; font-size: 10px; font-weight: 700; }
+      .mobile-nav a.active { color: white; background: rgba(255,255,255,.1); }
+      .mobile-nav svg { width: 20px; height: 20px; }
+      #resumen, #categorias, #cuentas, #movimientos { scroll-margin-top: 12px; }
     }
     @media (max-width: 480px) {
       .actions .avatar { display: none; }
@@ -244,7 +260,7 @@
     <aside class="sidebar">
       <div class="brand"><div class="brand-mark">C</div><div><strong>Casa</strong><small>Finanzas familiares</small></div></div>
       <nav>
-        <a class="nav-item active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Resumen</span></a>
+        <a class="nav-item active" href="#resumen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Resumen</span></a>
         <a class="nav-item" href="#movimientos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Movimientos</span></a>
         <a class="nav-item" href="#cuentas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9h18M5 9V6l7-3 7 3v3M5 9v10M9 9v10M15 9v10M19 9v10M3 19h18"/></svg><span>Cuentas</span></a>
         <a class="nav-item" href="#categorias"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 13l-7 7-9-9V4h7l9 9z"/><circle cx="8.5" cy="8.5" r="1"/></svg><span>Categorías</span></a>
@@ -252,10 +268,10 @@
       <div class="sidebar-note"><strong>Datos privados</strong><span id="privacyNote">Sincronización segura con Supabase.</span></div>
     </aside>
 
-    <main>
+    <main id="resumen">
       <header class="topbar">
         <div><p class="eyebrow">Panel familiar</p><h1>Hola, familia</h1></div>
-        <div class="actions"><button class="btn" id="sampleBtn">CSV de ejemplo</button><button class="btn primary" id="importBtn">Importar CSV</button><button class="avatar logout-btn" id="logoutBtn" title="Cerrar sesión">JB</button></div>
+        <div class="actions"><button class="btn" id="shareBtn">Compartir</button><button class="btn" id="sampleBtn">CSV de ejemplo</button><button class="btn primary" id="importBtn">Importar CSV</button><button class="avatar logout-btn" id="logoutBtn" title="Cerrar sesión">JB</button></div>
       </header>
 
       <div class="notice" id="notice"><span id="noticeText"></span><button id="closeNotice">✕</button></div>
@@ -293,6 +309,13 @@
     </main>
   </div>
 
+  <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil" style="display:none">
+    <a class="active" href="#resumen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Resumen</span></a>
+    <a href="#movimientos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Movimientos</span></a>
+    <a href="#cuentas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9h18M5 9V6l7-3 7 3v3M5 9v10M9 9v10M15 9v10M19 9v10M3 19h18"/></svg><span>Cuentas</span></a>
+    <a href="#categorias"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 13l-7 7-9-9V4h7l9 9z"/><circle cx="8.5" cy="8.5" r="1"/></svg><span>Categorías</span></a>
+  </nav>
+
   <div class="modal" id="importModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-card"><h2 id="modalTitle">Importar movimientos</h2><p>Selecciona el CSV familiar. La plataforma reconocerá cada cuenta, categoría y moneda y actualizará automáticamente el panel.</p>
       <div class="dropzone" id="dropzone"><input type="file" id="fileInput" accept=".csv,text/csv"><label for="fileInput">Haz clic o arrastra el archivo aquí</label><small>Archivo CSV · máximo recomendado 10 MB</small></div>
@@ -307,6 +330,14 @@
       <div class="field"><label for="householdName">Nombre de la familia</label><input id="householdName" value="Familia Bonfiglio" maxlength="100"></div>
       <div class="error" id="householdError"></div>
       <div class="modal-actions" style="justify-content:flex-end"><button class="btn primary" id="createHouseholdBtn">Crear espacio</button></div>
+    </div>
+  </div>
+
+  <div class="modal" id="shareModal" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+    <div class="modal-card"><h2 id="shareTitle">Compartir con la familia</h2><p>Genera un enlace privado de solo lectura. Quien tenga el enlace podrá consultar el dashboard, pero no importar ni modificar movimientos.</p>
+      <div class="share-link-box" id="shareLinkBox"><input id="shareLink" readonly aria-label="Enlace familiar"><button class="btn primary" id="copyShareBtn">Copiar enlace</button></div>
+      <div class="error" id="shareError"></div>
+      <div class="modal-actions"><button class="link-btn" id="revokeShareBtn">Desactivar enlace anterior</button><div><button class="btn" id="cancelShareBtn">Cerrar</button> <button class="btn primary" id="createShareBtn">Generar enlace</button></div></div>
     </div>
   </div>
 
@@ -327,6 +358,7 @@
     const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY;
     const supabaseConfigured = Boolean(supabaseUrl && supabaseKey);
     const supabase = supabaseConfigured ? createClient(supabaseUrl, supabaseKey) : null;
+    const shareToken = new URLSearchParams(window.location.search).get('share');
     let transactions = supabaseConfigured ? [] : (JSON.parse(localStorage.getItem('casa-transactions') || 'null') || sampleTransactions);
     let currentUser = null;
     let currentHousehold = null;
@@ -353,11 +385,13 @@
     function showAuth(){
       $('#authScreen').classList.add('open');
       $('#appShell').style.display='none';
+      $('#mobileNav').style.display='none';
     }
 
     function showApp(){
       $('#authScreen').classList.remove('open');
       $('#appShell').style.display='';
+      $('#mobileNav').style.display='';
     }
 
     async function signIn(){
@@ -420,13 +454,38 @@
       $('#updated').textContent=`Sincronizado ahora · ${transactions.length} movimientos`;
     }
 
+    function applyRoleUI(){
+      const isAdmin=currentRole==='admin';
+      $('#importBtn').hidden=!isAdmin;
+      $('#sampleBtn').hidden=!isAdmin;
+      $('#shareBtn').hidden=!isAdmin;
+      $('#logoutBtn').hidden=!currentUser;
+    }
+
+    async function loadSharedDashboard(){
+      try{
+        const {data,error}=await supabase.rpc('get_shared_dashboard',{p_token:shareToken});
+        if(error)throw error;
+        if(!data)throw new Error('El enlace familiar no es válido o ha sido desactivado.');
+        currentRole='viewer';currentHousehold={name:data.household_name};currentUser=null;
+        transactions=(data.transactions||[]).map(t=>({
+          id:t.id,date:t.date,description:t.description,category:t.category,account:t.account,
+          currency:t.currency,type:t.type==='income'?'Ingreso':'Gasto',amount:Number(t.amount)
+        }));
+        showApp();applyRoleUI();
+        $('#privacyNote').textContent=`Solo lectura · ${currentHousehold.name}`;
+        $('#updated').textContent=`Vista familiar · ${transactions.length} movimientos`;
+        populateFilters();render();
+      }catch(error){showAuth();setAuthMessage('No se pudo abrir la vista familiar: '+error.message,true)}
+    }
+
     async function enterCloudApp(){
       try{
         if(!await loadHousehold())return;
         showApp();
         $('#privacyNote').textContent=`Sincronizado · ${currentHousehold.name}`;
         $('#logoutBtn').textContent=(currentUser.user_metadata?.full_name||currentUser.email||'U').charAt(0).toUpperCase();
-        $('#importBtn').style.display=currentRole==='admin'?'inline-block':'none';
+        applyRoleUI();
         await loadCloudTransactions();
       }catch(error){showAuth();setAuthMessage('No se pudo cargar la información: '+error.message,true)}
     }
@@ -446,6 +505,7 @@
         showNotice('Modo demostración: configura Supabase en Vercel para sincronizar los datos.');
         return;
       }
+      if(shareToken){await loadSharedDashboard();return}
       showAuth();
       const {data:{session}}=await supabase.auth.getSession();
       await handleSession(session);
@@ -453,6 +513,32 @@
         if(event==='SIGNED_IN'&&newSession)handleSession(newSession);
         if(event==='SIGNED_OUT')handleSession(null);
       });
+    }
+
+    function openShareModal(){
+      $('#shareError').style.display='none';
+      $('#shareLinkBox').classList.remove('open');
+      $('#shareModal').classList.add('open');
+    }
+    function closeShareModal(){$('#shareModal').classList.remove('open')}
+    async function createShareLink(){
+      if(currentRole!=='admin'||!currentHousehold)return;
+      $('#createShareBtn').classList.add('spinner');
+      const {data,error}=await supabase.rpc('create_dashboard_share_link',{p_household_id:currentHousehold.id});
+      $('#createShareBtn').classList.remove('spinner');
+      if(error){$('#shareError').textContent=error.message;$('#shareError').style.display='block';return}
+      const url=new URL(window.location.origin+window.location.pathname);url.searchParams.set('share',data);
+      $('#shareLink').value=url.toString();$('#shareLinkBox').classList.add('open');
+    }
+    async function copyShareLink(){
+      await navigator.clipboard.writeText($('#shareLink').value);
+      $('#copyShareBtn').textContent='Copiado';setTimeout(()=>$('#copyShareBtn').textContent='Copiar enlace',1800);
+    }
+    async function revokeShareLink(){
+      if(currentRole!=='admin'||!currentHousehold)return;
+      const {error}=await supabase.rpc('revoke_dashboard_share_link',{p_household_id:currentHousehold.id});
+      if(error){$('#shareError').textContent=error.message;$('#shareError').style.display='block';return}
+      $('#shareLinkBox').classList.remove('open');showNotice('El enlace familiar anterior ha sido desactivado.');closeShareModal();
     }
 
     function filteredTransactions(){
@@ -583,10 +669,13 @@
     $('#logoutBtn').onclick=()=>supabaseConfigured&&supabase.auth.signOut();
     $('#authPassword').addEventListener('keydown',event=>{if(event.key==='Enter')signIn()});
     $('#importBtn').onclick=openModal; $('#cancelBtn').onclick=closeModal; $('#sampleBtn').onclick=downloadSample; $('#modalSampleBtn').onclick=downloadSample; $('#closeNotice').onclick=()=>$('#notice').classList.remove('show');
+    $('#shareBtn').onclick=openShareModal;$('#cancelShareBtn').onclick=closeShareModal;$('#createShareBtn').onclick=createShareLink;$('#copyShareBtn').onclick=copyShareLink;$('#revokeShareBtn').onclick=revokeShareLink;
     $('#fileInput').onchange=e=>importFile(e.target.files[0]);
     ['periodFilter','accountFilter','categoryFilter'].forEach(id=>$('#'+id).onchange=render); $('#chartCurrency').onchange=()=>{renderChart(filteredTransactions());renderCategories(filteredTransactions())};
     const drop=$('#dropzone');['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag')}));['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag')}));drop.addEventListener('drop',e=>importFile(e.dataTransfer.files[0]));
     $('#importModal').addEventListener('click',e=>{if(e.target===$('#importModal'))closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+    $('#shareModal').addEventListener('click',e=>{if(e.target===$('#shareModal'))closeShareModal()});
+    document.querySelectorAll('.mobile-nav a').forEach(link=>link.addEventListener('click',()=>{document.querySelectorAll('.mobile-nav a').forEach(item=>item.classList.remove('active'));link.classList.add('active')}));
     initApp();
   </script>
 </body>
