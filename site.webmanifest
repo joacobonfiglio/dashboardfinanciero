@@ -1,0 +1,16 @@
+{
+  "name": "Casa — Finanzas familiares",
+  "short_name": "Casa",
+  "description": "Dashboard de finanzas familiares",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f1ea",
+  "theme_color": "#293128",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
