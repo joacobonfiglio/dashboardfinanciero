@@ -177,6 +177,24 @@
     .modal-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 18px; }
     .link-btn { padding: 8px 0; border: 0; color: var(--green); background: transparent; font-weight: 800; font-size: 12px; }
     .error { display: none; color: #9b4c3c; font-size: 12px; margin: -10px 0 15px; }
+    .auth-screen { min-height: 100vh; display: none; place-items: center; padding: 24px; background: radial-gradient(circle at top right, #e7deca 0, transparent 35%), var(--bg); }
+    .auth-screen.open { display: grid; }
+    .auth-card { width: min(430px, 100%); padding: 34px; border-radius: 26px; background: var(--panel); box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .auth-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+    .auth-card h2 { margin: 0 0 8px; font: 500 31px/1.1 Georgia, serif; letter-spacing: -.03em; }
+    .auth-card > p { margin: 0 0 22px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .field { display: grid; gap: 7px; margin-bottom: 14px; }
+    .field label { color: var(--muted); font-size: 11px; font-weight: 750; text-transform: uppercase; letter-spacing: .07em; }
+    .field input { width: 100%; padding: 12px 13px; border: 1px solid var(--line); border-radius: 11px; background: white; color: var(--ink); outline: none; }
+    .field input:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+    .auth-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 20px; }
+    .auth-actions .btn { width: 100%; }
+    .auth-message { min-height: 18px; margin-top: 14px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .auth-message.error-text { color: #9b4c3c; }
+    .config-warning { display: none; margin-top: 18px; padding: 12px; border-radius: 10px; background: var(--rose-soft); color: #874c3e; font-size: 12px; line-height: 1.5; }
+    .logout-btn { border: 0; padding: 0; }
+    .cloud-status { color: #d5dfd1; }
+    .spinner { opacity: .65; pointer-events: none; }
 
     @media (max-width: 1050px) {
       .shell { grid-template-columns: 82px 1fr; }
@@ -208,7 +226,21 @@
   </style>
 </head>
 <body>
-  <div class="shell">
+  <section class="auth-screen" id="authScreen">
+    <div class="auth-card">
+      <div class="auth-brand"><div class="brand-mark">C</div><div><strong>Casa</strong><small style="display:block;color:var(--muted);margin-top:2px">Finanzas familiares</small></div></div>
+      <h2>Tu dinero, en familia</h2>
+      <p>Accede para consultar los saldos y movimientos compartidos de forma segura.</p>
+      <div class="field"><label for="authName">Nombre</label><input id="authName" autocomplete="name" placeholder="Tu nombre"></div>
+      <div class="field"><label for="authEmail">Correo electrónico</label><input id="authEmail" type="email" autocomplete="email" placeholder="nombre@correo.com"></div>
+      <div class="field"><label for="authPassword">Contraseña</label><input id="authPassword" type="password" autocomplete="current-password" minlength="8" placeholder="Mínimo 8 caracteres"></div>
+      <div class="auth-actions"><button class="btn primary" id="loginBtn">Entrar</button><button class="btn" id="signupBtn">Crear cuenta</button></div>
+      <div class="auth-message" id="authMessage"></div>
+      <div class="config-warning" id="configWarning">Faltan las variables públicas de Supabase en Vercel. Añade <b>VITE_SUPABASE_URL</b> y <b>VITE_SUPABASE_PUBLISHABLE_KEY</b> y vuelve a desplegar.</div>
+    </div>
+  </section>
+
+  <div class="shell" id="appShell" style="display:none">
     <aside class="sidebar">
       <div class="brand"><div class="brand-mark">C</div><div><strong>Casa</strong><small>Finanzas familiares</small></div></div>
       <nav>
@@ -217,13 +249,13 @@
         <a class="nav-item" href="#cuentas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9h18M5 9V6l7-3 7 3v3M5 9v10M9 9v10M15 9v10M19 9v10M3 19h18"/></svg><span>Cuentas</span></a>
         <a class="nav-item" href="#categorias"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 13l-7 7-9-9V4h7l9 9z"/><circle cx="8.5" cy="8.5" r="1"/></svg><span>Categorías</span></a>
       </nav>
-      <div class="sidebar-note"><strong>Datos privados</strong>Esta versión guarda la información en este dispositivo. La sincronización familiar se añadirá en la siguiente fase.</div>
+      <div class="sidebar-note"><strong>Datos privados</strong><span id="privacyNote">Sincronización segura con Supabase.</span></div>
     </aside>
 
     <main>
       <header class="topbar">
         <div><p class="eyebrow">Panel familiar</p><h1>Hola, familia</h1></div>
-        <div class="actions"><button class="btn" id="sampleBtn">CSV de ejemplo</button><button class="btn primary" id="importBtn">Importar CSV</button><div class="avatar">JB</div></div>
+        <div class="actions"><button class="btn" id="sampleBtn">CSV de ejemplo</button><button class="btn primary" id="importBtn">Importar CSV</button><button class="avatar logout-btn" id="logoutBtn" title="Cerrar sesión">JB</button></div>
       </header>
 
       <div class="notice" id="notice"><span id="noticeText"></span><button id="closeNotice">✕</button></div>
@@ -270,7 +302,16 @@
     </div>
   </div>
 
-  <script>
+  <div class="modal" id="householdModal" role="dialog" aria-modal="true" aria-labelledby="householdTitle">
+    <div class="modal-card"><h2 id="householdTitle">Crear espacio familiar</h2><p>Este será el espacio privado donde se guardarán las cuentas y movimientos de la familia.</p>
+      <div class="field"><label for="householdName">Nombre de la familia</label><input id="householdName" value="Familia Bonfiglio" maxlength="100"></div>
+      <div class="error" id="householdError"></div>
+      <div class="modal-actions" style="justify-content:flex-end"><button class="btn primary" id="createHouseholdBtn">Crear espacio</button></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from '@supabase/supabase-js';
     const sampleTransactions = [
       ['2026-02-02','Sueldo','Ingresos','Banco Galicia','ARS','Ingreso',1650000],['2026-02-05','Supermercado','Alimentación','Banco Galicia','ARS','Gasto',132000],['2026-02-12','Servicios hogar','Vivienda','Banco Galicia','ARS','Gasto',87000],
       ['2026-03-02','Sueldo','Ingresos','Banco Galicia','ARS','Ingreso',1650000],['2026-03-07','Compras semanales','Alimentación','Mercado Pago','ARS','Gasto',148500],['2026-03-15','Combustible','Transporte','Mercado Pago','ARS','Gasto',62000],
@@ -282,7 +323,14 @@
       ['2026-03-01','Saldo inicial','Ahorro','Banco España','EUR','Ingreso',12400],['2026-04-06','Seguro','Vivienda','Banco España','EUR','Gasto',380],['2026-06-17','Viaje','Ocio','Banco España','EUR','Gasto',920],['2026-07-11','Transferencia recibida','Ingresos','Banco España','EUR','Ingreso',2400]
     ].map(([date,description,category,account,currency,type,amount],i)=>({id:i+1,date,description,category,account,currency,type,amount}));
 
-    let transactions = JSON.parse(localStorage.getItem('casa-transactions') || 'null') || sampleTransactions;
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY;
+    const supabaseConfigured = Boolean(supabaseUrl && supabaseKey);
+    const supabase = supabaseConfigured ? createClient(supabaseUrl, supabaseKey) : null;
+    let transactions = supabaseConfigured ? [] : (JSON.parse(localStorage.getItem('casa-transactions') || 'null') || sampleTransactions);
+    let currentUser = null;
+    let currentHousehold = null;
+    let currentRole = null;
     const currencies = ['ARS','USD','EUR'];
     const categoryColors = ['#556b4f','#d5b98a','#b86f52','#899590','#b7a8a1','#8a7866','#718a70'];
     const monthNames = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
@@ -291,6 +339,121 @@
     const formatMoney = (value,currency,compact=false) => new Intl.NumberFormat('es-AR',{style:'currency',currency,maximumFractionDigits: currency==='ARS'?0:2,notation:compact?'compact':'standard'}).format(value);
     const normalize = value => String(value ?? '').trim();
     const normKey = value => normalize(value).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+
+    function setAuthMessage(message='', isError=false){
+      $('#authMessage').textContent=message;
+      $('#authMessage').classList.toggle('error-text',isError);
+    }
+
+    function setAuthBusy(isBusy){
+      $('#loginBtn').classList.toggle('spinner',isBusy);
+      $('#signupBtn').classList.toggle('spinner',isBusy);
+    }
+
+    function showAuth(){
+      $('#authScreen').classList.add('open');
+      $('#appShell').style.display='none';
+    }
+
+    function showApp(){
+      $('#authScreen').classList.remove('open');
+      $('#appShell').style.display='';
+    }
+
+    async function signIn(){
+      if(!supabaseConfigured)return;
+      const email=$('#authEmail').value.trim(), password=$('#authPassword').value;
+      if(!email||!password)return setAuthMessage('Introduce tu correo y contraseña.',true);
+      setAuthBusy(true);setAuthMessage('Accediendo…');
+      const {error}=await supabase.auth.signInWithPassword({email,password});
+      setAuthBusy(false);
+      if(error)setAuthMessage(error.message,true);
+    }
+
+    async function signUp(){
+      if(!supabaseConfigured)return;
+      const full_name=$('#authName').value.trim(), email=$('#authEmail').value.trim(), password=$('#authPassword').value;
+      if(!full_name||!email||password.length<8)return setAuthMessage('Completa el nombre, el correo y una contraseña de al menos 8 caracteres.',true);
+      setAuthBusy(true);setAuthMessage('Creando la cuenta…');
+      const {data,error}=await supabase.auth.signUp({email,password,options:{data:{full_name}}});
+      setAuthBusy(false);
+      if(error)return setAuthMessage(error.message,true);
+      if(!data.session)setAuthMessage('Cuenta creada. Revisa tu correo para confirmarla y después inicia sesión.');
+    }
+
+    async function loadHousehold(){
+      const {data,error}=await supabase.from('household_members').select('role, households(id,name)').eq('user_id',currentUser.id).limit(1).maybeSingle();
+      if(error)throw error;
+      if(!data){
+        $('#householdModal').classList.add('open');
+        return false;
+      }
+      currentRole=data.role;
+      currentHousehold=Array.isArray(data.households)?data.households[0]:data.households;
+      return true;
+    }
+
+    async function createHousehold(){
+      const name=$('#householdName').value.trim();
+      if(!name){$('#householdError').textContent='Escribe un nombre.';$('#householdError').style.display='block';return}
+      $('#createHouseholdBtn').classList.add('spinner');
+      const {error}=await supabase.from('households').insert({name,created_by:currentUser.id});
+      $('#createHouseholdBtn').classList.remove('spinner');
+      if(error){$('#householdError').textContent=error.message;$('#householdError').style.display='block';return}
+      $('#householdModal').classList.remove('open');
+      await enterCloudApp();
+    }
+
+    async function loadCloudTransactions(){
+      const {data,error}=await supabase.from('transactions')
+        .select('id,transaction_date,description,currency,type,amount,accounts(name),categories(name)')
+        .eq('household_id',currentHousehold.id)
+        .order('transaction_date',{ascending:false});
+      if(error)throw error;
+      transactions=(data||[]).map(t=>({
+        id:t.id,date:t.transaction_date,description:t.description,currency:t.currency,
+        type:t.type==='income'?'Ingreso':'Gasto',amount:Number(t.amount),
+        account:(Array.isArray(t.accounts)?t.accounts[0]?.name:t.accounts?.name)||'Sin cuenta',
+        category:(Array.isArray(t.categories)?t.categories[0]?.name:t.categories?.name)||'Sin categoría'
+      }));
+      populateFilters();render();
+      $('#updated').textContent=`Sincronizado ahora · ${transactions.length} movimientos`;
+    }
+
+    async function enterCloudApp(){
+      try{
+        if(!await loadHousehold())return;
+        showApp();
+        $('#privacyNote').textContent=`Sincronizado · ${currentHousehold.name}`;
+        $('#logoutBtn').textContent=(currentUser.user_metadata?.full_name||currentUser.email||'U').charAt(0).toUpperCase();
+        $('#importBtn').style.display=currentRole==='admin'?'inline-block':'none';
+        await loadCloudTransactions();
+      }catch(error){showAuth();setAuthMessage('No se pudo cargar la información: '+error.message,true)}
+    }
+
+    async function handleSession(session){
+      if(!session){currentUser=null;currentHousehold=null;currentRole=null;showAuth();return}
+      currentUser=session.user;
+      setAuthMessage('Cargando información…');
+      await enterCloudApp();
+    }
+
+    async function initApp(){
+      if(!supabaseConfigured){
+        showApp();
+        $('#privacyNote').textContent='Modo demostración local.';
+        populateFilters();render();
+        showNotice('Modo demostración: configura Supabase en Vercel para sincronizar los datos.');
+        return;
+      }
+      showAuth();
+      const {data:{session}}=await supabase.auth.getSession();
+      await handleSession(session);
+      supabase.auth.onAuthStateChange((event,newSession)=>{
+        if(event==='SIGNED_IN'&&newSession)handleSession(newSession);
+        if(event==='SIGNED_OUT')handleSession(null);
+      });
+    }
 
     function filteredTransactions(){
       const period=$('#periodFilter').value, account=$('#accountFilter').value, category=$('#categoryFilter').value;
@@ -371,9 +534,44 @@
     }
 
     function parseDate(value){if(/^\d{4}-\d{2}-\d{2}$/.test(value))return value;const m=value.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);return m?`${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`:''}
+    async function sha256(text){
+      const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));
+      return [...new Uint8Array(digest)].map(byte=>byte.toString(16).padStart(2,'0')).join('');
+    }
+
     function importFile(file){
       if(!file||!file.name.toLowerCase().endsWith('.csv'))return showImportError('Selecciona un archivo con extensión .csv.');
-      const reader=new FileReader();reader.onload=()=>{try{const parsed=parseCSV(reader.result);transactions=parsed;localStorage.setItem('casa-transactions',JSON.stringify(transactions));populateFilters();render();closeModal();$('#updated').textContent=`Actualizado ahora · ${parsed.length} movimientos`;showNotice(`Se importaron correctamente ${parsed.length} movimientos.`)}catch(e){showImportError(e.message)}};reader.readAsText(file,'UTF-8');
+      const reader=new FileReader();
+      reader.onload=async()=>{
+        try{
+          const csvText=String(reader.result||'');
+          const parsed=parseCSV(csvText);
+          if(supabaseConfigured){
+            if(!currentHousehold||currentRole!=='admin')throw new Error('No tienes permisos para importar movimientos.');
+            const rows=parsed.map(t=>({date:t.date,description:t.description,category:t.category,account:t.account,currency:t.currency,type:t.type,amount:t.amount}));
+            const {error}=await supabase.rpc('import_csv_batch',{
+              p_household_id:currentHousehold.id,
+              p_file_name:file.name,
+              p_file_hash:await sha256(csvText),
+              p_rows:rows
+            });
+            if(error)throw error;
+            await loadCloudTransactions();
+          }else{
+            transactions=parsed;
+            localStorage.setItem('casa-transactions',JSON.stringify(transactions));
+            populateFilters();render();
+          }
+          closeModal();
+          $('#updated').textContent=`Actualizado ahora · ${parsed.length} movimientos`;
+          showNotice(`Se importaron correctamente ${parsed.length} movimientos.`);
+        }catch(error){
+          const message=error?.message||'No se pudo importar el archivo.';
+          showImportError(message.includes('already been imported')?'Este archivo ya fue importado anteriormente.':message);
+        }
+      };
+      reader.onerror=()=>showImportError('No se pudo leer el archivo.');
+      reader.readAsText(file,'UTF-8');
     }
     function showImportError(message){$('#importError').textContent=message;$('#importError').style.display='block'}
     function showNotice(message){$('#noticeText').textContent=message;$('#notice').classList.add('show')}
@@ -381,12 +579,15 @@
     function closeModal(){$('#importModal').classList.remove('open');$('#fileInput').value=''}
     function downloadSample(){const rows=[['fecha','descripcion','categoria','cuenta','moneda','tipo','importe'],...sampleTransactions.slice(-12).map(t=>[t.date,t.description,t.category,t.account,t.currency,t.type,t.amount])];const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='movimientos_familia_ejemplo.csv';a.click();URL.revokeObjectURL(a.href)}
 
+    $('#loginBtn').onclick=signIn; $('#signupBtn').onclick=signUp; $('#createHouseholdBtn').onclick=createHousehold;
+    $('#logoutBtn').onclick=()=>supabaseConfigured&&supabase.auth.signOut();
+    $('#authPassword').addEventListener('keydown',event=>{if(event.key==='Enter')signIn()});
     $('#importBtn').onclick=openModal; $('#cancelBtn').onclick=closeModal; $('#sampleBtn').onclick=downloadSample; $('#modalSampleBtn').onclick=downloadSample; $('#closeNotice').onclick=()=>$('#notice').classList.remove('show');
     $('#fileInput').onchange=e=>importFile(e.target.files[0]);
     ['periodFilter','accountFilter','categoryFilter'].forEach(id=>$('#'+id).onchange=render); $('#chartCurrency').onchange=()=>{renderChart(filteredTransactions());renderCategories(filteredTransactions())};
     const drop=$('#dropzone');['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag')}));['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag')}));drop.addEventListener('drop',e=>importFile(e.dataTransfer.files[0]));
     $('#importModal').addEventListener('click',e=>{if(e.target===$('#importModal'))closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
-    populateFilters(); render();
+    initApp();
   </script>
 </body>
 </html>

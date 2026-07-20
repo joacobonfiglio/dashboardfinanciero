@@ -4,14 +4,7 @@ Aplicación web para consultar saldos, ingresos y gastos familiares en ARS, USD 
 
 ## Estado actual
 
-La versión 1 guarda los movimientos en `localStorage`. Esto significa que los datos permanecen en el navegador que importa el CSV, pero todavía no se sincronizan entre dispositivos.
-
-Antes de utilizarla con información financiera real compartida, la siguiente fase debe incorporar:
-
-- Acceso privado mediante usuario y contraseña.
-- Base de datos compartida.
-- Permisos para los miembros de la familia.
-- Copias de seguridad y registro de cambios.
+La aplicación utiliza Supabase para el acceso con usuario y contraseña, el espacio familiar compartido y los movimientos. La importación de CSV se procesa como un único lote y rechaza archivos duplicados.
 
 ## Desarrollo local
 
@@ -20,6 +13,13 @@ Necesitas Node.js 20.19 o superior.
 ```bash
 npm install
 npm run dev
+```
+
+Crea primero un archivo `.env.local` (no lo subas a GitHub):
+
+```env
+VITE_SUPABASE_URL=https://TU_PROYECTO.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=TU_CLAVE_PUBLICA
 ```
 
 Vite mostrará una dirección local, normalmente `http://localhost:5173`.
@@ -56,9 +56,19 @@ git push -u origin main
 2. Importa el repositorio de GitHub.
 3. Vercel reconocerá automáticamente Vite.
 4. Comprueba que el comando de build sea `npm run build` y el directorio de salida `dist`.
-5. Pulsa **Deploy**.
+5. Añade `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY` en **Settings > Environment Variables**.
+6. Pulsa **Deploy**.
 
 Cada `push` posterior a la rama `main` generará un nuevo despliegue.
+
+## Preparar Supabase
+
+Ejecuta desde **Supabase > SQL Editor**, en este orden:
+
+1. `supabase/schema.sql`
+2. `supabase/002_import_csv.sql`
+
+Ambos scripts terminan correctamente con el mensaje `Success. No rows returned`.
 
 ## Formato del CSV
 
@@ -77,4 +87,4 @@ Valores admitidos:
 
 ## Privacidad
 
-El repositorio debe mantenerse privado. No incluyas CSV reales, contraseñas, tokens ni claves privadas. El atributo `noindex` evita la indexación habitual, pero no sustituye un sistema de autenticación.
+El repositorio debe mantenerse privado. No incluyas CSV reales, contraseñas, tokens ni claves privadas. La clave publicable de Supabase puede usarse en el navegador porque el acceso real está limitado mediante RLS; nunca uses la clave secreta o `service_role` en Vite.
