@@ -11,19 +11,19 @@
   <title>Casa — Finanzas familiares</title>
   <style>
     :root {
-      --bg: #f4f1ea;
-      --panel: #fffdf8;
-      --ink: #25271f;
-      --muted: #797b70;
-      --line: #e8e3d8;
-      --green: #556b4f;
-      --green-2: #84957c;
-      --green-soft: #e6ece1;
-      --sand: #d5b98a;
-      --terracotta: #b86f52;
-      --rose-soft: #f4e5df;
-      --shadow: 0 14px 40px rgba(51, 47, 35, .07);
-      --radius: 22px;
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --ink: #14213a;
+      --muted: #71809a;
+      --line: #e6eaf1;
+      --green: #246bfd;
+      --green-2: #6a98ff;
+      --green-soft: #eaf1ff;
+      --sand: #8c9ab5;
+      --terracotta: #e36d58;
+      --rose-soft: #fff0ed;
+      --shadow: 0 10px 30px rgba(18, 36, 69, .055);
+      --radius: 18px;
     }
 
     * { box-sizing: border-box; }
@@ -42,39 +42,39 @@
     .shell { min-height: 100vh; display: grid; grid-template-columns: 242px 1fr; }
     .sidebar {
       position: sticky; top: 0; height: 100vh; padding: 28px 22px;
-      background: #293128; color: #f8f6ef; display: flex; flex-direction: column;
+      background: #101b31; color: #f8faff; display: flex; flex-direction: column;
     }
     .brand { display: flex; align-items: center; gap: 12px; margin: 2px 8px 42px; }
     .brand-mark {
       width: 38px; height: 38px; display: grid; place-items: center;
-      border-radius: 12px; color: #293128; background: #d9c69e; font-weight: 800;
+      border-radius: 11px; color: white; background: var(--green); font-weight: 800;
     }
     .brand strong { display: block; font-size: 17px; letter-spacing: -.02em; }
-    .brand small { display: block; color: #b8c0b5; margin-top: 2px; }
+    .brand small { display: block; color: #91a0bb; margin-top: 2px; }
     nav { display: grid; gap: 8px; }
     .nav-item {
       display: flex; align-items: center; gap: 12px; padding: 12px 14px;
-      border-radius: 13px; color: #bfc6bc; text-decoration: none; font-size: 14px;
+      border-radius: 10px; color: #a9b7d0; text-decoration: none; font-size: 13px; font-weight: 650;
     }
-    .nav-item.active { background: rgba(255,255,255,.1); color: white; }
+    .nav-item.active { background: rgba(91,143,255,.18); color: white; }
     .nav-item svg { width: 19px; height: 19px; }
     .sidebar-note {
       margin-top: auto; padding: 16px; border-radius: 16px;
-      background: rgba(255,255,255,.07); color: #cbd0c8; font-size: 12px; line-height: 1.55;
+      background: rgba(255,255,255,.06); color: #b8c4d9; font-size: 12px; line-height: 1.55;
     }
     .sidebar-note strong { color: white; display: block; margin-bottom: 5px; font-size: 13px; }
 
-    main { padding: 34px clamp(24px, 4vw, 58px) 54px; overflow: hidden; }
-    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 32px; }
-    .eyebrow { margin: 0 0 6px; color: var(--green); font-size: 12px; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
-    h1 { margin: 0; font-family: Georgia, serif; font-size: clamp(30px, 4vw, 43px); font-weight: 500; letter-spacing: -.035em; }
+    main { max-width: 1560px; padding: 34px clamp(24px, 4vw, 58px) 54px; overflow: hidden; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 26px; }
+    .eyebrow { margin: 0 0 7px; color: var(--green); font-size: 11px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(29px, 4vw, 39px); font-weight: 760; letter-spacing: -.04em; }
     .actions { display: flex; align-items: center; gap: 10px; }
     .btn {
       border: 1px solid var(--line); padding: 11px 15px; border-radius: 12px;
-      color: var(--ink); background: var(--panel); font-weight: 700; font-size: 13px;
-      box-shadow: 0 4px 16px rgba(51,47,35,.04);
+      color: var(--ink); background: var(--panel); font-weight: 750; font-size: 12px;
+      box-shadow: 0 3px 12px rgba(18,36,69,.03);
     }
-    .btn.primary { color: white; background: var(--green); border-color: var(--green); }
+    .btn.primary { color: white; background: var(--green); border-color: var(--green); box-shadow: 0 8px 18px rgba(36,107,253,.18); }
     .btn:hover { transform: translateY(-1px); }
     .avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: #d9c69e; font-weight: 800; }
 
@@ -86,23 +86,23 @@
     .notice.show { display: flex; }
     .notice button { border: 0; background: transparent; color: var(--muted); }
 
-    .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 20px; padding: 11px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.8); }
     .select-wrap { position: relative; }
     select {
       appearance: none; min-width: 135px; padding: 10px 34px 10px 13px; border: 1px solid var(--line);
-      border-radius: 11px; background: var(--panel); color: var(--ink); font-size: 13px; font-weight: 650;
+      border-radius: 9px; background: var(--panel); color: var(--ink); font-size: 12px; font-weight: 700;
     }
     .select-wrap::after { content: "⌄"; position: absolute; right: 12px; top: 8px; color: var(--muted); pointer-events: none; }
     .updated { margin-left: auto; color: var(--muted); font-size: 12px; }
 
-    .balances { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 16px; }
+    .balances { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
     .balance-card {
-      position: relative; overflow: hidden; min-height: 155px; padding: 22px;
-      background: var(--panel); border: 1px solid rgba(232,227,216,.8); border-radius: var(--radius); box-shadow: var(--shadow);
+      position: relative; overflow: hidden; min-height: 140px; padding: 20px;
+      background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);
     }
     .balance-card::after {
       content: ""; position: absolute; width: 100px; height: 100px; right: -30px; bottom: -42px;
-      border-radius: 50%; background: var(--green-soft);
+      border-radius: 50%; background: #edf3ff;
     }
     .balance-card.usd::after { background: #eee4cf; }
     .balance-card.eur::after { background: #e3e7ed; }
@@ -110,14 +110,26 @@
     .currency-pill { padding: 4px 8px; border-radius: 99px; background: var(--green-soft); color: var(--green); }
     .usd .currency-pill { color: #80652e; background: #f2e8d2; }
     .eur .currency-pill { color: #5b6675; background: #e9edf2; }
-    .balance-value { margin: 19px 0 8px; font-family: Georgia, serif; font-size: clamp(27px, 3vw, 35px); letter-spacing: -.03em; }
+    .balance-value { margin: 16px 0 8px; font-size: clamp(25px, 3vw, 32px); font-weight: 760; letter-spacing: -.04em; }
     .balance-delta { color: var(--muted); font-size: 12px; }
     .balance-delta b { color: var(--green); }
 
+    .executive-metrics { display: grid; grid-template-columns: 1.35fr repeat(3, minmax(0,1fr)); gap: 14px; margin-bottom: 14px; }
+    .executive-card { padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); box-shadow: var(--shadow); }
+    .executive-card.featured { color: white; border-color: #172a4a; background: linear-gradient(135deg, #14233d, #1e3f75); }
+    .executive-label { display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+    .featured .executive-label { color: #b9caff; }
+    .executive-label span:last-child { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; color: var(--green); background: var(--green-soft); font-size: 15px; letter-spacing: 0; }
+    .featured .executive-label span:last-child { color: white; background: rgba(255,255,255,.15); }
+    .executive-value { margin: 16px 0 5px; color: var(--ink); font-size: 25px; font-weight: 780; letter-spacing: -.045em; }
+    .featured .executive-value { color: white; font-size: 30px; }
+    .executive-note { color: var(--muted); font-size: 12px; }
+    .featured .executive-note { color: #d3defa; }
+
     .grid { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(285px, .9fr); gap: 16px; margin-bottom: 16px; }
-    .panel { padding: 22px; background: var(--panel); border: 1px solid rgba(232,227,216,.8); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .panel { padding: 21px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
     .panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 21px; }
-    .panel-title { margin: 0; font-family: Georgia, serif; font-size: 20px; font-weight: 500; }
+    .panel-title { margin: 0; font-size: 17px; font-weight: 760; letter-spacing: -.02em; }
     .panel-subtitle { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
     .legend { display: flex; gap: 14px; color: var(--muted); font-size: 11px; }
     .legend span::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--green); }
@@ -152,6 +164,14 @@
     .account-icon { width: 29px; height: 29px; display: grid; place-items: center; border-radius: 9px; background: var(--green-soft); color: var(--green); font-weight: 850; }
     .account-value { margin: 16px 0 4px; font-size: 17px; font-weight: 800; letter-spacing: -.02em; }
     .account-name { color: var(--muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .debt-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+    .debt-card { min-height: 132px; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: #faf8f2; }
+    .debt-card svg { width: 22px; height: 22px; color: var(--green); }
+    .debt-card h3 { margin: 12px 0 5px; font: 500 20px Georgia, serif; }
+    .debt-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .debt-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .debt-amount { margin-top: 14px; color: var(--terracotta); font-size: 20px; font-weight: 800; letter-spacing: -.02em; }
+    .debt-actions { display: flex; gap: 5px; }
 
     .table-panel { overflow: hidden; }
     .table-wrap { overflow-x: auto; }
@@ -163,6 +183,11 @@
     .tx-category { display: inline-flex; padding: 5px 8px; border-radius: 99px; background: #f0eee8; color: #686a61; }
     .income { color: var(--green); font-weight: 800; }
     .expense-text { color: var(--terracotta); font-weight: 800; }
+    .table-actions { display: flex; gap: 6px; }
+    .icon-action { width: 31px; height: 31px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 9px; background: white; color: var(--muted); cursor: pointer; }
+    .icon-action:hover { border-color: var(--green); color: var(--green); }
+    .icon-action.delete:hover { border-color: var(--terracotta); color: var(--terracotta); }
+    .icon-action svg { width: 15px; height: 15px; }
     .empty { padding: 36px; text-align: center; color: var(--muted); display: none; }
 
     .modal { display: none; position: fixed; inset: 0; z-index: 10; place-items: center; padding: 20px; background: rgba(28,31,25,.5); backdrop-filter: blur(5px); }
@@ -189,6 +214,8 @@
     .field label { color: var(--muted); font-size: 11px; font-weight: 750; text-transform: uppercase; letter-spacing: .07em; }
     .field input { width: 100%; padding: 12px 13px; border: 1px solid var(--line); border-radius: 11px; background: white; color: var(--ink); outline: none; }
     .field input:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+    .field select { width: 100%; padding: 12px 13px; border: 1px solid var(--line); border-radius: 11px; background: white; color: var(--ink); outline: none; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
     .auth-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 20px; }
     .auth-actions .btn { width: 100%; }
     .auth-message { min-height: 18px; margin-top: 14px; color: var(--muted); font-size: 12px; line-height: 1.45; }
@@ -201,7 +228,7 @@
     .share-link-box { display: none; gap: 9px; margin-top: 18px; }
     .share-link-box.open { display: grid; }
     .share-link-box input { width: 100%; padding: 12px 13px; border: 1px solid var(--line); border-radius: 11px; background: #f7f4ed; color: var(--ink); }
-    #resumen, #categorias, #cuentas, #movimientos { scroll-margin-top: 20px; }
+    #resumen, #categorias, #cuentas, #movimientos, #deudas { scroll-margin-top: 20px; }
 
     @media (max-width: 1050px) {
       .shell { grid-template-columns: 82px 1fr; }
@@ -210,6 +237,9 @@
       .brand div:last-child, .nav-item span, .sidebar-note { display: none; }
       .nav-item { justify-content: center; }
       .accounts { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .debt-grid { grid-template-columns: 1fr; }
+      .executive-metrics { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .executive-card.featured { grid-column: span 2; }
     }
     @media (max-width: 780px) {
       .shell { display: block; }
@@ -218,45 +248,38 @@
       .topbar { align-items: flex-start; }
       .actions #sampleBtn, .actions #shareBtn { display: none; }
       .balances { grid-template-columns: 1fr; }
+      .executive-metrics { grid-template-columns: 1fr 1fr; }
+      .executive-card.featured { grid-column: span 2; }
       .balance-card { min-height: 135px; }
       .grid { grid-template-columns: 1fr; }
       .updated { width: 100%; margin: 0; }
       .mobile-nav {
         position: fixed; z-index: 8; left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom));
-        display: grid; grid-template-columns: repeat(4, 1fr); padding: 8px; border: 1px solid rgba(255,255,255,.12);
+        display: grid; grid-template-columns: repeat(5, 1fr); padding: 8px; border: 1px solid rgba(255,255,255,.12);
         border-radius: 18px; background: rgba(41,49,40,.96); box-shadow: 0 14px 38px rgba(26,30,25,.24); backdrop-filter: blur(12px);
       }
       .mobile-nav a { display: grid; place-items: center; gap: 4px; min-height: 52px; border-radius: 12px; color: #c5ccc2; text-decoration: none; font-size: 10px; font-weight: 700; }
       .mobile-nav a.active { color: white; background: rgba(255,255,255,.1); }
       .mobile-nav svg { width: 20px; height: 20px; }
-      #resumen, #categorias, #cuentas, #movimientos { scroll-margin-top: 12px; }
+      #resumen, #categorias, #cuentas, #movimientos, #deudas { scroll-margin-top: 12px; }
     }
     @media (max-width: 480px) {
       .actions .avatar { display: none; }
       h1 { font-size: 31px; }
       .accounts { grid-template-columns: 1fr 1fr; }
+      .executive-metrics { grid-template-columns: 1fr; }
+      .executive-card.featured { grid-column: auto; }
       .donut-layout { grid-template-columns: 115px 1fr; gap: 14px; }
       .donut { width: 115px; }
+      .form-grid { grid-template-columns: 1fr; }
       .panel { padding: 17px; }
     }
   </style>
+  <script defer src="/app.js"></script>
+  <script defer src="/enhancements.js"></script>
 </head>
 <body>
-  <section class="auth-screen" id="authScreen">
-    <div class="auth-card">
-      <div class="auth-brand"><div class="brand-mark">C</div><div><strong>Casa</strong><small style="display:block;color:var(--muted);margin-top:2px">Finanzas familiares</small></div></div>
-      <h2>Tu dinero, en familia</h2>
-      <p>Accede para consultar los saldos y movimientos compartidos de forma segura.</p>
-      <div class="field"><label for="authName">Nombre</label><input id="authName" autocomplete="name" placeholder="Tu nombre"></div>
-      <div class="field"><label for="authEmail">Correo electrónico</label><input id="authEmail" type="email" autocomplete="email" placeholder="nombre@correo.com"></div>
-      <div class="field"><label for="authPassword">Contraseña</label><input id="authPassword" type="password" autocomplete="current-password" minlength="8" placeholder="Mínimo 8 caracteres"></div>
-      <div class="auth-actions"><button class="btn primary" id="loginBtn">Entrar</button><button class="btn" id="signupBtn">Crear cuenta</button></div>
-      <div class="auth-message" id="authMessage"></div>
-      <div class="config-warning" id="configWarning">Faltan las variables públicas de Supabase en Vercel. Añade <b>VITE_SUPABASE_URL</b> y <b>VITE_SUPABASE_PUBLISHABLE_KEY</b> y vuelve a desplegar.</div>
-    </div>
-  </section>
-
-  <div class="shell" id="appShell" style="display:none">
+  <div class="shell" id="appShell">
     <aside class="sidebar">
       <div class="brand"><div class="brand-mark">C</div><div><strong>Casa</strong><small>Finanzas familiares</small></div></div>
       <nav>
@@ -264,14 +287,15 @@
         <a class="nav-item" href="#movimientos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Movimientos</span></a>
         <a class="nav-item" href="#cuentas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9h18M5 9V6l7-3 7 3v3M5 9v10M9 9v10M15 9v10M19 9v10M3 19h18"/></svg><span>Cuentas</span></a>
         <a class="nav-item" href="#categorias"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 13l-7 7-9-9V4h7l9 9z"/><circle cx="8.5" cy="8.5" r="1"/></svg><span>Categorías</span></a>
+        <a class="nav-item" href="#deudas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h3"/></svg><span>Deudas</span></a>
       </nav>
-      <div class="sidebar-note"><strong>Datos privados</strong><span id="privacyNote">Sincronización segura con Supabase.</span></div>
+      <div class="sidebar-note"><strong>Datos privados</strong><span id="privacyNote">Guardados solo en este navegador.</span></div>
     </aside>
 
     <main id="resumen">
       <header class="topbar">
-        <div><p class="eyebrow">Panel familiar</p><h1>Hola, familia</h1></div>
-        <div class="actions"><button class="btn" id="shareBtn">Compartir</button><button class="btn" id="sampleBtn">CSV de ejemplo</button><button class="btn primary" id="importBtn">Importar CSV</button><button class="avatar logout-btn" id="logoutBtn" title="Cerrar sesión">JB</button></div>
+        <div><p class="eyebrow">Panel financiero</p><h1>Visión general</h1></div>
+        <div class="actions"><button class="btn" id="exportImageBtn">Descargar reporte</button><button class="btn" id="backupBtn">Descargar respaldo JSON</button><button class="btn" id="importBtn">Importar CSV</button><button class="btn primary" id="newTransactionBtn">Añadir movimiento</button></div>
       </header>
 
       <div class="notice" id="notice"><span id="noticeText"></span><button id="closeNotice">✕</button></div>
@@ -285,9 +309,11 @@
 
       <section class="balances" id="balanceCards"></section>
 
+      <section class="executive-metrics" id="executiveMetrics" aria-label="Indicadores financieros principales"></section>
+
       <section class="grid">
         <article class="panel">
-          <div class="panel-head"><div><h2 class="panel-title">Ingresos y gastos</h2><p class="panel-subtitle">Comparativa mensual en la moneda seleccionada</p></div><div class="select-wrap"><select id="chartCurrency"><option>ARS</option><option>USD</option><option>EUR</option></select></div></div>
+          <div class="panel-head"><div><h2 class="panel-title">Ingresos y gastos</h2><p class="panel-subtitle">Comparativa mensual en la moneda seleccionada</p></div><div class="select-wrap"><select id="chartCurrency"><option>ARS</option><option>USD</option><option selected>EUR</option></select></div></div>
           <div class="legend"><span>Ingresos</span><span>Gastos</span></div>
           <div class="chart" id="barChart"></div>
         </article>
@@ -302,18 +328,24 @@
         <div class="accounts" id="accountsGrid"></div>
       </section>
 
+      <section class="panel" id="deudas" style="margin-bottom:16px">
+        <div class="panel-head"><div><h2 class="panel-title">Deudas</h2><p class="panel-subtitle" id="debtSummary">—</p></div><button class="btn" id="newDebtBtn">Añadir deuda</button></div>
+        <div class="debt-grid" id="debtGrid"></div>
+      </section>
+
       <section class="panel table-panel" id="movimientos">
         <div class="panel-head"><div><h2 class="panel-title">Últimos movimientos</h2><p class="panel-subtitle" id="movementCount">—</p></div></div>
-        <div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Descripción</th><th>Categoría</th><th>Cuenta</th><th>Moneda</th><th>Importe</th></tr></thead><tbody id="txBody"></tbody></table><div class="empty" id="emptyState">No hay movimientos para estos filtros.</div></div>
+        <div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Descripción</th><th>Categoría</th><th>Cuenta</th><th>Moneda</th><th>Importe</th><th aria-label="Acciones"></th></tr></thead><tbody id="txBody"></tbody></table><div class="empty" id="emptyState">No hay movimientos para estos filtros.</div></div>
       </section>
     </main>
   </div>
 
-  <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil" style="display:none">
+  <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil">
     <a class="active" href="#resumen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Resumen</span></a>
     <a href="#movimientos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Movimientos</span></a>
     <a href="#cuentas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9h18M5 9V6l7-3 7 3v3M5 9v10M9 9v10M15 9v10M19 9v10M3 19h18"/></svg><span>Cuentas</span></a>
     <a href="#categorias"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 13l-7 7-9-9V4h7l9 9z"/><circle cx="8.5" cy="8.5" r="1"/></svg><span>Categorías</span></a>
+    <a href="#deudas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h3"/></svg><span>Deudas</span></a>
   </nav>
 
   <div class="modal" id="importModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -325,358 +357,38 @@
     </div>
   </div>
 
-  <div class="modal" id="householdModal" role="dialog" aria-modal="true" aria-labelledby="householdTitle">
-    <div class="modal-card"><h2 id="householdTitle">Crear espacio familiar</h2><p>Este será el espacio privado donde se guardarán las cuentas y movimientos de la familia.</p>
-      <div class="field"><label for="householdName">Nombre de la familia</label><input id="householdName" value="Familia Bonfiglio" maxlength="100"></div>
-      <div class="error" id="householdError"></div>
-      <div class="modal-actions" style="justify-content:flex-end"><button class="btn primary" id="createHouseholdBtn">Crear espacio</button></div>
+  <div class="modal" id="transactionModal" role="dialog" aria-modal="true" aria-labelledby="transactionTitle">
+    <div class="modal-card"><h2 id="transactionTitle">Añadir movimiento</h2><p>Registra un ingreso o gasto. Se guardará automáticamente en este navegador.</p>
+      <form id="transactionForm">
+        <div class="form-grid">
+          <div class="field"><label for="transactionType">Tipo</label><select id="transactionType" required><option value="Gasto">Gasto</option><option value="Ingreso">Ingreso</option></select></div>
+          <div class="field"><label for="transactionDate">Fecha</label><input id="transactionDate" type="date" required></div>
+          <div class="field"><label for="transactionAmount">Importe</label><input id="transactionAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0" required></div>
+          <div class="field"><label for="transactionCurrency">Moneda</label><select id="transactionCurrency" required><option>ARS</option><option>USD</option><option>EUR</option></select></div>
+          <div class="field"><label for="transactionAccount">Cuenta</label><input id="transactionAccount" list="accountsList" maxlength="100" placeholder="Ej. Mercado Pago" required></div>
+          <div class="field"><label for="transactionCategory">Categoría</label><input id="transactionCategory" list="categoriesList" maxlength="100" placeholder="Ej. Alimentación" required></div>
+        </div>
+        <datalist id="accountsList"></datalist><datalist id="categoriesList"></datalist>
+        <div class="field"><label for="transactionDescription">Descripción</label><input id="transactionDescription" maxlength="160" placeholder="Ej. Compra supermercado" required></div>
+        <div class="modal-actions"><button class="btn" type="button" id="cancelTransactionBtn">Cancelar</button><button class="btn primary" type="submit" id="saveTransactionBtn">Guardar movimiento</button></div>
+      </form>
     </div>
   </div>
 
-  <div class="modal" id="shareModal" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
-    <div class="modal-card"><h2 id="shareTitle">Compartir con la familia</h2><p>Genera un enlace privado de solo lectura. Quien tenga el enlace podrá consultar el dashboard, pero no importar ni modificar movimientos.</p>
-      <div class="share-link-box" id="shareLinkBox"><input id="shareLink" readonly aria-label="Enlace familiar"><button class="btn primary" id="copyShareBtn">Copiar enlace</button></div>
-      <div class="error" id="shareError"></div>
-      <div class="modal-actions"><button class="link-btn" id="revokeShareBtn">Desactivar enlace anterior</button><div><button class="btn" id="cancelShareBtn">Cerrar</button> <button class="btn primary" id="createShareBtn">Generar enlace</button></div></div>
+  <div class="modal" id="debtModal" role="dialog" aria-modal="true" aria-labelledby="debtTitle">
+    <div class="modal-card"><h2 id="debtTitle">Añadir deuda</h2><p>Registra el saldo pendiente de una tarjeta o préstamo.</p>
+      <form id="debtForm">
+        <div class="form-grid">
+          <div class="field"><label for="debtType">Tipo</label><select id="debtType" required><option value="Tarjeta">Tarjeta</option><option value="Préstamo">Préstamo</option></select></div>
+          <div class="field"><label for="debtCurrency">Moneda</label><select id="debtCurrency" required><option>EUR</option><option>ARS</option><option>USD</option></select></div>
+          <div class="field"><label for="debtStatus">Estado</label><select id="debtStatus" required><option value="Pendiente">Pendiente</option><option value="Próxima a cancelar">Próxima a cancelar</option><option value="Pagado">Pagado</option></select></div>
+          <div class="field"><label for="debtName">Nombre</label><input id="debtName" maxlength="100" placeholder="Ej. Tarjeta Azul" required></div>
+          <div class="field"><label for="debtAmount">Saldo pendiente</label><input id="debtAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0" required></div>
+        </div>
+        <div class="modal-actions"><button class="btn" type="button" id="cancelDebtBtn">Cancelar</button><button class="btn primary" type="submit" id="saveDebtBtn">Guardar deuda</button></div>
+      </form>
     </div>
   </div>
 
-  <script type="module">
-    import { createClient } from '@supabase/supabase-js';
-    const sampleTransactions = [
-      ['2026-02-02','Sueldo','Ingresos','Banco Galicia','ARS','Ingreso',1650000],['2026-02-05','Supermercado','Alimentación','Banco Galicia','ARS','Gasto',132000],['2026-02-12','Servicios hogar','Vivienda','Banco Galicia','ARS','Gasto',87000],
-      ['2026-03-02','Sueldo','Ingresos','Banco Galicia','ARS','Ingreso',1650000],['2026-03-07','Compras semanales','Alimentación','Mercado Pago','ARS','Gasto',148500],['2026-03-15','Combustible','Transporte','Mercado Pago','ARS','Gasto',62000],
-      ['2026-04-02','Sueldo','Ingresos','Banco Galicia','ARS','Ingreso',1720000],['2026-04-06','Alquiler','Vivienda','Banco Galicia','ARS','Gasto',390000],['2026-04-18','Cena familiar','Ocio','Mercado Pago','ARS','Gasto',76000],
-      ['2026-05-02','Sueldo','Ingresos','Banco Galicia','ARS','Ingreso',1720000],['2026-05-08','Supermercado','Alimentación','Banco Galicia','ARS','Gasto',167300],['2026-05-20','Farmacia','Salud','Mercado Pago','ARS','Gasto',45900],
-      ['2026-06-02','Sueldo','Ingresos','Banco Galicia','ARS','Ingreso',1800000],['2026-06-09','Servicios hogar','Vivienda','Banco Galicia','ARS','Gasto',110000],['2026-06-21','Regalo','Ocio','Mercado Pago','ARS','Gasto',92500],
-      ['2026-07-02','Sueldo','Ingresos','Banco Galicia','ARS','Ingreso',1800000],['2026-07-04','Alquiler','Vivienda','Banco Galicia','ARS','Gasto',420000],['2026-07-09','Supermercado','Alimentación','Mercado Pago','ARS','Gasto',185400],['2026-07-12','Combustible','Transporte','Mercado Pago','ARS','Gasto',74500],['2026-07-15','Farmacia','Salud','Efectivo ARS','ARS','Gasto',28700],
-      ['2026-04-01','Ahorro inicial','Ahorro','Efectivo USD','USD','Ingreso',8500],['2026-05-13','Compra ordenador','Compras','Efectivo USD','USD','Gasto',1250],['2026-07-10','Ahorro mensual','Ahorro','Efectivo USD','USD','Ingreso',500],
-      ['2026-03-01','Saldo inicial','Ahorro','Banco España','EUR','Ingreso',12400],['2026-04-06','Seguro','Vivienda','Banco España','EUR','Gasto',380],['2026-06-17','Viaje','Ocio','Banco España','EUR','Gasto',920],['2026-07-11','Transferencia recibida','Ingresos','Banco España','EUR','Ingreso',2400]
-    ].map(([date,description,category,account,currency,type,amount],i)=>({id:i+1,date,description,category,account,currency,type,amount}));
-
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY;
-    const supabaseConfigured = Boolean(supabaseUrl && supabaseKey);
-    const supabase = supabaseConfigured ? createClient(supabaseUrl, supabaseKey) : null;
-    const shareToken = new URLSearchParams(window.location.search).get('share');
-    let transactions = supabaseConfigured ? [] : (JSON.parse(localStorage.getItem('casa-transactions') || 'null') || sampleTransactions);
-    let currentUser = null;
-    let currentHousehold = null;
-    let currentRole = null;
-    const currencies = ['ARS','USD','EUR'];
-    const categoryColors = ['#556b4f','#d5b98a','#b86f52','#899590','#b7a8a1','#8a7866','#718a70'];
-    const monthNames = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-
-    const $ = s => document.querySelector(s);
-    const formatMoney = (value,currency,compact=false) => new Intl.NumberFormat('es-AR',{style:'currency',currency,maximumFractionDigits: currency==='ARS'?0:2,notation:compact?'compact':'standard'}).format(value);
-    const normalize = value => String(value ?? '').trim();
-    const normKey = value => normalize(value).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-
-    function setAuthMessage(message='', isError=false){
-      $('#authMessage').textContent=message;
-      $('#authMessage').classList.toggle('error-text',isError);
-    }
-
-    function setAuthBusy(isBusy){
-      $('#loginBtn').classList.toggle('spinner',isBusy);
-      $('#signupBtn').classList.toggle('spinner',isBusy);
-    }
-
-    function showAuth(){
-      $('#authScreen').classList.add('open');
-      $('#appShell').style.display='none';
-      $('#mobileNav').style.display='none';
-    }
-
-    function showApp(){
-      $('#authScreen').classList.remove('open');
-      $('#appShell').style.display='';
-      $('#mobileNav').style.display='';
-    }
-
-    async function signIn(){
-      if(!supabaseConfigured)return;
-      const email=$('#authEmail').value.trim(), password=$('#authPassword').value;
-      if(!email||!password)return setAuthMessage('Introduce tu correo y contraseña.',true);
-      setAuthBusy(true);setAuthMessage('Accediendo…');
-      const {error}=await supabase.auth.signInWithPassword({email,password});
-      setAuthBusy(false);
-      if(error)setAuthMessage(error.message,true);
-    }
-
-    async function signUp(){
-      if(!supabaseConfigured)return;
-      const full_name=$('#authName').value.trim(), email=$('#authEmail').value.trim(), password=$('#authPassword').value;
-      if(!full_name||!email||password.length<8)return setAuthMessage('Completa el nombre, el correo y una contraseña de al menos 8 caracteres.',true);
-      setAuthBusy(true);setAuthMessage('Creando la cuenta…');
-      const {data,error}=await supabase.auth.signUp({email,password,options:{data:{full_name}}});
-      setAuthBusy(false);
-      if(error)return setAuthMessage(error.message,true);
-      if(!data.session)setAuthMessage('Cuenta creada. Revisa tu correo para confirmarla y después inicia sesión.');
-    }
-
-    async function loadHousehold(){
-      const {data,error}=await supabase.from('household_members').select('role, households(id,name)').eq('user_id',currentUser.id).limit(1).maybeSingle();
-      if(error)throw error;
-      if(!data){
-        $('#householdModal').classList.add('open');
-        return false;
-      }
-      currentRole=data.role;
-      currentHousehold=Array.isArray(data.households)?data.households[0]:data.households;
-      return true;
-    }
-
-    async function createHousehold(){
-      const name=$('#householdName').value.trim();
-      if(!name){$('#householdError').textContent='Escribe un nombre.';$('#householdError').style.display='block';return}
-      $('#createHouseholdBtn').classList.add('spinner');
-      const {error}=await supabase.from('households').insert({name,created_by:currentUser.id});
-      $('#createHouseholdBtn').classList.remove('spinner');
-      if(error){$('#householdError').textContent=error.message;$('#householdError').style.display='block';return}
-      $('#householdModal').classList.remove('open');
-      await enterCloudApp();
-    }
-
-    async function loadCloudTransactions(){
-      const {data,error}=await supabase.from('transactions')
-        .select('id,transaction_date,description,currency,type,amount,accounts(name),categories(name)')
-        .eq('household_id',currentHousehold.id)
-        .order('transaction_date',{ascending:false});
-      if(error)throw error;
-      transactions=(data||[]).map(t=>({
-        id:t.id,date:t.transaction_date,description:t.description,currency:t.currency,
-        type:t.type==='income'?'Ingreso':'Gasto',amount:Number(t.amount),
-        account:(Array.isArray(t.accounts)?t.accounts[0]?.name:t.accounts?.name)||'Sin cuenta',
-        category:(Array.isArray(t.categories)?t.categories[0]?.name:t.categories?.name)||'Sin categoría'
-      }));
-      populateFilters();render();
-      $('#updated').textContent=`Sincronizado ahora · ${transactions.length} movimientos`;
-    }
-
-    function applyRoleUI(){
-      const isAdmin=currentRole==='admin';
-      $('#importBtn').hidden=!isAdmin;
-      $('#sampleBtn').hidden=!isAdmin;
-      $('#shareBtn').hidden=!isAdmin;
-      $('#logoutBtn').hidden=!currentUser;
-    }
-
-    async function loadSharedDashboard(){
-      try{
-        const {data,error}=await supabase.rpc('get_shared_dashboard',{p_token:shareToken});
-        if(error)throw error;
-        if(!data)throw new Error('El enlace familiar no es válido o ha sido desactivado.');
-        currentRole='viewer';currentHousehold={name:data.household_name};currentUser=null;
-        transactions=(data.transactions||[]).map(t=>({
-          id:t.id,date:t.date,description:t.description,category:t.category,account:t.account,
-          currency:t.currency,type:t.type==='income'?'Ingreso':'Gasto',amount:Number(t.amount)
-        }));
-        showApp();applyRoleUI();
-        $('#privacyNote').textContent=`Solo lectura · ${currentHousehold.name}`;
-        $('#updated').textContent=`Vista familiar · ${transactions.length} movimientos`;
-        populateFilters();render();
-      }catch(error){showAuth();setAuthMessage('No se pudo abrir la vista familiar: '+error.message,true)}
-    }
-
-    async function enterCloudApp(){
-      try{
-        if(!await loadHousehold())return;
-        showApp();
-        $('#privacyNote').textContent=`Sincronizado · ${currentHousehold.name}`;
-        $('#logoutBtn').textContent=(currentUser.user_metadata?.full_name||currentUser.email||'U').charAt(0).toUpperCase();
-        applyRoleUI();
-        await loadCloudTransactions();
-      }catch(error){showAuth();setAuthMessage('No se pudo cargar la información: '+error.message,true)}
-    }
-
-    async function handleSession(session){
-      if(!session){currentUser=null;currentHousehold=null;currentRole=null;showAuth();return}
-      currentUser=session.user;
-      setAuthMessage('Cargando información…');
-      await enterCloudApp();
-    }
-
-    async function initApp(){
-      if(!supabaseConfigured){
-        showApp();
-        $('#privacyNote').textContent='Modo demostración local.';
-        populateFilters();render();
-        showNotice('Modo demostración: configura Supabase en Vercel para sincronizar los datos.');
-        return;
-      }
-      if(shareToken){await loadSharedDashboard();return}
-      showAuth();
-      const {data:{session}}=await supabase.auth.getSession();
-      await handleSession(session);
-      supabase.auth.onAuthStateChange((event,newSession)=>{
-        if(event==='SIGNED_IN'&&newSession)handleSession(newSession);
-        if(event==='SIGNED_OUT')handleSession(null);
-      });
-    }
-
-    function openShareModal(){
-      $('#shareError').style.display='none';
-      $('#shareLinkBox').classList.remove('open');
-      $('#shareModal').classList.add('open');
-    }
-    function closeShareModal(){$('#shareModal').classList.remove('open')}
-    async function createShareLink(){
-      if(currentRole!=='admin'||!currentHousehold)return;
-      $('#createShareBtn').classList.add('spinner');
-      const {data,error}=await supabase.rpc('create_dashboard_share_link',{p_household_id:currentHousehold.id});
-      $('#createShareBtn').classList.remove('spinner');
-      if(error){$('#shareError').textContent=error.message;$('#shareError').style.display='block';return}
-      const url=new URL(window.location.origin+window.location.pathname);url.searchParams.set('share',data);
-      $('#shareLink').value=url.toString();$('#shareLinkBox').classList.add('open');
-    }
-    async function copyShareLink(){
-      await navigator.clipboard.writeText($('#shareLink').value);
-      $('#copyShareBtn').textContent='Copiado';setTimeout(()=>$('#copyShareBtn').textContent='Copiar enlace',1800);
-    }
-    async function revokeShareLink(){
-      if(currentRole!=='admin'||!currentHousehold)return;
-      const {error}=await supabase.rpc('revoke_dashboard_share_link',{p_household_id:currentHousehold.id});
-      if(error){$('#shareError').textContent=error.message;$('#shareError').style.display='block';return}
-      $('#shareLinkBox').classList.remove('open');showNotice('El enlace familiar anterior ha sido desactivado.');closeShareModal();
-    }
-
-    function filteredTransactions(){
-      const period=$('#periodFilter').value, account=$('#accountFilter').value, category=$('#categoryFilter').value;
-      return transactions.filter(t => (period==='all'||t.date.slice(0,7)===period) && (account==='all'||t.account===account) && (category==='all'||t.category===category));
-    }
-
-    function populateFilters(){
-      const period=$('#periodFilter'), account=$('#accountFilter'), category=$('#categoryFilter');
-      const previous=[period.value,account.value,category.value];
-      const months=[...new Set(transactions.map(t=>t.date.slice(0,7)))].sort().reverse();
-      period.innerHTML='<option value="all">Todo el periodo</option>'+months.map(m=>{const [y,mo]=m.split('-');return `<option value="${m}">${monthNames[+mo-1]} ${y}</option>`}).join('');
-      const accounts=[...new Set(transactions.map(t=>t.account))].sort();
-      account.innerHTML='<option value="all">Todas las cuentas</option>'+accounts.map(a=>`<option>${escapeHtml(a)}</option>`).join('');
-      const categories=[...new Set(transactions.map(t=>t.category))].sort();
-      category.innerHTML='<option value="all">Todas las categorías</option>'+categories.map(c=>`<option>${escapeHtml(c)}</option>`).join('');
-      [period,account,category].forEach((el,i)=>{if([...el.options].some(o=>o.value===previous[i]))el.value=previous[i]});
-    }
-
-    function render(){
-      const data=filteredTransactions();
-      renderBalances(data); renderChart(data); renderCategories(data); renderAccounts(data); renderTable(data);
-    }
-
-    function renderBalances(data){
-      $('#balanceCards').innerHTML=currencies.map(currency=>{
-        const entries=data.filter(t=>t.currency===currency);
-        const income=entries.filter(t=>t.type==='Ingreso').reduce((s,t)=>s+t.amount,0);
-        const expenses=entries.filter(t=>t.type==='Gasto').reduce((s,t)=>s+t.amount,0);
-        return `<article class="balance-card ${currency.toLowerCase()}"><div class="balance-label"><span>Saldo disponible</span><span class="currency-pill">${currency}</span></div><div class="balance-value">${formatMoney(income-expenses,currency)}</div><div class="balance-delta">Ingresos ${formatMoney(income,currency,true)} · <b>Gastos ${formatMoney(expenses,currency,true)}</b></div></article>`;
-      }).join('');
-    }
-
-    function renderChart(data){
-      const currency=$('#chartCurrency').value;
-      const allMonths=[...new Set(transactions.filter(t=>t.currency===currency).map(t=>t.date.slice(0,7)))].sort().slice(-6);
-      const values=allMonths.map(month=>{
-        const rows=data.filter(t=>t.currency===currency&&t.date.slice(0,7)===month);
-        return {month,income:rows.filter(t=>t.type==='Ingreso').reduce((s,t)=>s+t.amount,0),expense:rows.filter(t=>t.type==='Gasto').reduce((s,t)=>s+t.amount,0)};
-      });
-      const max=Math.max(1,...values.flatMap(v=>[v.income,v.expense]));
-      const axis=[max,max*.66,max*.33,0];
-      $('#barChart').innerHTML=`<div class="y-axis">${axis.map(x=>`<span>${formatMoney(x,currency,true)}</span>`).join('')}</div><div class="plot">${values.map(v=>`<div class="month"><div class="bar" title="Ingresos: ${formatMoney(v.income,currency)}" style="height:${v.income/max*85}%"></div><div class="bar expense" title="Gastos: ${formatMoney(v.expense,currency)}" style="height:${v.expense/max*85}%"></div><span class="month-label">${monthNames[+v.month.slice(5)-1]}</span></div>`).join('')}</div>`;
-    }
-
-    function renderCategories(data){
-      const currency=$('#chartCurrency').value;
-      const rows=data.filter(t=>t.currency===currency&&t.type==='Gasto');
-      const grouped={}; rows.forEach(t=>grouped[t.category]=(grouped[t.category]||0)+t.amount);
-      const items=Object.entries(grouped).sort((a,b)=>b[1]-a[1]); const total=items.reduce((s,x)=>s+x[1],0);
-      let cursor=0; const stops=items.map((x,i)=>{const start=cursor;cursor+=total?x[1]/total*100:0;return `${categoryColors[i%categoryColors.length]} ${start}% ${cursor}%`});
-      $('#donut').style.background=items.length?`conic-gradient(${stops.join(',')})`:'#e5e1d8';
-      $('#expenseTotal').textContent=formatMoney(total,currency,true); $('#categoryCurrencyLabel').textContent=`Distribución en ${currency}`;
-      $('#categoryList').innerHTML=(items.slice(0,5).map(([name,value],i)=>`<div class="category"><span class="dot" style="background:${categoryColors[i%categoryColors.length]}"></span><span>${escapeHtml(name)}</span><b>${total?Math.round(value/total*100):0}%</b></div>`).join('')||'<span style="color:var(--muted);font-size:11px">Sin gastos</span>');
-    }
-
-    function renderAccounts(data){
-      const grouped={}; data.forEach(t=>{const key=t.account+'|'+t.currency;grouped[key]=(grouped[key]||0)+(t.type==='Ingreso'?t.amount:-t.amount)});
-      $('#accountsGrid').innerHTML=Object.entries(grouped).sort().map(([key,value])=>{const [account,currency]=key.split('|');return `<div class="account"><div class="account-top"><span class="account-icon">${escapeHtml(account.charAt(0))}</span><span>${currency}</span></div><div class="account-value">${formatMoney(value,currency)}</div><div class="account-name">${escapeHtml(account)}</div></div>`}).join('')||'<span style="color:var(--muted)">Sin cuentas</span>';
-    }
-
-    function renderTable(data){
-      const sorted=[...data].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,12); $('#movementCount').textContent=`${data.length} movimientos encontrados`;
-      $('#txBody').innerHTML=sorted.map(t=>`<tr><td>${new Date(t.date+'T12:00:00').toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'})}</td><td class="tx-desc">${escapeHtml(t.description)}</td><td><span class="tx-category">${escapeHtml(t.category)}</span></td><td>${escapeHtml(t.account)}</td><td>${t.currency}</td><td class="${t.type==='Ingreso'?'income':'expense-text'}">${t.type==='Ingreso'?'+':'−'} ${formatMoney(t.amount,t.currency)}</td></tr>`).join('');
-      $('#emptyState').style.display=sorted.length?'none':'block';
-    }
-
-    function escapeHtml(value){const d=document.createElement('div');d.textContent=value;return d.innerHTML}
-
-    function parseCSV(text){
-      const firstLine=(text.split(/\r?\n/,1)[0]||'');
-      const separator=(firstLine.match(/;/g)||[]).length>(firstLine.match(/,/g)||[]).length?';':',';
-      const rows=[]; let row=[],field='',quotes=false;
-      for(let i=0;i<text.length;i++){const ch=text[i],next=text[i+1];if(ch==='"'&&quotes&&next==='"'){field+='"';i++}else if(ch==='"'){quotes=!quotes}else if(ch===separator&&!quotes){row.push(field.trim());field=''}else if((ch==='\n'||ch==='\r')&&!quotes){if(ch==='\r'&&next==='\n')i++;row.push(field.trim());if(row.some(Boolean))rows.push(row);row=[];field=''}else field+=ch}
-      row.push(field.trim());if(row.some(Boolean))rows.push(row);if(rows.length<2)throw new Error('El archivo no contiene movimientos.');
-      const headers=rows[0].map(normKey); const required=['fecha','descripcion','categoria','cuenta','moneda','tipo','importe'];
-      const missing=required.filter(x=>!headers.includes(x));if(missing.length)throw new Error('Faltan columnas: '+missing.join(', '));
-      return rows.slice(1).map((r,i)=>{const get=k=>normalize(r[headers.indexOf(k)]);const currency=get('moneda').toUpperCase();let type=normKey(get('tipo'));type=type==='ingreso'?'Ingreso':type==='gasto'?'Gasto':'';let raw=get('importe').replace(/\s/g,'');if(raw.includes(',')&&!raw.includes('.'))raw=raw.replace(',','.');else if(raw.includes(',')&&raw.includes('.'))raw=raw.lastIndexOf(',')>raw.lastIndexOf('.')?raw.replace(/\./g,'').replace(',','.'):raw.replace(/,/g,'');const amount=Math.abs(Number(raw));const date=parseDate(get('fecha'));if(!date||!required.every(k=>get(k))||!currencies.includes(currency)||!type||!Number.isFinite(amount))throw new Error(`Error en la fila ${i+2}. Revisa fecha, moneda, tipo e importe.`);return {id:i+1,date,description:get('descripcion'),category:get('categoria'),account:get('cuenta'),currency,type,amount}});
-    }
-
-    function parseDate(value){if(/^\d{4}-\d{2}-\d{2}$/.test(value))return value;const m=value.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);return m?`${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`:''}
-    async function sha256(text){
-      const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));
-      return [...new Uint8Array(digest)].map(byte=>byte.toString(16).padStart(2,'0')).join('');
-    }
-
-    function importFile(file){
-      if(!file||!file.name.toLowerCase().endsWith('.csv'))return showImportError('Selecciona un archivo con extensión .csv.');
-      const reader=new FileReader();
-      reader.onload=async()=>{
-        try{
-          const csvText=String(reader.result||'');
-          const parsed=parseCSV(csvText);
-          if(supabaseConfigured){
-            if(!currentHousehold||currentRole!=='admin')throw new Error('No tienes permisos para importar movimientos.');
-            const rows=parsed.map(t=>({date:t.date,description:t.description,category:t.category,account:t.account,currency:t.currency,type:t.type,amount:t.amount}));
-            const {error}=await supabase.rpc('import_csv_batch',{
-              p_household_id:currentHousehold.id,
-              p_file_name:file.name,
-              p_file_hash:await sha256(csvText),
-              p_rows:rows
-            });
-            if(error)throw error;
-            await loadCloudTransactions();
-          }else{
-            transactions=parsed;
-            localStorage.setItem('casa-transactions',JSON.stringify(transactions));
-            populateFilters();render();
-          }
-          closeModal();
-          $('#updated').textContent=`Actualizado ahora · ${parsed.length} movimientos`;
-          showNotice(`Se importaron correctamente ${parsed.length} movimientos.`);
-        }catch(error){
-          const message=error?.message||'No se pudo importar el archivo.';
-          showImportError(message.includes('already been imported')?'Este archivo ya fue importado anteriormente.':message);
-        }
-      };
-      reader.onerror=()=>showImportError('No se pudo leer el archivo.');
-      reader.readAsText(file,'UTF-8');
-    }
-    function showImportError(message){$('#importError').textContent=message;$('#importError').style.display='block'}
-    function showNotice(message){$('#noticeText').textContent=message;$('#notice').classList.add('show')}
-    function openModal(){$('#importError').style.display='none';$('#importModal').classList.add('open')}
-    function closeModal(){$('#importModal').classList.remove('open');$('#fileInput').value=''}
-    function downloadSample(){const rows=[['fecha','descripcion','categoria','cuenta','moneda','tipo','importe'],...sampleTransactions.slice(-12).map(t=>[t.date,t.description,t.category,t.account,t.currency,t.type,t.amount])];const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='movimientos_familia_ejemplo.csv';a.click();URL.revokeObjectURL(a.href)}
-
-    $('#loginBtn').onclick=signIn; $('#signupBtn').onclick=signUp; $('#createHouseholdBtn').onclick=createHousehold;
-    $('#logoutBtn').onclick=()=>supabaseConfigured&&supabase.auth.signOut();
-    $('#authPassword').addEventListener('keydown',event=>{if(event.key==='Enter')signIn()});
-    $('#importBtn').onclick=openModal; $('#cancelBtn').onclick=closeModal; $('#sampleBtn').onclick=downloadSample; $('#modalSampleBtn').onclick=downloadSample; $('#closeNotice').onclick=()=>$('#notice').classList.remove('show');
-    $('#shareBtn').onclick=openShareModal;$('#cancelShareBtn').onclick=closeShareModal;$('#createShareBtn').onclick=createShareLink;$('#copyShareBtn').onclick=copyShareLink;$('#revokeShareBtn').onclick=revokeShareLink;
-    $('#fileInput').onchange=e=>importFile(e.target.files[0]);
-    ['periodFilter','accountFilter','categoryFilter'].forEach(id=>$('#'+id).onchange=render); $('#chartCurrency').onchange=()=>{renderChart(filteredTransactions());renderCategories(filteredTransactions())};
-    const drop=$('#dropzone');['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag')}));['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag')}));drop.addEventListener('drop',e=>importFile(e.dataTransfer.files[0]));
-    $('#importModal').addEventListener('click',e=>{if(e.target===$('#importModal'))closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
-    $('#shareModal').addEventListener('click',e=>{if(e.target===$('#shareModal'))closeShareModal()});
-    document.querySelectorAll('.mobile-nav a').forEach(link=>link.addEventListener('click',()=>{document.querySelectorAll('.mobile-nav a').forEach(item=>item.classList.remove('active'));link.classList.add('active')}));
-    initApp();
-  </script>
 </body>
 </html>
