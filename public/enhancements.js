@@ -116,17 +116,24 @@
   }
 
   function adjustBalance(account, currency, currentBalance) {
-    const desired = window.prompt(`Saldo actual para “${account}” (${currency}).\nEl saldo visible ahora es ${money(currentBalance, currency)}.`, currentBalance);
-    if (desired === null) return;
-    const target = Number(String(desired).replace(',', '.'));
-    if (!Number.isFinite(target)) return alert('Introduce un importe válido.');
-    const difference = target - currentBalance;
-    if (Math.abs(difference) < 0.001) return;
-    const transactions = read(KEYS.transactions);
-    transactions.push({ id: id(), date: new Date().toISOString().slice(0, 10), description: `Ajuste manual de saldo · ${account}`,
-      category: 'Ajuste de saldo', account, currency, type: difference > 0 ? 'Ingreso' : 'Gasto', amount: Math.abs(difference) });
-    write(KEYS.transactions, transactions);
-    location.reload();
+    const modal = document.createElement('div');
+    modal.className = 'modal open';
+    modal.innerHTML = `<div class="modal-card"><h2>Editar saldo</h2><p>Indica el saldo actual de la cuenta. El dashboard creará un ajuste para que todos los indicadores queden actualizados.</p><form id="balanceForm"><div class="field"><label>Cuenta</label><input value="${esc(account)} · ${esc(currency)}" disabled></div><div class="field"><label for="balanceTarget">Saldo actual</label><input id="balanceTarget" type="number" step="0.01" inputmode="decimal" value="${currentBalance}" required autofocus></div><div class="modal-actions"><button class="btn" type="button" id="cancelBalanceBtn">Cancelar</button><button class="btn primary" type="submit">Guardar saldo</button></div></form></div>`;
+    document.body.append(modal);
+    $('#cancelBalanceBtn').onclick = () => modal.remove();
+    modal.onclick = event => { if (event.target === modal) modal.remove(); };
+    $('#balanceForm').onsubmit = event => {
+      event.preventDefault();
+      const target = Number(String($('#balanceTarget').value).replace(',', '.'));
+      if (!Number.isFinite(target)) return;
+      const difference = target - currentBalance;
+      if (Math.abs(difference) < 0.001) return modal.remove();
+      const transactions = read(KEYS.transactions);
+      transactions.push({ id: id(), date: new Date().toISOString().slice(0, 10), description: `Ajuste manual de saldo · ${account}`,
+        category: 'Ajuste de saldo', account, currency, type: difference > 0 ? 'Ingreso' : 'Gasto', amount: Math.abs(difference) });
+      write(KEYS.transactions, transactions);
+      location.reload();
+    };
   }
 
   function refreshDebtSummary() {
@@ -158,9 +165,21 @@
       const current = Number(raw.replace(/[^0-9,.-]/g, '').replace(/\./g, '').replace(',', '.'));
       if (!account || !currency || !Number.isFinite(current)) return;
       const button = document.createElement('button');
-      button.className = 'link-btn balance-edit'; button.textContent = 'Ajustar saldo';
+      button.className = 'btn balance-edit'; button.textContent = 'Editar saldo';
       button.onclick = () => adjustBalance(account, currency, current);
       card.append(button);
+    });
+    document.querySelectorAll('#txBody button[data-action="edit"]').forEach(button => {
+      if (button.dataset.labeled) return;
+      button.dataset.labeled = 'true';
+      button.textContent = 'Editar';
+      button.classList.add('transaction-edit-label');
+    });
+    document.querySelectorAll('#txBody button[data-action="delete"]').forEach(button => {
+      if (button.dataset.labeled) return;
+      button.dataset.labeled = 'true';
+      button.textContent = 'Eliminar';
+      button.classList.add('transaction-delete-label');
     });
     const debts = read(KEYS.debts);
     document.querySelectorAll('#debtGrid .debt-card').forEach(card => {
@@ -183,10 +202,10 @@
     enhanceCards();
     new MutationObserver(() => { enhanceCards(); refreshExecutiveMetrics(); })
       .observe($('#debtGrid'), { childList: true, subtree: true });
-    new MutationObserver(() => refreshExecutiveMetrics())
+    new MutationObserver(() => { refreshExecutiveMetrics(); enhanceCards(); })
       .observe($('#accountsGrid'), { childList: true, subtree: true });
     const style = document.createElement('style');
-    style.textContent = `.account .balance-edit{margin-top:10px}.debt-card .payment-debt{margin-top:14px;width:100%;padding:9px 10px;font-size:12px}.payment-check{display:block;margin-top:4px;color:var(--muted);font-size:13px}.payment-check input{accent-color:var(--green)}@media(max-width:480px){.debt-card .payment-debt{font-size:11px}}`;
+    style.textContent = `.account .balance-edit{width:100%;margin-top:14px;padding:9px 10px;font-size:12px}.debt-card .payment-debt{margin-top:14px;width:100%;padding:9px 10px;font-size:12px}.payment-check{display:block;margin-top:4px;color:var(--muted);font-size:13px}.payment-check input{accent-color:var(--green)}.table-actions{gap:7px}.table-actions .icon-action{width:auto;height:31px;padding:0 10px;font-size:11px;font-weight:750}.table-actions .transaction-delete-label{color:var(--terracotta)}@media(max-width:480px){.debt-card .payment-debt{font-size:11px}.table-actions .icon-action{padding:0 8px}}`;
     document.head.append(style);
   }
   init();
