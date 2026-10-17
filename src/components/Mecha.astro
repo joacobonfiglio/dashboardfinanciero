@@ -1,0 +1,11 @@
+---
+import Chispa from './Chispa.astro';
+---
+<div class="mecha-zone">
+  <div class="rail" aria-hidden="true">
+    <div class="rail__track"></div>
+    <div class="rail__burn"></div>
+    <div class="rail__head"><Chispa class="size-full" stroke={52} /></div>
+  </div>
+  <slot />
+</div>

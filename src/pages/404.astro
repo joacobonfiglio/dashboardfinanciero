@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import Chispa from '../components/Chispa.astro';
+---
+<Base title="Página no encontrada | Traka" description="No encontramos esta página." path="/404/" noindex>
+  <section class="section grid min-h-[70vh] place-items-center">
+    <div class="wrap text-center">
+      <Chispa class="mx-auto size-32 text-ceniza opacity-60" stroke={34} />
+      <p class="label mt-8 text-brasa">Error 404</p>
+      <h1 class="h-lg mt-3">Esta chispa se apagó.</h1>
+      <p class="lede mx-auto mt-5 max-w-md">La página que buscás no existe o cambió de lugar.</p>
+      <a href="/" class="btn btn-fuego btn-lg mt-8">Volver al inicio</a>
+    </div>
+  </section>
+</Base>

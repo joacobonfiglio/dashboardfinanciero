@@ -1,0 +1,15 @@
+---
+import { Icon } from 'astro-icon/components';
+import { faqs } from '../config';
+---
+<div class="divide-y divide-carbon/15 border-y border-carbon/15">
+  {faqs.map((f) => (
+    <details class="faq group py-1">
+      <summary class="flex items-center justify-between gap-6 py-4 font-display text-xl font-bold md:text-2xl">
+        <span>{f.q}</span>
+        <Icon name="ph:plus-bold" class="faq__plus size-6 shrink-0 text-brasa" aria-hidden="true" />
+      </summary>
+      <p class="max-w-2xl pb-5 text-carbon/85">{f.a}</p>
+    </details>
+  ))}
+</div>

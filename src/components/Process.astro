@@ -1,0 +1,20 @@
+---
+const steps = [
+  { t: 'Escuchamos', d: 'Nos contás cómo funciona tu negocio y qué querés que pase.' },
+  { t: 'Plan a medida', d: 'Te pasamos alcance, plazo y precio cerrado, por escrito.' },
+  { t: 'Conectamos', d: 'Armamos tu Perfil de Empresa en Google, tu web y tu botón de WhatsApp.' },
+  { t: 'Ponemos en marcha', d: 'Publicamos, medimos las consultas y te mostramos los números.' },
+];
+---
+<ol class="relative grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+  {steps.map((s, i) => (
+    <li class="relative" data-reveal>
+      <div class="flex items-center gap-4">
+        <span class="grid size-12 shrink-0 place-items-center rounded-full bg-carbon font-mono text-sm font-medium text-arena">0{i + 1}</span>
+        <span class="hidden h-1.5 flex-1 lg:block" style="background: radial-gradient(circle, var(--color-fuego) 2.6px, transparent 3.2px) 0 0 / 16px 6px repeat-x;" aria-hidden="true"></span>
+      </div>
+      <h3 class="mt-5 text-2xl">{s.t}</h3>
+      <p class="mt-2 text-carbon/80">{s.d}</p>
+    </li>
+  ))}
+</ol>

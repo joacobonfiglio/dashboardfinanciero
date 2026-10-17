@@ -1,0 +1,35 @@
+---
+import { EMAIL, INSTAGRAM_URL } from '../config';
+import { Icon } from 'astro-icon/components';
+import WaButton from './WaButton.astro';
+---
+<footer class="on-dark relative z-10">
+  <div class="mx-auto grid max-w-[1480px] gap-10 px-5 py-14 md:grid-cols-[1.3fr_1fr_1fr] md:px-8 md:py-20">
+    <div>
+      <img src="/brand/traka-logo-negativo.svg" alt="Traka" width="141" height="48" class="h-12 w-auto" loading="lazy" />
+      <p class="mt-5 max-w-sm text-arena/80">Webs y Google para negocios reales.</p>
+      <p class="label mt-6 text-chispa">Desde Mar del Plata, para negocios de Argentina y España</p>
+    </div>
+    <div>
+      <h2 class="label mb-4 text-chispa" style="font-family: var(--font-mono); font-weight: 500; letter-spacing: .1em; font-size: .78rem;">Navegar</h2>
+      <ul class="space-y-1">
+        <li><a class="inline-flex min-h-11 items-center hover:underline" href="/servicios/">Servicios</a></li>
+        <li><a class="inline-flex min-h-11 items-center hover:underline" href="/sobre-nosotros/">Sobre nosotros</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="label mb-4 text-chispa" style="font-family: var(--font-mono); font-weight: 500; letter-spacing: .1em; font-size: .78rem;">Contacto</h2>
+      <ul class="space-y-1">
+        <li class="flex min-h-11 items-center gap-2"><Icon name="ph:whatsapp-logo-bold" class="size-5" aria-hidden="true" /> WhatsApp [NÚMERO]</li>
+        <li class="flex min-h-11 items-center gap-2"><Icon name="ph:envelope-simple-bold" class="size-5" aria-hidden="true" /> {EMAIL}</li>
+        <li class="flex min-h-11 items-center gap-2"><Icon name="ph:instagram-logo-bold" class="size-5" aria-hidden="true" />
+          {INSTAGRAM_URL ? <a class="hover:underline" href={INSTAGRAM_URL}>Instagram</a> : <span>Instagram [PENDIENTE: usuario]</span>}
+        </li>
+      </ul>
+      <WaButton message="Hola, te escribo desde el pie de la web de Traka." origin="footer" class="mt-5" />
+    </div>
+  </div>
+  <div class="border-t border-arena/15 px-5 py-5 md:px-8">
+    <p class="mx-auto max-w-[1480px] text-sm text-arena/60">© {new Date().getFullYear()} Traka. Que te encuentren.</p>
+  </div>
+</footer>

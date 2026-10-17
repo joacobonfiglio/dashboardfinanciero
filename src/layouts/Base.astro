@@ -1,0 +1,97 @@
+---
+import '@fontsource-variable/bricolage-grotesque/opsz.css';
+import '@fontsource/dm-sans/400.css';
+import '@fontsource/dm-sans/500.css';
+import '@fontsource/dm-mono/400.css';
+import '@fontsource/dm-mono/500.css';
+import '../styles/global.css';
+import bricolageUrl from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_URL } from '../config';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  jsonLd?: object[];
+  noindex?: boolean;
+}
+const { title, description, path, jsonLd = [], noindex = false } = Astro.props;
+const url = new URL(path, SITE_URL).href;
+const og = new URL('/og.png', SITE_URL).href;
+
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE_URL}/#org`,
+  name: 'Traka',
+  url: SITE_URL,
+  logo: `${SITE_URL}/brand/traka-icono-app.png`,
+  slogan: 'Que te encuentren.',
+};
+const business = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${SITE_URL}/#business`,
+  name: 'Traka',
+  url: SITE_URL,
+  description: 'Webs y posicionamiento en Google para comercios y pymes.',
+  image: og,
+  address: { '@type': 'PostalAddress', addressLocality: 'Mar del Plata', addressRegion: 'Buenos Aires', addressCountry: 'AR' },
+  areaServed: [{ '@type': 'Country', name: 'Argentina' }, { '@type': 'Country', name: 'España' }],
+  parentOrganization: { '@id': `${SITE_URL}/#org` },
+};
+const graphs = [organization, business, ...jsonLd];
+---
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={url} />
+    <link rel="alternate" hreflang="es-AR" href={url} />
+    <link rel="alternate" hreflang="x-default" href={url} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:site_name" content="Traka" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={og} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#F4EEE4" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/brand/traka-icono-app.png" />
+    <link rel="preload" href={bricolageUrl} as="font" type="font/woff2" crossorigin />
+    <script is:inline>
+      (function () {
+        var c = document.documentElement.classList;
+        c.add('js');
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) c.add('motion-ok');
+      })();
+    </script>
+    {graphs.map((g) => <script type="application/ld+json" set:html={JSON.stringify(g)} />)}
+  </head>
+  <body>
+    <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:rounded-full focus:bg-carbon focus:px-5 focus:py-3 focus:text-arena">Saltar al contenido</a>
+    <Header />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      // Botones de WhatsApp todavía sin número: no hacen nada.
+      document.addEventListener('click', (e) => {
+        const a = (e.target as Element).closest('a[data-wa]') as HTMLAnchorElement | null;
+        if (a && a.getAttribute('href') === '#') e.preventDefault();
+      });
+    </script>
+    <script>
+      import '../scripts/mecha';
+    </script>
+  </body>
+</html>

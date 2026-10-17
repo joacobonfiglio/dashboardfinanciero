@@ -1,0 +1,19 @@
+---
+import Chispa from './Chispa.astro';
+import WaButton from './WaButton.astro';
+interface Props { message?: string; origin?: string }
+const { message = 'Hola, quiero empezar con Traka.', origin = 'cta-final' } = Astro.props;
+---
+<section class="cta relative overflow-hidden bg-fuego text-carbon" aria-labelledby="cta-title">
+  <div class="wrap relative py-24 md:py-36">
+    <div class="burst-spark absolute -top-10 left-[calc(var(--rail-x)-70px)] size-36 text-carbon md:left-[calc(var(--rail-x)-100px)] md:size-52" aria-hidden="true">
+      <Chispa class="size-full" stroke={34} />
+    </div>
+    <div class="cta__reveal relative pt-24 md:pt-32">
+      <p class="label">Que te encuentren. Que te elijan. Que te escriban.</p>
+      <h2 id="cta-title" class="h-xl mt-4" style="font-variation-settings: 'opsz' 96;">¿Empezamos?</h2>
+      <p class="lede mt-6 max-w-xl">Contanos qué negocio tenés. Te respondemos por WhatsApp, una persona, sin vueltas.</p>
+      <WaButton message={Astro.props.message ?? 'Hola, quiero empezar con Traka.'} origin={origin} variant="carbon" size="lg" class="mt-9" />
+    </div>
+  </div>
+</section>

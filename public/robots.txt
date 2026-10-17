@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://trakadigital.com/sitemap-index.xml

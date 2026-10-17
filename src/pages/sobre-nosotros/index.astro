@@ -1,0 +1,113 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+import Mecha from '../../components/Mecha.astro';
+import Chispa from '../../components/Chispa.astro';
+import WaButton from '../../components/WaButton.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import { SITE_URL } from '../../config';
+
+const values = [
+  { t: 'Precio cerrado', d: 'Lo que te decimos al empezar es lo que pagás. Sin letra chica.', icon: 'ph:lock-simple-bold' },
+  { t: 'Plazos por escrito', d: 'Alcance y fechas antes de arrancar, para que sepas qué esperar.', icon: 'ph:calendar-check-bold' },
+  { t: 'Una persona que responde', d: 'Hablás siempre con la misma persona, por WhatsApp.', icon: 'ph:chat-circle-dots-bold' },
+  { t: 'Consultas, no likes', d: 'Medimos llamadas, mensajes y consultas. Y te mostramos los números.', icon: 'ph:chart-line-up-bold' },
+];
+const chain = [
+  { t: 'Te encuentra', d: 'En Google y en Maps.' },
+  { t: 'Te elige', d: 'Por tu web, clara y rápida.' },
+  { t: 'Te escribe', d: 'Por WhatsApp o llamada.' },
+];
+const jsonLd = [{ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE_URL}/` },
+  { '@type': 'ListItem', position: 2, name: 'Sobre nosotros', item: `${SITE_URL}/sobre-nosotros/` },
+] }];
+---
+<Base
+  title="Sobre nosotros: webs que traen consultas | Traka"
+  description="Traka es una agencia de Mar del Plata que ayuda a comercios y pymes de Argentina y España a aparecer en Google y recibir consultas. Conocé cómo trabajamos."
+  path="/sobre-nosotros/"
+  jsonLd={jsonLd}
+>
+  <Mecha>
+    <section class="section pt-12 md:pt-20" aria-labelledby="sn-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <nav aria-label="Migas de pan" class="label mb-8 text-carbon/70"><a href="/" class="hover:underline">Inicio</a> / <span aria-current="page">Sobre nosotros</span></nav>
+        <p class="label text-brasa">Sobre nosotros</p>
+        <h1 id="sn-title" class="h-xl mt-4 max-w-5xl" style="font-size: clamp(2.5rem, 1.1rem + 6.4vw, 5.5rem);">Webs que traen consultas, no adornos.</h1>
+        <p class="lede mt-7 max-w-2xl">Traka ayuda a comercios y pymes a aparecer en Google y a que, cuando alguien los encuentra, les escriba.</p>
+      </div>
+    </section>
+
+    <section class="section on-dark" aria-labelledby="origen-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap grid items-start gap-12 lg:grid-cols-[1.2fr_.8fr]">
+        <div>
+          <p class="label text-chispa">Origen</p>
+          <h2 id="origen-title" class="h-lg mt-4">Nacimos en una ciudad de temporada.</h2>
+          <p class="lede mt-7 max-w-2xl text-arena/90">Donde un comercio se juega el año en tres meses, una web que no trae consultas no sirve. Por eso hacemos webs que traen consultas, no adornos.</p>
+          <p class="label mt-8 inline-flex items-center gap-2 text-chispa"><Icon name="ph:map-pin-bold" class="size-5" aria-hidden="true" />Desde Mar del Plata, para negocios de Argentina y España.</p>
+        </div>
+        <div class="grid aspect-[4/5] place-items-center rounded-[28px] border-2 border-dashed border-arena/30 p-6 text-center">
+          <p class="label text-chispa">[PENDIENTE: foto real de Mar del Plata o del equipo trabajando]</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="nombre-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <p class="label text-brasa">El nombre</p>
+        <h2 id="nombre-title" class="h-lg mt-4 max-w-3xl">Una traca: cada petardo enciende al siguiente.</h2>
+        <p class="lede mt-6 max-w-2xl text-carbon/85">En Valencia, una traca es una cadena de petardos unidos por una mecha. Así funciona un cliente: cada paso enciende el siguiente hasta el estallido final.</p>
+        <ol class="mt-14 grid gap-8 md:grid-cols-3">
+          {chain.map((c, i) => (
+            <li class="relative" data-reveal>
+              <div class="flex items-center gap-3">
+                <Chispa class="size-12 shrink-0 text-fuego" stroke={46} />
+                {i < 2 && <span class="hidden h-1.5 flex-1 md:block" style="background: radial-gradient(circle, var(--color-carbon) 2.6px, transparent 3.2px) 0 0 / 16px 6px repeat-x;" aria-hidden="true"></span>}
+              </div>
+              <h3 class="mt-4 text-3xl">{c.t}</h3>
+              <p class="mt-1 text-carbon/80">{c.d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="section on-mar" aria-labelledby="val-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <p class="label text-chispa">Cómo trabajamos</p>
+        <h2 id="val-title" class="h-lg mt-4 max-w-3xl">Sin vueltas.</h2>
+        <ul class="mt-12 grid gap-6 sm:grid-cols-2">
+          {values.map((v) => (
+            <li class="rounded-[28px] border-2 border-arena/20 p-7" data-reveal>
+              <Icon name={v.icon} class="size-9 text-chispa" aria-hidden="true" />
+              <h3 class="mt-5 text-2xl">{v.t}</h3>
+              <p class="mt-2 text-arena/85">{v.d}</p>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-12 max-w-3xl font-display text-2xl font-bold md:text-3xl">No prometemos el primer puesto en Google. Sí que te encuentren más, y te lo mostramos con datos.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="quien-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
+        <div class="grid aspect-square max-w-sm place-items-center rounded-[28px] border-2 border-dashed border-carbon/30 p-6 text-center">
+          <p class="label text-brasa">[PENDIENTE: foto de la persona que atiende]</p>
+        </div>
+        <div>
+          <p class="label text-brasa">Quién te atiende</p>
+          <h2 id="quien-title" class="h-lg mt-4">Una persona, por WhatsApp.</h2>
+          <p class="lede mt-6 max-w-xl text-carbon/85">[PENDIENTE: nombre y breve presentación]. Es quien te escucha, arma el plan y responde cada mensaje.</p>
+          <WaButton message="Hola, vengo de la página Sobre nosotros de Traka y quiero hacer una consulta." origin="sobre-nosotros" class="mt-8" />
+        </div>
+      </div>
+    </section>
+  </Mecha>
+  <FinalCta message="Hola, conocí Traka y quiero empezar." origin="cta-final-sobre-nosotros" />
+</Base>

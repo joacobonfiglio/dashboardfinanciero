@@ -1,0 +1,167 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import Mecha from '../components/Mecha.astro';
+import Chispa from '../components/Chispa.astro';
+import WaButton from '../components/WaButton.astro';
+import PhoneSearch from '../components/PhoneSearch.astro';
+import CasePhone from '../components/CasePhone.astro';
+import Packages from '../components/Packages.astro';
+import Process from '../components/Process.astro';
+import Faq from '../components/Faq.astro';
+import FinalCta from '../components/FinalCta.astro';
+import { faqs, packages, SITE_URL } from '../config';
+
+const acts = [
+  { n: '01', t: 'Te encuentran', d: 'Alguien busca lo que hacés. Aparecés en Google, en Maps y en tu Perfil de Empresa, con horarios, fotos y reseñas al día.', tags: ['Google', 'Maps', 'Perfil de Empresa'], icon: 'ph:magnifying-glass-bold' },
+  { n: '02', t: 'Te eligen', d: 'Entra a tu web desde el celular y entiende en segundos qué hacés, dónde estás y por qué elegirte.', tags: ['Web clara', 'Rápida', 'Para celular'], icon: 'ph:device-mobile-bold' },
+  { n: '03', t: 'Te escriben', d: 'Un toque y te escribe por WhatsApp o te llama. Sin formularios eternos, sin vueltas.', tags: ['WhatsApp', 'Llamada'], icon: 'ph:chat-circle-dots-bold' },
+];
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+  ...packages.map((p) => ({ '@context': 'https://schema.org', '@type': 'Service', name: `Traka ${p.name}`, description: `${p.tag}. ${p.summary}`, provider: { '@id': `${SITE_URL}/#org` }, areaServed: ['AR', 'ES'], url: `${SITE_URL}/servicios/#${p.id}` })),
+];
+---
+<Base
+  title="Webs y posicionamiento en Google para negocios | Traka"
+  description="Webs simples y Perfil de Empresa en Google para comercios y pymes. Precio cerrado, plazos por escrito y una persona que te responde por WhatsApp."
+  path="/"
+  jsonLd={jsonLd}
+>
+  <Mecha>
+    <!-- 1. HERO -->
+    <section class="section relative overflow-hidden pt-10 md:pt-16" aria-labelledby="hero-title">
+      <span class="node" aria-hidden="true"></span>
+      <canvas id="sparks" class="pointer-events-none absolute inset-0 hidden size-full" aria-hidden="true"></canvas>
+      <div class="wrap relative grid items-center gap-14 lg:grid-cols-[1.2fr_.8fr]">
+        <div>
+          <p class="label text-brasa">Webs y Google para negocios reales</p>
+          <h1 id="hero-title" class="h-xl mt-5">
+            <span class="js-split">Que te encuentren.</span><Chispa class="js-burst ml-1 inline-block size-[.55em] -translate-y-[.45em] text-fuego" stroke={46} />
+          </h1>
+          <p class="lede mt-7 max-w-xl">Webs y Google para negocios que quieren que les escriban.</p>
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <WaButton message="Hola, vengo desde la home de Traka y quiero que me encuentren en Google." origin="hero" size="lg" />
+            <a href="#casos" class="btn btn-ghost btn-lg">Ver casos</a>
+          </div>
+          <p class="mt-6 flex items-center gap-2 text-sm text-carbon/75"><Icon name="ph:seal-check-bold" class="size-5 text-brasa" aria-hidden="true" />Precio cerrado · Plazos por escrito · Una persona que responde</p>
+        </div>
+        <div class="lg:rotate-[2.5deg]"><PhoneSearch /></div>
+      </div>
+    </section>
+
+    <!-- 2. LA MECHA EN TRES ACTOS -->
+    <section id="mecha" class="acts on-dark relative" aria-labelledby="acts-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="acts__pin relative lg:flex lg:min-h-screen lg:flex-col lg:justify-center lg:overflow-hidden">
+        <div class="wrap py-20 lg:py-10">
+          <p class="label text-chispa">Cómo funciona</p>
+          <h2 id="acts-title" class="h-lg mt-4 max-w-3xl">Un cliente, tres chispas.</h2>
+          <p class="lede mt-5 max-w-2xl text-arena/80">Cada paso enciende al siguiente. Si uno falla, la mecha se corta: por eso trabajamos los tres.</p>
+        </div>
+        <div class="acts__viewport pb-20 lg:pb-0">
+          <div class="acts__track relative grid gap-5 pl-[var(--gutter-l)] pr-[var(--gutter-r)] lg:grid-cols-3 lg:gap-6">
+            <div class="acts__line" aria-hidden="true"><i class="base"></i><i class="fire"></i></div>
+            {acts.map((a) => (
+              <article class="act flex flex-col rounded-[28px] border-2 border-arena/20 bg-arena/[.04] p-7 lg:min-h-[340px] lg:p-9">
+                <div class="flex items-center justify-between">
+                  <span class="act__num label text-arena">Acto {a.n}</span>
+                  <Icon name={a.icon} class="size-9 text-chispa" aria-hidden="true" />
+                </div>
+                <h3 class="mt-8 text-4xl font-extrabold md:text-5xl" style="font-variation-settings: 'opsz' 96;">{a.t}</h3>
+                <p class="mt-4 text-lg text-arena/85">{a.d}</p>
+                <ul class="mt-auto flex flex-wrap gap-2 pt-8">
+                  {a.tags.map((t) => <li class="label rounded-full border border-chispa/60 px-3 py-1.5 text-chispa">{t}</li>)}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. PAQUETES -->
+    <section id="paquetes" class="section" aria-labelledby="pkg-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <p class="label text-brasa">Paquetes con precio cerrado</p>
+        <h2 id="pkg-title" class="h-lg mt-4 max-w-3xl">Elegí hasta dónde querés llegar.</h2>
+        <p class="lede mt-5 max-w-2xl text-carbon/80">Tres paquetes con nombre de fuego. Sabés qué incluye, cuánto tarda y cuánto cuesta antes de empezar.</p>
+        <div class="mt-14"><Packages /></div>
+        <p class="mt-8 text-sm text-carbon/70">No hacemos tiendas online ni desarrollos complejos. <a class="link" href="/servicios/">Ver el detalle de cada paquete</a>.</p>
+      </div>
+    </section>
+
+    <!-- 4. CASOS -->
+    <section id="casos" class="section on-mar" aria-labelledby="casos-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <p class="label text-chispa">Casos</p>
+        <h2 id="casos-title" class="h-lg mt-4 max-w-3xl">Pruebas, no portfolio.</h2>
+        <p class="lede mt-5 max-w-2xl text-arena/85">Negocios reales, vistos primero desde el celular. Con el antes y el después en consultas.</p>
+        <div class="snap-row mt-12" tabindex="0" role="group" aria-label="Casos de clientes, deslizá para ver más">
+          <CasePhone name="Aquabon" kind="Lavandería" tone="chispa" />
+          <CasePhone name="Tintorería Constitución" kind="Tintorería" tone="arena" />
+          <CasePhone name="Llama Divina" kind="Bienestar" tone="fuego" />
+          <CasePhone name="Aquabon Gestión" kind="Software propio" tone="carbon" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. CÓMO TRABAJAMOS -->
+    <section id="proceso" class="section" aria-labelledby="proc-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <p class="label text-brasa">Cómo trabajamos</p>
+        <h2 id="proc-title" class="h-lg mt-4 max-w-3xl">De la charla a las consultas, en cuatro pasos.</h2>
+        <div class="mt-14"><Process /></div>
+      </div>
+    </section>
+
+    <!-- 6. SIN VUELTAS -->
+    <section id="sin-vueltas" class="section on-dark" aria-labelledby="sv-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap grid gap-12 lg:grid-cols-2">
+        <div>
+          <p class="label text-chispa">Sin vueltas</p>
+          <h2 id="sv-title" class="h-lg mt-4">Lo que prometemos es lo que podemos cumplir.</h2>
+          <ul class="mt-10 space-y-5">
+            {['Precio cerrado.', 'Plazos por escrito.', 'Una persona que responde.', 'Resultados medidos en consultas, no en likes.'].map((t) => (
+              <li class="flex items-center gap-4 border-b border-arena/15 pb-5 font-display text-2xl font-bold md:text-3xl"><Chispa class="size-7 shrink-0 text-fuego" stroke={50} />{t}</li>
+            ))}
+          </ul>
+        </div>
+        <div class="flex items-center">
+          <blockquote class="rounded-[32px] bg-chispa p-8 text-carbon md:p-12">
+            <p class="font-display text-3xl font-extrabold leading-tight md:text-4xl" style="letter-spacing:-0.02em">No prometemos el primer puesto en Google. Sí que te encuentren más, y te lo mostramos con datos.</p>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. ORIGEN -->
+    <section id="origen" class="section" aria-labelledby="origen-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap max-w-5xl lg:ml-[max(0px,calc((100%-64rem)/2))]">
+        <p class="label text-brasa">Origen</p>
+        <h2 id="origen-title" class="h-lg mt-4">Nacimos en una ciudad de temporada, donde un comercio se juega el año en tres meses.</h2>
+        <p class="lede mt-8 max-w-2xl">Por eso hacemos webs que traen consultas, no adornos.</p>
+        <p class="label mt-10 inline-flex items-center gap-2 text-brasa"><Icon name="ph:map-pin-bold" class="size-5" aria-hidden="true" />Desde Mar del Plata, para negocios de Argentina y España.</p>
+        <p class="mt-6"><a class="link font-medium" href="/sobre-nosotros/">Conocé más sobre Traka</a></p>
+      </div>
+    </section>
+
+    <!-- 8. FAQ -->
+    <section id="preguntas" class="section pt-0" aria-labelledby="faq-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap max-w-4xl lg:ml-[max(0px,calc((100%-56rem)/2))]">
+        <p class="label text-brasa">Preguntas frecuentes</p>
+        <h2 id="faq-title" class="h-lg mt-4">Lo que casi todos preguntan.</h2>
+        <div class="mt-10"><Faq /></div>
+      </div>
+    </section>
+  </Mecha>
+
+  <!-- 9. CTA FINAL -->
+  <FinalCta message="Hola, quiero empezar con Traka." origin="cta-final-home" />
+</Base>

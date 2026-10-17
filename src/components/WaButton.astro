@@ -1,0 +1,23 @@
+---
+import { Icon } from 'astro-icon/components';
+import { waHref } from '../config';
+interface Props {
+  message: string;
+  label?: string;
+  variant?: 'fuego' | 'carbon' | 'ghost';
+  size?: 'md' | 'lg';
+  /** Identifica desde dónde se escribe (analítica) */
+  origin: string;
+  class?: string;
+}
+const { message, label = 'Escribinos por WhatsApp', variant = 'fuego', size = 'md', origin, class: cls = '' } = Astro.props;
+---
+<a
+  href={waHref(message)}
+  class:list={['btn', `btn-${variant}`, size === 'lg' && 'btn-lg', cls]}
+  data-wa={origin}
+  rel="noopener"
+>
+  <Icon name="ph:whatsapp-logo-bold" class="size-5 shrink-0" aria-hidden="true" />
+  <span>{label}</span>
+</a>
