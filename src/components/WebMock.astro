@@ -1,0 +1,46 @@
+---
+import { Icon } from 'astro-icon/components';
+/** Maqueta de una web: navegador y celular, para las páginas de servicio. */
+interface Props { label?: string }
+const { label = 'tu negocio' } = Astro.props;
+---
+<div class="relative mx-auto w-full max-w-[520px] pb-10 pl-10 sm:pb-14 sm:pl-16" role="img" aria-label="Maqueta de una web mostrada en una computadora y en un celular.">
+  <div class="win" aria-hidden="true">
+    <div class="win__bar">
+      <span class="win__dot"></span><span class="win__dot"></span><span class="win__dot"></span>
+      <span class="win__addr"><Icon name="ph:lock-simple-bold" class="size-2.5 shrink-0" />{label}</span>
+    </div>
+    <div class="aspect-[16/10] p-4">
+      <div class="flex h-[52%] flex-col justify-center rounded-xl bg-fuego px-4">
+        <div class="ml-auto h-3 w-2/5 rounded bg-carbon/80"></div>
+        <div class="ml-auto mt-2 h-3 w-1/4 rounded bg-carbon/60"></div>
+        <div class="mt-4 flex items-center justify-end gap-2 pr-1">
+          <span class="flex h-7 items-center gap-1.5 rounded-full bg-carbon px-3 text-[9px] font-medium text-arena">
+            <Icon name="ph:whatsapp-logo-bold" class="size-3" />WhatsApp
+          </span>
+          <span class="h-7 w-16 rounded-full border-2 border-carbon/40"></span>
+        </div>
+      </div>
+      <div class="mt-3 grid grid-cols-3 gap-3">
+        <div class="h-14 rounded-lg bg-carbon/10"></div>
+        <div class="h-14 rounded-lg bg-carbon/10"></div>
+        <div class="h-14 rounded-lg bg-carbon/10"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phone absolute bottom-0 left-0 !w-[112px] !rounded-[22px] !border-[6px] sm:!w-[140px] sm:!rounded-[26px]" aria-hidden="true">
+    <div class="flex h-full flex-col px-1.5 pb-1.5 pt-5">
+      <div class="flex h-[42%] flex-col justify-center rounded-md bg-fuego px-2">
+        <div class="h-1.5 w-4/5 rounded bg-carbon/80"></div>
+        <div class="mt-1 h-1.5 w-3/5 rounded bg-carbon/60"></div>
+        <div class="mt-2 h-4 w-14 rounded-full bg-carbon"></div>
+      </div>
+      <div class="mt-1.5 grid gap-1.5">
+        <div class="h-6 rounded bg-carbon/10"></div>
+        <div class="h-6 rounded bg-carbon/10"></div>
+      </div>
+      <div class="mb-1 mt-auto h-5 rounded-full bg-[#25D366]/80"></div>
+    </div>
+  </div>
+</div>

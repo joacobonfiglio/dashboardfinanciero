@@ -1,0 +1,239 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../../../layouts/Base.astro';
+import Mecha from '../../../components/Mecha.astro';
+import Burn from '../../../components/Burn.astro';
+import Chispa from '../../../components/Chispa.astro';
+import SectionHead from '../../../components/SectionHead.astro';
+import WaButton from '../../../components/WaButton.astro';
+import WebMock from '../../../components/WebMock.astro';
+import Process from '../../../components/Process.astro';
+import FinalCta from '../../../components/FinalCta.astro';
+import { SITE_URL, site, servicios, notaPrecios } from '../../../site';
+
+const svc = servicios.find((s) => s.id === 'web')!;
+const otros = servicios.filter((s) => s.id !== 'web');
+
+const incluye = [
+  { t: 'Diseño propio, sin plantillas', d: 'El diseño sale de tu marca y de lo que vende tu negocio, no de un tema comprado.', icon: 'ph:paint-brush-broad-bold' },
+  { t: 'Pensada para el celular', d: 'Se arma primero en pantalla chica, que es por donde te va a entrar casi todo el mundo.', icon: 'ph:device-mobile-bold' },
+  { t: 'Textos incluidos', d: 'Escribimos las secciones con vos. No te dejamos un documento vacío para completar.', icon: 'ph:text-aa-bold' },
+  { t: 'WhatsApp en cada sección', d: 'Cada botón abre el chat con el mensaje ya escrito según la página donde está.', icon: 'ph:whatsapp-logo-bold' },
+  { t: 'SEO local', d: 'Títulos, descripciones, datos estructurados y tu Perfil de Empresa en Google conectado.', icon: 'ph:magnifying-glass-bold' },
+  { t: 'Medición desde el día uno', d: 'Analytics y Search Console configurados, para ver qué páginas traen consultas.', icon: 'ph:chart-line-up-bold' },
+];
+
+const casos = [
+  { t: 'No tenés web', d: 'Hoy te encuentran por Instagram o de boca en boca, y se te caen consultas en el camino.' },
+  { t: 'Tenés una, pero vieja', d: 'En el celular se ve mal, tarda en cargar o muestra datos que ya no son.' },
+  { t: 'Tenés web y nadie escribe', d: 'Entra gente pero no pasa nada: no se entiende qué hacés o no hay por dónde contactarte.' },
+  { t: 'Vendés por WhatsApp', d: 'Querés un lugar propio que te presente bien antes de que te escriban.' },
+];
+
+// TODO(cliente): confirmar si el dominio y el hosting van incluidos o se contratan aparte,
+// para sumarlo a "Qué incluye" y a las preguntas frecuentes.
+const faqs = [
+  { q: '¿Cuánto tarda una web?', a: 'Entre 3 y 4 semanas desde que tenemos el material y el alcance acordado. El plazo queda por escrito antes de empezar.' },
+  { q: '¿Qué necesitás de mí?', a: 'Tu logo si lo tenés, fotos de tu negocio y un rato para contarnos cómo trabajás. Si no tenés fotos, lo charlamos antes de arrancar.' },
+  { q: '¿Qué incluye el precio?', a: 'Diseño, desarrollo, textos, el botón de WhatsApp, el SEO local y la medición. Desde $200.000; el precio final depende del alcance y te llega por escrito.' },
+  { q: '¿Hacen tiendas online?', a: 'No. Hacemos webs simples que traen consultas: quién sos, qué hacés, dónde estás y cómo escribirte.' },
+  { q: '¿La web es mía?', a: 'Sí. El material que creamos para vos queda a tu nombre una vez cancelado el trabajo.' },
+  { q: '¿Y después de publicarla?', a: 'La dejamos publicada y midiendo, y te mostramos los números. Si querés que la sigamos manteniendo, lo charlamos aparte.' },
+];
+
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE_URL}/` },
+    { '@type': 'ListItem', position: 2, name: 'Servicios', item: `${SITE_URL}/#servicios` },
+    { '@type': 'ListItem', position: 3, name: 'Desarrollo de páginas web', item: `${SITE_URL}/servicios/desarrollo-web/` },
+  ] },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Desarrollo de páginas web',
+    serviceType: 'Diseño y desarrollo de páginas web',
+    description: 'Diseño y desarrollo de páginas web para comercios y pymes, pensadas para el celular y para recibir consultas por WhatsApp.',
+    provider: { '@id': `${SITE_URL}/#org` },
+    areaServed: site.areaServed.map((name) => ({ '@type': 'Country', name })),
+    url: `${SITE_URL}/servicios/desarrollo-web/`,
+    offers: {
+      '@type': 'Offer',
+      url: `${SITE_URL}/servicios/desarrollo-web/`,
+      availability: 'https://schema.org/InStock',
+      priceSpecification: { '@type': 'PriceSpecification', minPrice: 200000, priceCurrency: 'ARS', valueAddedTaxIncluded: false },
+    },
+  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+];
+---
+<Base
+  title="Desarrollo de páginas web desde $200.000 | Traka"
+  description="Diseñamos y programamos tu web desde cero, pensada para el celular y con botón de WhatsApp. Desde $200.000 y lista en 3 a 4 semanas."
+  path="/servicios/desarrollo-web/"
+  jsonLd={jsonLd}
+>
+  <Mecha>
+    <!-- 1 · HERO -->
+    <section id="hero" class="section s-papel on-light relative overflow-hidden pb-14 pt-10 md:pt-14" aria-labelledby="dw-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="glow glow--fuego left-[-16%] top-[-18%] size-[38rem]" aria-hidden="true"></div>
+
+      <div class="wrap relative grid items-center gap-12 lg:grid-cols-[1.05fr_.95fr]">
+        <div>
+          <nav aria-label="Migas de pan" class="label mb-7 opacity-75">
+            <a href="/" class="hover:underline">Inicio</a> / <a href="/#servicios" class="hover:underline">Servicios</a> / <span aria-current="page">Desarrollo web</span>
+          </nav>
+          <p class="label flex items-center gap-2.5"><span class="pulse-dot" aria-hidden="true"></span>Desarrollo web</p>
+          <h1 id="dw-title" class="h-xl mt-5">Desarrollo de páginas web que traen consultas.</h1>
+          <p class="lede mt-7 max-w-xl text-carbon/80">
+            Diseñamos y programamos tu web desde cero, pensada primero para el celular: quién sos, qué hacés, dónde estás y un botón para escribirte.
+          </p>
+
+          <div class="hairline mt-9 grid max-w-xl gap-x-8 gap-y-5 pt-7 sm:grid-cols-3">
+            <div>
+              <p class="label">Precio</p>
+              <p class="svc__price mt-1" style="font-size:clamp(1.6rem,1.1rem + 1.4vw,2.1rem)">{svc.price}</p>
+            </div>
+            <div>
+              <p class="label">Plazo</p>
+              <p class="mt-1 font-display text-xl font-bold md:text-2xl">3 a 4 semanas</p>
+            </div>
+            <div>
+              <p class="label">Alcance</p>
+              <p class="mt-1 font-display text-xl font-bold md:text-2xl">Hasta 5 secciones</p>
+            </div>
+          </div>
+
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <WaButton message={svc.message} label="Quiero mi web" origin="desarrollo-web-hero" size="lg" />
+            <a href="#incluye" class="btn btn-ghost btn-lg">Ver qué incluye</a>
+          </div>
+        </div>
+
+        <WebMock />
+      </div>
+    </section>
+
+    <!-- 2 · QUÉ INCLUYE -->
+    <section id="incluye" class="section s-arena on-light" aria-labelledby="inc-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <SectionHead
+          kicker="Qué incluye"
+          id="inc-title"
+          title="Todo lo que hace falta para que la web funcione."
+          lede="No es una web linda y nada más: es la pieza que convierte una búsqueda en un mensaje."
+        />
+        <ul class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {incluye.map((i, n) => (
+            <li class="rounded-[26px] border-2 border-carbon/12 bg-papel p-7" data-reveal style={`--d:${n * 70}ms`}>
+              <Icon name={i.icon} class="size-9 text-brasa" aria-hidden="true" />
+              <h3 class="mt-5 text-xl md:text-2xl">{i.t}</h3>
+              <p class="mt-2 opacity-80">{i.d}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <div class="s-arena"><Burn to="carbon" /></div>
+
+    <!-- 3 · PARA QUÉ CASOS SIRVE -->
+    <section id="casos" class="section s-carbon" aria-labelledby="casos-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <SectionHead kicker="Cuándo te sirve" id="casos-title" title="Si te pasa alguna de estas, es por acá." />
+        <ul class="mt-12 grid gap-6 md:grid-cols-2">
+          {casos.map((c, n) => (
+            <li class="flex gap-4 rounded-[26px] border-2 border-arena/15 bg-arena/[.04] p-7" data-reveal style={`--d:${n * 70}ms`}>
+              <Chispa class="mt-1 size-7 shrink-0 text-fuego" stroke={50} />
+              <div>
+                <h3 class="text-xl md:text-2xl">{c.t}</h3>
+                <p class="mt-2 opacity-85">{c.d}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <div class="s-carbon"><Burn to="papel" /></div>
+
+    <!-- 4 · CÓMO FUNCIONA -->
+    <section id="como" class="section s-papel on-light" aria-labelledby="como-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <SectionHead kicker="Cómo funciona" id="como-title" title="De la charla a la web publicada, en cuatro pasos." />
+        <div class="mt-12"><Process /></div>
+      </div>
+    </section>
+
+    <!-- 5 · PRECIO -->
+    <section id="precio" class="section s-arena on-light" aria-labelledby="precio-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap grid items-center gap-10 lg:grid-cols-[1fr_.85fr]">
+        <div>
+          <SectionHead kicker="Precio" id="precio-title" title="Desde $200.000, y sabés por qué." />
+          <p class="lede mt-6 max-w-xl text-carbon/80">
+            El precio final depende del alcance: cuántas secciones necesitás y cuánto material (textos, fotos, logo) tengas listo. Lo cerramos antes de empezar y no se mueve.
+          </p>
+          <p class="mt-5 text-sm opacity-75">{notaPrecios}</p>
+        </div>
+        <div class="svc svc--featured" data-reveal>
+          <p class="label text-chispa">Desarrollo de páginas web</p>
+          <p class="svc__price mt-3">{svc.price}</p>
+          <ul class="mt-6 space-y-3">
+            {svc.items.map((it) => (
+              <li class="flex gap-3"><Icon name="ph:check-circle-bold" class="mt-1 size-5 shrink-0 text-fuego" aria-hidden="true" /><span>{it}</span></li>
+            ))}
+          </ul>
+          <WaButton message={svc.message} label="Quiero mi web" origin="desarrollo-web-precio" class="mt-8 w-full" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · PREGUNTAS -->
+    <section id="preguntas" class="section s-papel on-light" aria-labelledby="faq-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap wrap-narrow">
+        <SectionHead kicker="Preguntas frecuentes" id="faq-title" title="Lo que preguntan antes de arrancar." />
+        <div class="mt-10 divide-y divide-current/15 border-y border-current/15">
+          {faqs.map((f) => (
+            <details class="faq group py-1">
+              <summary class="flex items-center justify-between gap-6 py-5 font-display text-xl font-bold md:text-2xl">
+                <span>{f.q}</span>
+                <Icon name="ph:plus-bold" class="faq__plus size-6 shrink-0 text-fuego" aria-hidden="true" />
+              </summary>
+              <p class="max-w-2xl pb-6 opacity-80">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 · OTROS SERVICIOS -->
+    <section id="otros" class="section s-arena on-light" aria-labelledby="otros-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <SectionHead kicker="Otros servicios" id="otros-title" title="Lo demás que hacemos." />
+        <ul class="mt-10 grid gap-6 md:grid-cols-2">
+          {otros.map((o) => (
+            <li class="svc" data-reveal>
+              <Icon name={o.icon} class="svc__icon size-9" aria-hidden="true" />
+              <h3 class="mt-5 text-2xl">{o.name}</h3>
+              <p class="mt-2 opacity-80">{o.summary}</p>
+              <p class="svc__price mt-5">{o.price}</p>
+              <a href={`/#${o.id}`} class="mt-6 inline-flex items-center gap-1.5 font-medium underline underline-offset-4">
+                Ver más<Icon name="ph:arrow-right-bold" class="size-4" aria-hidden="true" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <div class="s-arena"><Burn to="fuego" /></div>
+  </Mecha>
+
+  <FinalCta message="Hola, vengo de la página de desarrollo web y quiero mi web. Te cuento: " origin="cta-final-desarrollo-web" />
+</Base>

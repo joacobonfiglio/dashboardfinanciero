@@ -29,6 +29,12 @@ import { servicios } from '../site';
         variant={sv.featured ? 'fuego' : 'carbon'}
         class="mt-8 w-full"
       />
+      {sv.page && (
+        <a href={sv.page} class="mt-4 inline-flex items-center justify-center gap-1.5 text-sm font-medium underline underline-offset-4">
+          Ver cómo trabajamos una web
+          <Icon name="ph:arrow-right-bold" class="size-4" aria-hidden="true" />
+        </a>
+      )}
     </article>
   ))}
 </div>

@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { site, packages, faqs, steps } from '../site';
+import { site, servicios, faqs, steps } from '../site';
 
 /** Resumen del negocio en texto plano, generado desde src/site.ts. */
 export const GET: APIRoute = () => {
@@ -14,16 +14,17 @@ export const GET: APIRoute = () => {
   L.push('- No promete el primer puesto en Google ni posiciones garantizadas.');
   L.push('- No mide resultados en likes: mide llamadas, mensajes de WhatsApp y consultas.');
   L.push('');
-  L.push('## Paquetes');
-  for (const p of packages) {
-    L.push(`### ${p.name} — ${p.tag}`);
-    L.push(`- Plazo: ${p.time}`);
-    L.push(`- Para quién: ${p.who}`);
-    L.push(`- Incluye: ${p.items.join('; ')}.`);
-    L.push(`- Precio: cerrado, por escrito después de la primera charla${p.from ? ` (desde ${p.from})` : ''}.`);
-    L.push(`- Detalle: ${site.url}/servicios/#${p.id}`);
+  L.push('## Servicios y precios');
+  for (const sv of servicios) {
+    L.push(`### ${sv.name} — ${sv.price}`);
+    L.push(`- Qué es: ${sv.summary}`);
+    L.push(`- Incluye: ${sv.items.join('; ')}.`);
+    if (sv.priceNote) L.push(`- Sobre el precio: ${sv.priceNote}`);
+    L.push(`- Detalle: ${site.url}${sv.page ?? `/#${sv.id}`}`);
     L.push('');
   }
+  L.push('Precios en pesos argentinos. El precio final se pasa por escrito antes de empezar.');
+  L.push('');
   L.push('## Cómo se trabaja');
   steps.forEach((s, i) => L.push(`${i + 1}. ${s.t}: ${s.d}`));
   L.push('');
@@ -42,8 +43,8 @@ export const GET: APIRoute = () => {
   for (const f of faqs) L.push(`- ${f.q} ${f.a}`);
   L.push('');
   L.push('## Páginas');
-  L.push(`- ${site.url}/ — Inicio: qué hace Traka y selector de necesidades.`);
-  L.push(`- ${site.url}/servicios/ — Paquetes, alcance comparado y plazos.`);
+  L.push(`- ${site.url}/ — Inicio: servicios con precio y selector de necesidades.`);
+  L.push(`- ${site.url}/servicios/desarrollo-web/ — Desarrollo de páginas web: qué incluye, precio y plazo.`);
   L.push(`- ${site.url}/sobre-nosotros/ — Origen, el nombre y cómo se trabaja.`);
   L.push('');
 

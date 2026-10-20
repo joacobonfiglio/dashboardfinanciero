@@ -45,18 +45,11 @@ if (zone && !reduced) {
 
 /* ------------------------------------------------- carruseles que avanzan con el scroll */
 const rows = [...document.querySelectorAll<HTMLElement>('[data-scrollx]')];
-const bar = document.querySelector<HTMLElement>('.acts__progress');
 const unaColumna = window.matchMedia('(max-width: 1023.98px)');
 
 for (const row of rows) {
   const cards = [...row.children] as HTMLElement[];
   let manual = false;
-
-  const progreso = () => {
-    const max = row.scrollWidth - row.clientWidth;
-    if (max > 8 && row.classList.contains('acts-row')) bar?.style.setProperty('--p', String(row.scrollLeft / max));
-  };
-  row.addEventListener('scroll', progreso, { passive: true });
 
   // Si la persona lo desliza con el dedo, mandan sus manos: dejamos de moverlo.
   const soltar = () => {
@@ -67,18 +60,18 @@ for (const row of rows) {
   row.addEventListener('wheel', soltar, { passive: true });
   row.addEventListener('keydown', soltar);
 
-  const seccion = row.closest('section') ?? row.parentElement!;
+  // El avance se mide sobre el propio carrusel: recién empieza cuando ya se ve.
+  const INICIO = 0.72; // su borde de arriba llegó al 72% del alto de la pantalla
+  const FIN = 0.12;    // y termina cuando casi lo tenés arriba de todo
   const avanzar = () => {
     if (manual || reduced || !unaColumna.matches) return;
     const max = row.scrollWidth - row.clientWidth;
     if (max <= 8) return;
     row.classList.add('is-driven');
-    const r = seccion.getBoundingClientRect();
-    const desde = window.innerHeight * 0.85;
-    const hasta = Math.min(window.innerHeight * 0.1, window.innerHeight - r.height * 0.6);
-    const p = Math.min(Math.max((desde - r.top) / Math.max(desde - hasta, 1), 0), 1);
+    const vh = window.innerHeight;
+    const top = row.getBoundingClientRect().top;
+    const p = Math.min(Math.max((vh * INICIO - top) / Math.max(vh * (INICIO - FIN), 1), 0), 1);
     row.scrollLeft = max * p;
-    progreso();
   };
 
   let pedido = false;
@@ -90,7 +83,6 @@ for (const row of rows) {
   addEventListener('scroll', alScroll, { passive: true });
   addEventListener('resize', alScroll);
   avanzar();
-  progreso();
 
   if (reduced) cards.forEach((c) => c.classList.add('is-lit'));
   else {

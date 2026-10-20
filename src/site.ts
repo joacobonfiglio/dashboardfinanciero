@@ -48,80 +48,6 @@ export function waHref(message: string): string {
   return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;
 }
 
-/* ---------------------------------------------------------------- paquetes */
-
-export type Pkg = {
-  id: string;
-  name: string;
-  tag: string;
-  time: string;
-  summary: string;
-  items: readonly string[];
-  who: string;
-  featured?: boolean;
-  /** TODO(cliente): precio "desde". Vacío = no se muestra ningún precio. */
-  from?: string;
-};
-
-export const packages: readonly Pkg[] = [
-  {
-    id: 'chispa',
-    name: 'Chispa',
-    tag: 'Que te encuentren',
-    time: '10 días',
-    summary: 'Para aparecer en Google y en Maps cuanto antes.',
-    items: [
-      'Perfil de Empresa en Google optimizado',
-      'Landing de una página',
-      'Botón de WhatsApp',
-      'Plan de reseñas',
-    ],
-    who: 'Tenés un negocio y cuando alguien te busca en Google no aparecés, o aparecés con datos viejos. Lo resolvemos rápido.',
-    from: '',
-  },
-  {
-    id: 'fuego',
-    name: 'Fuego',
-    tag: 'Que te elijan',
-    time: '3 a 4 semanas',
-    featured: true,
-    summary: 'La web completa para que te encuentren y te elijan.',
-    items: [
-      'Todo lo de Chispa',
-      'Web de hasta 5 secciones',
-      'SEO local',
-      'Analytics y Search Console',
-      'Redacción incluida',
-    ],
-    who: 'Querés una web propia que te presente bien, te posicione en tu zona y reciba consultas todos los días.',
-    from: '',
-  },
-  {
-    id: 'brasa',
-    name: 'Brasa',
-    tag: 'Que no se apague',
-    time: 'Mensual',
-    summary: 'Para sostener lo que ya funciona y medirlo.',
-    items: [
-      'Mantenimiento de la web',
-      'Publicaciones en el Perfil de Empresa',
-      'Gestión de reseñas',
-      'Informe mensual de consultas',
-    ],
-    who: 'Ya tenés tu web y tu Perfil, y no querés que se apaguen. Los mantenemos vivos y medimos qué trae cada uno.',
-    from: '',
-  },
-];
-
-/* -------------------------------------------------------- barra superior */
-
-/** Barra de oferta arriba de todo: lo primero que se ve y lleva al WhatsApp. */
-export const topbar = {
-  text: 'Webs a partir de $200.000',
-  cta: 'Quiero más información',
-  message: 'Hola, vi que las webs de Traka arrancan en $200.000 y quiero más información.',
-};
-
 /* ---------------------------------------------------------------- servicios */
 
 export type Servicio = {
@@ -136,6 +62,8 @@ export type Servicio = {
   message: string;
   icon: string;
   featured?: boolean;
+  /** Página propia del servicio, cuando existe. */
+  page?: string;
 };
 
 export const servicios: readonly Servicio[] = [
@@ -154,6 +82,7 @@ export const servicios: readonly Servicio[] = [
     message: 'Hola, quiero una web para mi negocio. Vi que arrancan en $200.000.',
     icon: 'ph:browsers-bold',
     featured: true,
+    page: '/servicios/desarrollo-web/',
   },
   {
     id: 'google',
