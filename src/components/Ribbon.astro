@@ -1,0 +1,16 @@
+---
+import Chispa from './Chispa.astro';
+interface Props { items?: string[]; class?: string }
+const { items = ['Que te encuentren', 'Que te elijan', 'Que te escriban'], class: cls = 's-fuego' } = Astro.props;
+const row = [...items, ...items, ...items];
+---
+<div class:list={['ribbon', cls]} aria-hidden="true">
+  <div class="ribbon__track">
+    {[0, 1].map(() => (
+      <p class="ribbon__item">
+        {row.map((t) => (<><span>{t}</span><Chispa class="size-[.7em] shrink-0" stroke={54} /></>))}
+      </p>
+    ))}
+  </div>
+</div>
+<p class="sr-only">Que te encuentren. Que te elijan. Que te escriban.</p>

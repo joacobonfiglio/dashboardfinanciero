@@ -1,0 +1,54 @@
+---
+import Legal from '../../layouts/Legal.astro';
+import { site } from '../../site';
+// TODO(Traka): base redactada para Argentina. Revisión legal pendiente antes de producción.
+const medimos = Boolean(site.gaId);
+---
+<Legal
+  title="Política de cookies | Traka"
+  description="Qué guarda esta web en tu navegador, cuánto dura y cómo cambiar tu elección."
+  path="/legales/cookies/"
+  heading="Política de cookies"
+  updated="octubre de 2026"
+>
+  <p>Esta web usa lo mínimo. No hay cookies de publicidad ni de perfilado, y nada de medición se activa hasta que lo aceptes.</p>
+
+  <h2>Qué se guarda</h2>
+  <div class="legal__table">
+    <table>
+      <thead>
+        <tr><th scope="col">Qué</th><th scope="col">Para qué</th><th scope="col">Cuánto dura</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>traka-consent</code></td>
+          <td>Recordar si aceptaste o rechazaste la medición, para no volver a preguntarte.</td>
+          <td>Hasta que borres los datos del navegador.</td>
+        </tr>
+        {medimos && (
+          <tr>
+            <td><code>_ga</code>, <code>_ga_*</code></td>
+            <td>Google Analytics: contar visitas y páginas vistas de forma agregada. Solo si aceptás.</td>
+            <td>Hasta 2 años.</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+  {!medimos && <p>Hoy esta web no tiene la medición activada: lo único que se guarda es tu elección.</p>}
+
+  <h2>Cambiar tu elección</h2>
+  <p>Podés cambiarla cuando quieras.</p>
+  <p>
+    <button type="button" id="cookies-reopen" class="btn btn-carbon">Cambiar mi elección</button>
+    <span id="cookies-sin-aviso" class="ml-3 text-sm opacity-70" hidden>Hoy no hay medición activa en esta web.</span>
+  </p>
+  <p>También podés borrar o bloquear cookies desde la configuración de tu navegador.</p>
+
+  <script is:inline>
+    document.getElementById('cookies-reopen').addEventListener('click', function () {
+      if (window.trakaCookies) window.trakaCookies.open();
+      else document.getElementById('cookies-sin-aviso').hidden = false;
+    });
+  </script>
+</Legal>

@@ -2,23 +2,29 @@
 import { Icon } from 'astro-icon/components';
 import Base from '../layouts/Base.astro';
 import Mecha from '../components/Mecha.astro';
+import Burn from '../components/Burn.astro';
 import Chispa from '../components/Chispa.astro';
+import Ribbon from '../components/Ribbon.astro';
+import SectionHead from '../components/SectionHead.astro';
 import WaButton from '../components/WaButton.astro';
 import PhoneSearch from '../components/PhoneSearch.astro';
-import CasePhone from '../components/CasePhone.astro';
+import Needs from '../components/Needs.astro';
+import CaseCard from '../components/CaseCard.astro';
 import Packages from '../components/Packages.astro';
 import Process from '../components/Process.astro';
 import Faq from '../components/Faq.astro';
 import FinalCta from '../components/FinalCta.astro';
-import { faqs, packages, SITE_URL } from '../config';
+import { cases, faqs, packages, SITE_URL } from '../site';
 
 const acts = [
   { n: '01', t: 'Te encuentran', d: 'Alguien busca lo que hacés. Aparecés en Google, en Maps y en tu Perfil de Empresa, con horarios, fotos y reseñas al día.', tags: ['Google', 'Maps', 'Perfil de Empresa'], icon: 'ph:magnifying-glass-bold' },
   { n: '02', t: 'Te eligen', d: 'Entra a tu web desde el celular y entiende en segundos qué hacés, dónde estás y por qué elegirte.', tags: ['Web clara', 'Rápida', 'Para celular'], icon: 'ph:device-mobile-bold' },
   { n: '03', t: 'Te escriben', d: 'Un toque y te escribe por WhatsApp o te llama. Sin formularios eternos, sin vueltas.', tags: ['WhatsApp', 'Llamada'], icon: 'ph:chat-circle-dots-bold' },
 ];
+
 const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+  { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Paquetes de Traka', itemListElement: packages.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: `Traka ${p.name}`, url: `${SITE_URL}/servicios/#${p.id}` })) },
   ...packages.map((p) => ({ '@context': 'https://schema.org', '@type': 'Service', name: `Traka ${p.name}`, description: `${p.tag}. ${p.summary}`, provider: { '@id': `${SITE_URL}/#org` }, areaServed: ['AR', 'ES'], url: `${SITE_URL}/servicios/#${p.id}` })),
 ];
 ---
@@ -29,139 +35,180 @@ const jsonLd = [
   jsonLd={jsonLd}
 >
   <Mecha>
-    <!-- 1. HERO -->
-    <section class="section relative overflow-hidden pt-10 md:pt-16" aria-labelledby="hero-title">
+    <!-- 1 · HERO -->
+    <section class="section s-noche relative overflow-hidden pb-16 pt-12 md:pt-20" aria-labelledby="hero-title">
       <span class="node" aria-hidden="true"></span>
-      <canvas id="sparks" class="pointer-events-none absolute inset-0 hidden size-full" aria-hidden="true"></canvas>
-      <div class="wrap relative grid items-center gap-14 lg:grid-cols-[1.2fr_.8fr]">
+      <div class="glow glow--fuego left-[-14%] top-[-16%] size-[42rem]" aria-hidden="true"></div>
+      <div class="glow glow--chispa right-[-6%] top-[32%] size-[26rem] opacity-25" aria-hidden="true"></div>
+
+      <div class="wrap relative grid items-center gap-14 lg:grid-cols-[1.15fr_.85fr]">
         <div>
-          <p class="label text-brasa">Webs y Google para negocios reales</p>
-          <h1 id="hero-title" class="h-xl mt-5">
-            <span class="js-split">Que te encuentren.</span><Chispa class="js-burst ml-1 inline-block size-[.55em] -translate-y-[.45em] text-fuego" stroke={46} />
+          <p class="label flex items-center gap-2.5 text-chispa">
+            <span class="pulse-dot" aria-hidden="true"></span>Webs y Google para negocios reales
+          </p>
+          <h1 id="hero-title" class="h-hero mt-6 font-display font-extrabold">
+            <span class="hero__line" style="--d:.05s"><span>Que te</span></span>
+            <span class="hero__line" style="--d:.16s"><span class="text-fuego">encuentren</span></span>
+            <span class="hero__line" style="--d:.27s"><span>en Google<Chispa class="hero__spark ml-3 inline-block size-[.34em] -translate-y-[.38em] text-chispa" stroke={46} /></span></span>
           </h1>
-          <p class="lede mt-7 max-w-xl">Webs y Google para negocios que quieren que les escriban.</p>
+          <p class="lede mt-8 max-w-xl opacity-85">
+            Armamos tu Perfil de Empresa en Google y una web clara para el celular. El objetivo no son las visitas: son los mensajes.
+          </p>
+
           <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
             <WaButton message="Hola, vengo desde la home de Traka y quiero que me encuentren en Google." origin="hero" size="lg" />
-            <a href="#casos" class="btn btn-ghost btn-lg">Ver casos</a>
+            <a href="#que-necesitas" class="btn btn-ghost btn-lg">¿Qué necesitás?</a>
           </div>
-          <p class="mt-6 flex items-center gap-2 text-sm text-carbon/75"><Icon name="ph:seal-check-bold" class="size-5 text-brasa" aria-hidden="true" />Precio cerrado · Plazos por escrito · Una persona que responde</p>
+
+          <ul class="hairline mt-10 grid max-w-xl gap-x-6 gap-y-4 pt-7 sm:grid-cols-3">
+            {[
+              { k: 'Precio', v: 'Cerrado' },
+              { k: 'Plazos', v: 'Por escrito' },
+              { k: 'Quién atiende', v: 'Una persona' },
+            ].map((s) => (
+              <li>
+                <p class="label opacity-55">{s.k}</p>
+                <p class="mt-1 font-display text-xl font-bold md:text-2xl">{s.v}</p>
+              </li>
+            ))}
+          </ul>
         </div>
+
         <div class="lg:rotate-[2.5deg]"><PhoneSearch /></div>
       </div>
     </section>
 
-    <!-- 2. LA MECHA EN TRES ACTOS -->
-    <section id="mecha" class="acts on-dark relative" aria-labelledby="acts-title">
+    <Ribbon />
+
+    <div class="s-fuego"><Burn to="papel" /></div>
+
+    <!-- 2 · SELECTOR -->
+    <section id="que-necesitas" class="section s-papel on-light" aria-labelledby="need-title">
       <span class="node" aria-hidden="true"></span>
-      <div class="acts__pin relative lg:flex lg:min-h-screen lg:flex-col lg:justify-center lg:overflow-hidden">
-        <div class="wrap py-20 lg:py-10">
-          <p class="label text-chispa">Cómo funciona</p>
-          <h2 id="acts-title" class="h-lg mt-4 max-w-3xl">Un cliente, tres chispas.</h2>
-          <p class="lede mt-5 max-w-2xl text-arena/80">Cada paso enciende al siguiente. Si uno falla, la mecha se corta: por eso trabajamos los tres.</p>
-        </div>
-        <div class="acts__viewport pb-20 lg:pb-0">
-          <div class="acts__track relative grid gap-5 pl-[var(--gutter-l)] pr-[var(--gutter-r)] lg:grid-cols-3 lg:gap-6">
-            <div class="acts__line" aria-hidden="true"><i class="base"></i><i class="fire"></i></div>
-            {acts.map((a) => (
-              <article class="act flex flex-col rounded-[28px] border-2 border-arena/20 bg-arena/[.04] p-7 lg:min-h-[340px] lg:p-9">
-                <div class="flex items-center justify-between">
-                  <span class="act__num label text-arena">Acto {a.n}</span>
-                  <Icon name={a.icon} class="size-9 text-chispa" aria-hidden="true" />
-                </div>
-                <h3 class="mt-8 text-4xl font-extrabold md:text-5xl" style="font-variation-settings: 'opsz' 96;">{a.t}</h3>
-                <p class="mt-4 text-lg text-arena/85">{a.d}</p>
-                <ul class="mt-auto flex flex-wrap gap-2 pt-8">
-                  {a.tags.map((t) => <li class="label rounded-full border border-chispa/60 px-3 py-1.5 text-chispa">{t}</li>)}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </div>
+      <div class="wrap">
+        <SectionHead
+          kicker="Empezá por acá"
+          id="need-title"
+          title="¿Qué necesitás?"
+          lede="Tocá tu caso y te mostramos el mensaje de WhatsApp ya escrito. Lo leés antes de enviarlo: si no te cierra, lo cambiás."
+        />
+        <div class="mt-12"><Needs /></div>
       </div>
     </section>
 
-    <!-- 3. PAQUETES -->
-    <section id="paquetes" class="section" aria-labelledby="pkg-title">
+    <div class="s-papel"><Burn to="carbon" /></div>
+
+    <!-- 3 · TRES ACTOS -->
+    <section id="mecha" class="section s-carbon" aria-labelledby="acts-title">
       <span class="node" aria-hidden="true"></span>
       <div class="wrap">
-        <p class="label text-brasa">Paquetes con precio cerrado</p>
-        <h2 id="pkg-title" class="h-lg mt-4 max-w-3xl">Elegí hasta dónde querés llegar.</h2>
-        <p class="lede mt-5 max-w-2xl text-carbon/80">Tres paquetes con nombre de fuego. Sabés qué incluye, cuánto tarda y cuánto cuesta antes de empezar.</p>
+        <SectionHead
+          kicker="Cómo funciona"
+          id="acts-title"
+          title="Un cliente, tres chispas."
+          lede="Cada paso enciende al siguiente. Si uno falla, la mecha se corta: por eso trabajamos los tres."
+        />
+      </div>
+      <div class="wrap mt-12">
+        <div class="snap-row snap-row--acts" tabindex="0" role="group" aria-label="Los tres pasos, deslizá para ver más">
+          {acts.map((a) => (
+            <article class="act" data-reveal>
+              <div class="flex items-center justify-between">
+                <span class="act__num label">Acto {a.n}</span>
+                <Icon name={a.icon} class="size-9 text-chispa" aria-hidden="true" />
+              </div>
+              <h3 class="mt-8 font-display text-4xl font-extrabold md:text-5xl" style="font-variation-settings:'opsz' 96">{a.t}</h3>
+              <p class="mt-4 text-lg opacity-85">{a.d}</p>
+              <ul class="mt-auto flex flex-wrap gap-2 pt-8">
+                {a.tags.map((t) => <li class="label rounded-full border border-chispa/50 px-3 py-1.5 text-chispa">{t}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+        <div class="acts__progress progress mt-2 max-w-md lg:hidden" aria-hidden="true"><i></i></div>
+      </div>
+    </section>
+
+    <!-- 4 · PAQUETES -->
+    <section id="paquetes" class="section s-noche" aria-labelledby="pkg-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <SectionHead
+          kicker="Paquetes con precio cerrado"
+          id="pkg-title"
+          title="Elegí hasta dónde querés llegar."
+          lede="Tres paquetes con nombre de fuego. Sabés qué incluye y cuánto tarda antes de empezar; el precio te llega por escrito después de la primera charla."
+        />
         <div class="mt-14"><Packages /></div>
-        <p class="mt-8 text-sm text-carbon/70">No hacemos tiendas online ni desarrollos complejos. <a class="link" href="/servicios/">Ver el detalle de cada paquete</a>.</p>
+        <p class="mt-10 text-sm opacity-70">
+          No hacemos tiendas online ni desarrollos complejos. <a class="link" href="/servicios/">Ver el detalle de cada paquete</a>.
+        </p>
       </div>
     </section>
 
-    <!-- 4. CASOS -->
-    <section id="casos" class="section on-mar" aria-labelledby="casos-title">
+    <div class="s-noche"><Burn to="mar" /></div>
+
+    <!-- 5 · CASOS -->
+    <section id="casos" class="section s-mar" aria-labelledby="casos-title">
       <span class="node" aria-hidden="true"></span>
       <div class="wrap">
-        <p class="label text-chispa">Casos</p>
-        <h2 id="casos-title" class="h-lg mt-4 max-w-3xl">Pruebas, no portfolio.</h2>
-        <p class="lede mt-5 max-w-2xl text-arena/85">Negocios reales, vistos primero desde el celular. Con el antes y el después en consultas.</p>
-        <div class="snap-row mt-12" tabindex="0" role="group" aria-label="Casos de clientes, deslizá para ver más">
-          <CasePhone name="Aquabon" kind="Lavandería" tone="chispa" />
-          <CasePhone name="Tintorería Constitución" kind="Tintorería" tone="arena" />
-          <CasePhone name="Llama Divina" kind="Bienestar" tone="fuego" />
-          <CasePhone name="Aquabon Gestión" kind="Software propio" tone="carbon" />
+        <SectionHead kicker="Casos" id="casos-title" title="Negocios reales, vistos desde el celular." lede="Así es como los ve un cliente cuando te busca." />
+        <div class="snap-row snap-row--cases mt-12" tabindex="0" role="group" aria-label="Casos de clientes, deslizá para ver más">
+          {cases.map((c) => <CaseCard name={c.name} kind={c.kind} tone={c.tone} url={c.url} metric={c.metric} />)}
         </div>
       </div>
     </section>
 
-    <!-- 5. CÓMO TRABAJAMOS -->
-    <section id="proceso" class="section" aria-labelledby="proc-title">
+    <div class="s-mar"><Burn to="carbon" /></div>
+
+    <!-- 6 · PROCESO -->
+    <section id="proceso" class="section s-carbon" aria-labelledby="proc-title">
       <span class="node" aria-hidden="true"></span>
       <div class="wrap">
-        <p class="label text-brasa">Cómo trabajamos</p>
-        <h2 id="proc-title" class="h-lg mt-4 max-w-3xl">De la charla a las consultas, en cuatro pasos.</h2>
+        <SectionHead kicker="Cómo trabajamos" id="proc-title" title="De la charla a las consultas, en cuatro pasos." />
         <div class="mt-14"><Process /></div>
       </div>
     </section>
 
-    <!-- 6. SIN VUELTAS -->
-    <section id="sin-vueltas" class="section on-dark" aria-labelledby="sv-title">
+    <!-- 7 · SIN VUELTAS -->
+    <section id="sin-vueltas" class="section s-noche" aria-labelledby="sv-title">
       <span class="node" aria-hidden="true"></span>
-      <div class="wrap grid gap-12 lg:grid-cols-2">
+      <div class="wrap grid gap-12 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
         <div>
-          <p class="label text-chispa">Sin vueltas</p>
-          <h2 id="sv-title" class="h-lg mt-4">Lo que prometemos es lo que podemos cumplir.</h2>
+          <SectionHead kicker="Sin vueltas" id="sv-title" title="Lo que prometemos es lo que podemos cumplir." />
           <ul class="mt-10 space-y-5">
-            {['Precio cerrado.', 'Plazos por escrito.', 'Una persona que responde.', 'Resultados medidos en consultas, no en likes.'].map((t) => (
-              <li class="flex items-center gap-4 border-b border-arena/15 pb-5 font-display text-2xl font-bold md:text-3xl"><Chispa class="size-7 shrink-0 text-fuego" stroke={50} />{t}</li>
+            {['Precio cerrado.', 'Plazos por escrito.', 'Una persona que responde.', 'Resultados medidos en consultas, no en likes.'].map((t, i) => (
+              <li class="flex items-center gap-4 border-b border-arena/15 pb-5 font-display text-2xl font-bold md:text-3xl" data-reveal style={`--d:${i * 80}ms`}>
+                <Chispa class="size-7 shrink-0 text-fuego" stroke={50} />{t}
+              </li>
             ))}
           </ul>
         </div>
-        <div class="flex items-center">
-          <blockquote class="rounded-[32px] bg-chispa p-8 text-carbon md:p-12">
-            <p class="font-display text-3xl font-extrabold leading-tight md:text-4xl" style="letter-spacing:-0.02em">No prometemos el primer puesto en Google. Sí que te encuentren más, y te lo mostramos con datos.</p>
-          </blockquote>
-        </div>
+        <blockquote class="relative overflow-hidden rounded-[32px] bg-chispa p-8 text-carbon md:p-12" data-reveal>
+          <Chispa class="pointer-events-none absolute -right-10 -top-10 size-44 text-carbon/10" stroke={30} />
+          <p class="relative font-display text-3xl font-extrabold leading-tight md:text-4xl">
+            No prometemos el primer puesto en Google. Sí que te encuentren más, y te lo mostramos con datos.
+          </p>
+        </blockquote>
       </div>
     </section>
 
-    <!-- 7. ORIGEN -->
-    <section id="origen" class="section" aria-labelledby="origen-title">
-      <span class="node" aria-hidden="true"></span>
-      <div class="wrap max-w-5xl lg:ml-[max(0px,calc((100%-64rem)/2))]">
-        <p class="label text-brasa">Origen</p>
-        <h2 id="origen-title" class="h-lg mt-4">Nacimos en una ciudad de temporada, donde un comercio se juega el año en tres meses.</h2>
-        <p class="lede mt-8 max-w-2xl">Por eso hacemos webs que traen consultas, no adornos.</p>
-        <p class="label mt-10 inline-flex items-center gap-2 text-brasa"><Icon name="ph:map-pin-bold" class="size-5" aria-hidden="true" />Desde Mar del Plata, para negocios de Argentina y España.</p>
-        <p class="mt-6"><a class="link font-medium" href="/sobre-nosotros/">Conocé más sobre Traka</a></p>
-      </div>
-    </section>
+    <div class="s-noche"><Burn to="papel" /></div>
 
-    <!-- 8. FAQ -->
-    <section id="preguntas" class="section pt-0" aria-labelledby="faq-title">
+    <!-- 8 · PREGUNTAS -->
+    <section id="preguntas" class="section s-papel on-light" aria-labelledby="faq-title">
       <span class="node" aria-hidden="true"></span>
-      <div class="wrap max-w-4xl lg:ml-[max(0px,calc((100%-56rem)/2))]">
-        <p class="label text-brasa">Preguntas frecuentes</p>
-        <h2 id="faq-title" class="h-lg mt-4">Lo que casi todos preguntan.</h2>
+      <div class="wrap wrap-narrow">
+        <SectionHead kicker="Preguntas frecuentes" id="faq-title" title="Lo que casi todos preguntan." />
         <div class="mt-10"><Faq /></div>
+        <p class="mt-10">
+          ¿Querés saber de dónde venimos? <a class="link" href="/sobre-nosotros/">Conocé Traka</a>.
+        </p>
       </div>
     </section>
+
+    <div class="s-papel"><Burn to="fuego" /></div>
   </Mecha>
 
-  <!-- 9. CTA FINAL -->
   <FinalCta message="Hola, quiero empezar con Traka." origin="cta-final-home" />
 </Base>

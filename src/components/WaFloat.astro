@@ -1,0 +1,9 @@
+---
+import { Icon } from 'astro-icon/components';
+import { waHref } from '../site';
+const message = 'Hola, te escribo desde la web de Traka.';
+---
+<a class="wa-float" href={waHref(message)} data-wa="flotante" rel="noopener" aria-label="Escribinos por WhatsApp">
+  <Icon name="ph:whatsapp-logo-fill" class="size-7 shrink-0" aria-hidden="true" />
+  <span class="wa-float__text">WhatsApp</span>
+</a>

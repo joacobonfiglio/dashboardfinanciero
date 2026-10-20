@@ -1,0 +1,52 @@
+---
+import { Icon } from 'astro-icon/components';
+import { needs, waHref } from '../site';
+---
+<div class="needs">
+  <fieldset class="needs__options space-y-3">
+    <legend class="label mb-4">Elegí una opción</legend>
+    {needs.map((n, i) => (
+      <div class="relative">
+        <input class="needs__input" type="radio" name="need" id={`need-${n.id}`} checked={i === 0} />
+        <label class="needs__opt" for={`need-${n.id}`}>
+          <span class="needs__dot" aria-hidden="true"></span>
+          <span>
+            <span class="block font-display text-xl font-bold leading-tight md:text-2xl">{n.label}</span>
+            <span class="mt-1 block text-sm opacity-70">{n.hint}</span>
+          </span>
+          <Icon name={n.icon} class="icon-accent ml-auto size-7 shrink-0" aria-hidden="true" />
+        </label>
+      </div>
+    ))}
+  </fieldset>
+
+  <div class="lg:sticky lg:top-28">
+    {needs.map((n) => (
+      <div class="needs__preview" data-need={n.id}>
+        <div class="chat">
+          <div class="chat__bar">
+            <span class="grid size-9 place-items-center rounded-full bg-[#25D366] text-[#0A2E1D]" aria-hidden="true">
+              <Icon name="ph:whatsapp-logo-fill" class="size-5" />
+            </span>
+            <span>
+              <span class="block text-sm font-semibold">Traka</span>
+              <span class="chat__typing text-[11px] opacity-70"><i></i><i></i><i></i><span class="ml-1">escribiendo…</span></span>
+            </span>
+          </div>
+          <p class="chat__bubble">{n.message}<span class="opacity-85">(contanos de tu negocio)</span></p>
+          <p class="chat__meta"><span>Mensaje listo para enviar</span><Icon name="ph:checks-bold" class="size-3.5" aria-hidden="true" /></p>
+        </div>
+        <a
+          href={waHref(n.message)}
+          data-wa={`selector-${n.id}`}
+          rel="noopener"
+          class="btn btn-fuego btn-lg mt-5 w-full"
+        >
+          <Icon name="ph:paper-plane-tilt-bold" class="size-5 shrink-0" aria-hidden="true" />
+          <span>Enviar este mensaje</span>
+        </a>
+        <p class="mt-3 text-center text-sm opacity-65">Te sugerimos el paquete <strong class="font-semibold">{n.pkg}</strong>. Lo charlamos sin compromiso.</p>
+      </div>
+    ))}
+  </div>
+</div>

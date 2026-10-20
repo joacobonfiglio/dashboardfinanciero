@@ -1,0 +1,23 @@
+---
+import Base from './Base.astro';
+import Burn from '../components/Burn.astro';
+interface Props { title: string; description: string; path: string; heading: string; updated: string }
+const { title, description, path, heading, updated } = Astro.props;
+---
+<Base title={title} description={description} path={path} noindex>
+  <section class="section s-noche pb-16 pt-12 md:pt-16">
+    <div class="wrap wrap-narrow">
+      <nav aria-label="Migas de pan" class="label mb-8 opacity-65">
+        <a href="/" class="hover:underline">Inicio</a> / <span aria-current="page">{heading}</span>
+      </nav>
+      <h1 class="h-lg">{heading}</h1>
+      <p class="label mt-5 opacity-60">Última actualización: {updated}</p>
+    </div>
+  </section>
+  <div class="s-noche"><Burn to="papel" /></div>
+  <section class="section s-papel on-light pt-14">
+    <div class="wrap wrap-narrow legal">
+      <slot />
+    </div>
+  </section>
+</Base>

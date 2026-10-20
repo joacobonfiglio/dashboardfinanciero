@@ -1,0 +1,22 @@
+---
+/** Borde quemado entre dos secciones. `to` es el color de la sección que viene abajo. */
+interface Props { to: 'noche' | 'carbon' | 'papel' | 'mar' | 'fuego' | 'humo' }
+const { to } = Astro.props;
+---
+<div class="burn" style={`color: var(--color-${to})`} aria-hidden="true">
+  <svg viewBox="0 0 1200 60" preserveAspectRatio="none" role="presentation">
+    <path
+      fill="currentColor"
+      d="M0,60 L0,21.8 L28,17.3 L51,17.0 L68,6.5 L92,30.9 L112,27.3 L138,23.1 L155,31.5 L174,18.1 L205,19.3 L233,22.7 L250,17.1 L278,23.7 L305,24.2 L335,28.6 L361,25.5 L390,21.2 L408,23.5 L427,10.0 L457,26.3 L479,28.5 L505,24.2 L538,24.5 L555,28.6 L589,30.8 L612,8.8 L631,10.6 L649,20.5 L681,17.5 L707,31.9 L739,21.0 L761,31.9 L780,19.2 L800,24.7 L821,16.1 L844,26.2 L872,25.3 L900,17.0 L930,31.7 L953,9.8 L970,17.2 L989,6.0 L1008,17.8 L1024,31.7 L1043,20.5 L1066,18.2 L1100,24.4 L1118,17.8 L1139,30.9 L1155,33.1 L1174,9.2 L1200,28.1 L1200,60 Z"
+    />
+    <g fill="#FF5B24">
+      <circle cx="120" cy="13" r="2.4" opacity=".9" /><circle cx="480" cy="11" r="2.1" opacity=".75" />
+      <circle cx="930" cy="11" r="2.4" opacity=".9" /><circle cx="700" cy="30" r="1.7" opacity=".6" />
+      <circle cx="250" cy="27" r="1.7" opacity=".6" />
+    </g>
+    <g fill="#FFB833">
+      <circle cx="210" cy="8" r="1.8" opacity=".8" /><circle cx="840" cy="14" r="1.6" opacity=".7" />
+      <circle cx="570" cy="16" r="1.5" opacity=".65" />
+    </g>
+  </svg>
+</div>

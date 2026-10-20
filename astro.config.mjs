@@ -9,7 +9,8 @@ export default defineConfig({
   build: { format: 'directory', inlineStylesheets: 'always' },
   integrations: [
     icon(),
-    sitemap({ filter: (page) => !page.includes('/design') }),
+    // Las páginas legales van con noindex: fuera del sitemap.
+    sitemap({ filter: (page) => !page.includes('/legales/') }),
   ],
   vite: { plugins: [tailwindcss()] },
 });

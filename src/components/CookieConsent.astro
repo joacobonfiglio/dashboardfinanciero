@@ -1,0 +1,31 @@
+---
+import { site } from '../site';
+const enabled = Boolean(site.gaId) && import.meta.env.PROD;
+---
+{enabled && (
+  <div class="cookies" id="cookies" role="dialog" aria-modal="false" aria-labelledby="cookies-title" hidden>
+    <h2 id="cookies-title" class="font-display text-xl font-bold">Medimos para mejorar</h2>
+    <p class="mt-2 text-sm opacity-85">
+      Usamos Google Analytics para saber qué páginas sirven. No se activa nada hasta que aceptes.
+      <a class="link" href="/legales/cookies/">Ver la política de cookies</a>.
+    </p>
+    <div class="mt-4 flex flex-wrap gap-2">
+      <button type="button" id="cookies-yes" class="btn btn-fuego">Aceptar</button>
+      <button type="button" id="cookies-no" class="btn btn-ghost">Solo lo necesario</button>
+    </div>
+  </div>
+  <script is:inline>
+    (function () {
+      var KEY = 'traka-consent';
+      var box = document.getElementById('cookies');
+      function read() { try { return localStorage.getItem(KEY); } catch (e) { return 'denied'; } }
+      function save(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+      function apply(v) { if (window.gtag) window.gtag('consent', 'update', { analytics_storage: v === 'granted' ? 'granted' : 'denied' }); }
+      function close(v) { save(v); apply(v); box.hidden = true; }
+      if (!read()) box.hidden = false;
+      document.getElementById('cookies-yes').addEventListener('click', function () { close('granted'); });
+      document.getElementById('cookies-no').addEventListener('click', function () { close('denied'); });
+      window.trakaCookies = { open: function () { box.hidden = false; }, estado: read };
+    })();
+  </script>
+)}

@@ -1,0 +1,24 @@
+---
+import { site } from '../site';
+const gaId = site.gaId;
+const enabled = Boolean(gaId) && import.meta.env.PROD;
+---
+{enabled && (
+  <>
+    <script is:inline define:vars={{ gaId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('consent', 'default', {
+        ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+        analytics_storage: 'denied', wait_for_update: 500,
+      });
+      try {
+        if (localStorage.getItem('traka-consent') === 'granted') gtag('consent', 'update', { analytics_storage: 'granted' });
+      } catch (e) { /* almacenamiento bloqueado: seguimos sin consentimiento */ }
+      gtag('js', new Date());
+      gtag('config', gaId, { anonymize_ip: true });
+    </script>
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+  </>
+)}

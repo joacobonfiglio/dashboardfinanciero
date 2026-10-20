@@ -1,12 +1,12 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { waHref } from '../config';
+import { waHref } from '../site';
 interface Props {
   message: string;
   label?: string;
-  variant?: 'fuego' | 'carbon' | 'ghost';
+  variant?: 'fuego' | 'carbon' | 'arena' | 'ghost';
   size?: 'md' | 'lg';
-  /** Identifica desde dónde se escribe (analítica) */
+  /** Desde dónde se escribe. Va al evento click_whatsapp de GA4. */
   origin: string;
   class?: string;
 }

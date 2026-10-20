@@ -1,0 +1,56 @@
+---
+import Legal from '../../layouts/Legal.astro';
+import { site } from '../../site';
+// TODO(Traka): estas páginas son una base redactada para Argentina (Ley 25.326).
+// No reemplazan la revisión de un abogado antes de publicarlas en producción.
+const holder = site.legal.holder;
+const taxId = site.legal.taxId;
+---
+<Legal
+  title="Política de privacidad | Traka"
+  description="Cómo trata Traka los datos personales de quienes nos escriben o visitan la web."
+  path="/legales/privacidad/"
+  heading="Política de privacidad"
+  updated="octubre de 2026"
+>
+  <h2>Quién es responsable de tus datos</h2>
+  {holder
+    ? <p>El responsable del tratamiento es {holder}{taxId && <> (CUIT {taxId})</>}, con domicilio en {site.city}, {site.region}, Argentina.</p>
+    : <p>El responsable del tratamiento es Traka, con domicilio en {site.city}, {site.region}, Argentina.</p>}
+  {site.email && <p>Para cualquier consulta sobre tus datos podés escribir a <a class="link" href={`mailto:${site.email}`}>{site.email}</a>.</p>}
+
+  <h2>Qué datos tratamos</h2>
+  <ul>
+    <li><strong>Los que nos mandás vos.</strong> Si nos escribís por WhatsApp o por correo: tu nombre, tu teléfono o tu correo y lo que nos cuentes de tu negocio.</li>
+    <li><strong>Datos de navegación.</strong> Páginas vistas, origen de la visita y tipo de dispositivo, de forma agregada, solo si aceptaste la medición en el aviso de cookies.</li>
+  </ul>
+  <p>No pedimos datos sensibles ni datos de tarjetas en esta web.</p>
+
+  <h2>Para qué los usamos</h2>
+  <ul>
+    <li>Responder tu consulta y, si avanzamos, preparar un presupuesto.</li>
+    <li>Prestar el servicio contratado y mantenerte al tanto de cómo va.</li>
+    <li>Entender qué páginas de la web sirven y cuáles no, para mejorarlas.</li>
+  </ul>
+
+  <h2>Con quién los compartimos</h2>
+  <p>No vendemos ni cedemos tus datos. Trabajamos con proveedores que los tratan por cuenta nuestra:</p>
+  <ul>
+    <li><strong>WhatsApp (Meta).</strong> El botón de WhatsApp abre una conversación en su plataforma; lo que escribas ahí se rige también por las políticas de Meta.</li>
+    <li><strong>Google Analytics (Google).</strong> Medición de uso de la web, solo con tu consentimiento y con la IP anonimizada.</li>
+    <li><strong>Hosting.</strong> La web está alojada en un proveedor de infraestructura que guarda registros técnicos de acceso.</li>
+  </ul>
+
+  <h2>Transferencias internacionales</h2>
+  <p>Algunos de esos proveedores están fuera de Argentina, principalmente en Estados Unidos y la Unión Europea. En esos casos la transferencia se ampara en las cláusulas contractuales y compromisos de protección que esos proveedores ofrecen.</p>
+
+  <h2>Cuánto los conservamos</h2>
+  <p>Las consultas que no derivan en un trabajo se conservan mientras puedan ser útiles para retomar el contacto. Los datos de clientes se conservan mientras dure la relación y, después, por los plazos legales de tipo contable e impositivo.</p>
+
+  <h2>Tus derechos</h2>
+  <p>Podés pedirnos acceder a tus datos, rectificarlos, actualizarlos o suprimirlos{site.email ? <> escribiendo a <a class="link" href={`mailto:${site.email}`}>{site.email}</a></> : <> escribiéndonos por los canales de contacto de esta web</>}. El titular de los datos personales tiene la facultad de ejercer el derecho de acceso en forma gratuita a intervalos no inferiores a seis meses, salvo que acredite un interés legítimo al efecto, conforme el artículo 14, inciso 3 de la Ley N.º 25.326.</p>
+  <p class="legal__box">LA AGENCIA DE ACCESO A LA INFORMACIÓN PÚBLICA, en su carácter de Órgano de Control de la Ley N.º 25.326, tiene la atribución de atender las denuncias y reclamos que interpongan quienes resulten afectados en sus derechos por incumplimiento de las normas vigentes en materia de protección de datos personales.</p>
+
+  <h2>Cambios</h2>
+  <p>Si cambiamos esta política, actualizamos la fecha del encabezado.</p>
+</Legal>

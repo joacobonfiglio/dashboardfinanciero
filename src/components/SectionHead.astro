@@ -1,0 +1,9 @@
+---
+interface Props { kicker: string; title: string; id: string; lede?: string; class?: string }
+const { kicker, title, id, lede, class: cls = '' } = Astro.props;
+---
+<div class:list={['max-w-3xl', cls]}>
+  <p class="label flex items-center gap-2.5"><span class="pulse-dot" aria-hidden="true"></span>{kicker}</p>
+  <h2 id={id} class="h-lg mt-5">{title}</h2>
+  {lede && <p class="lede mt-5 opacity-80">{lede}</p>}
+</div>

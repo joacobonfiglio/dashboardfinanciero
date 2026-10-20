@@ -8,7 +8,10 @@ import '../styles/global.css';
 import bricolageUrl from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_URL } from '../config';
+import WaFloat from '../components/WaFloat.astro';
+import Analytics from '../components/Analytics.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+import { site, SITE_URL } from '../site';
 
 interface Props {
   title: string;
@@ -21,26 +24,37 @@ const { title, description, path, jsonLd = [], noindex = false } = Astro.props;
 const url = new URL(path, SITE_URL).href;
 const og = new URL('/og.png', SITE_URL).href;
 
+const sameAs = [site.instagram, site.googleBusiness].filter(Boolean);
+
 const organization = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   '@id': `${SITE_URL}/#org`,
-  name: 'Traka',
+  name: site.name,
   url: SITE_URL,
   logo: `${SITE_URL}/brand/traka-icono-app.png`,
-  slogan: 'Que te encuentren.',
+  slogan: site.tagline,
+  ...(sameAs.length ? { sameAs } : {}),
 };
 const business = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
   '@id': `${SITE_URL}/#business`,
-  name: 'Traka',
+  name: site.name,
   url: SITE_URL,
-  description: 'Webs y posicionamiento en Google para comercios y pymes.',
+  description: site.description,
   image: og,
-  address: { '@type': 'PostalAddress', addressLocality: 'Mar del Plata', addressRegion: 'Buenos Aires', addressCountry: 'AR' },
-  areaServed: [{ '@type': 'Country', name: 'Argentina' }, { '@type': 'Country', name: 'España' }],
+  address: {
+    '@type': 'PostalAddress',
+    ...(site.street ? { streetAddress: site.street } : {}),
+    addressLocality: site.city,
+    addressRegion: site.region,
+    addressCountry: site.country,
+  },
+  areaServed: site.areaServed.map((name) => ({ '@type': 'Country', name })),
   parentOrganization: { '@id': `${SITE_URL}/#org` },
+  ...(site.hours.length ? { openingHours: site.hours.map((h) => `${h.d} ${h.h}`) } : {}),
+  ...(sameAs.length ? { sameAs } : {}),
 };
 const graphs = [organization, business, ...jsonLd];
 ---
@@ -54,16 +68,16 @@ const graphs = [organization, business, ...jsonLd];
     <link rel="canonical" href={url} />
     <link rel="alternate" hreflang="es-AR" href={url} />
     <link rel="alternate" hreflang="x-default" href={url} />
-    {noindex && <meta name="robots" content="noindex" />}
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_AR" />
-    <meta property="og:site_name" content="Traka" />
+    <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={url} />
     <meta property="og:image" content={og} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#F4EEE4" />
+    <meta name="theme-color" content="#0C0908" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/brand/traka-icono-app.png" />
     <link rel="preload" href={bricolageUrl} as="font" type="font/woff2" crossorigin />
@@ -74,24 +88,20 @@ const graphs = [organization, business, ...jsonLd];
         if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) c.add('motion-ok');
       })();
     </script>
+    <Analytics />
     {graphs.map((g) => <script type="application/ld+json" set:html={JSON.stringify(g)} />)}
   </head>
   <body>
-    <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:rounded-full focus:bg-carbon focus:px-5 focus:py-3 focus:text-arena">Saltar al contenido</a>
+    <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:rounded-full focus:bg-fuego focus:px-5 focus:py-3 focus:text-carbon">Saltar al contenido</a>
     <Header />
     <main id="contenido">
       <slot />
     </main>
     <Footer />
+    <WaFloat />
+    <CookieConsent />
     <script>
-      // Botones de WhatsApp todavía sin número: no hacen nada.
-      document.addEventListener('click', (e) => {
-        const a = (e.target as Element).closest('a[data-wa]') as HTMLAnchorElement | null;
-        if (a && a.getAttribute('href') === '#') e.preventDefault();
-      });
-    </script>
-    <script>
-      import '../scripts/mecha';
+      import '../scripts/motion';
     </script>
   </body>
 </html>

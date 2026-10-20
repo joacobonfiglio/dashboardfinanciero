@@ -1,15 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
 import Chispa from '../components/Chispa.astro';
+import WaButton from '../components/WaButton.astro';
 ---
 <Base title="Página no encontrada | Traka" description="No encontramos esta página." path="/404/" noindex>
-  <section class="section grid min-h-[70vh] place-items-center">
-    <div class="wrap text-center">
-      <Chispa class="mx-auto size-32 text-ceniza opacity-60" stroke={34} />
-      <p class="label mt-8 text-brasa">Error 404</p>
-      <h1 class="h-lg mt-3">Esta chispa se apagó.</h1>
-      <p class="lede mx-auto mt-5 max-w-md">La página que buscás no existe o cambió de lugar.</p>
-      <a href="/" class="btn btn-fuego btn-lg mt-8">Volver al inicio</a>
+  <section class="section s-noche relative grid min-h-[72vh] place-items-center overflow-hidden">
+    <div class="glow glow--fuego left-1/2 top-1/3 size-[32rem] -translate-x-1/2" aria-hidden="true"></div>
+    <div class="wrap relative text-center">
+      <Chispa class="mx-auto size-28 text-ceniza opacity-50" stroke={34} />
+      <p class="label mt-8 text-chispa">Error 404</p>
+      <h1 class="h-xl mt-4">Esta chispa se apagó.</h1>
+      <p class="lede mx-auto mt-5 max-w-md opacity-85">La página que buscás no existe o cambió de lugar.</p>
+      <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <a href="/" class="btn btn-fuego btn-lg">Volver al inicio</a>
+        <WaButton message="Hola, llegué a una página que no existe en la web de Traka y quiero hacer una consulta." origin="404" variant="ghost" size="lg" />
+      </div>
     </div>
   </section>
 </Base>
