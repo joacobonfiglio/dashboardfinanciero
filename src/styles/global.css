@@ -247,7 +247,7 @@ a.link { color: var(--color-chispa); text-decoration: underline; text-underline-
 @supports not selector(:has(*)) { .needs__preview { display: block; } .needs__options { display: none; } }
 
 .chat {
-  border-radius: 26px; padding: 1.25rem; background: #0F1A14;
+  border-radius: 26px; padding: 1.25rem; background: #0F1A14; color: var(--color-arena);
   border: 2px solid rgba(37, 211, 102, .35);
   background-image: radial-gradient(rgba(244, 238, 228, .05) 1px, transparent 1px);
   background-size: 18px 18px;
