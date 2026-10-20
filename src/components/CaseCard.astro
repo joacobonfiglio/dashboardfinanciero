@@ -1,13 +1,17 @@
 ---
+import { Icon } from 'astro-icon/components';
 interface Props { name: string; kind: string; tone: string; url?: string; metric?: string }
 const { name, kind, tone, url = '', metric = '' } = Astro.props;
 const bg: Record<string, string> = { fuego: 'bg-fuego', chispa: 'bg-chispa', arena: 'bg-arena', mar: 'bg-mar' };
+const banda = bg[tone] ?? 'bg-arena';
+// TODO(cliente): reemplazar estas maquetas por capturas reales de cada sitio.
 ---
-<article class="w-[230px] lg:w-auto" data-reveal>
-  <div class="phone mx-auto !w-[180px] !rounded-[32px] !border-[8px] lg:!w-[86%]" role="img" aria-label={`Maqueta de la web de ${name} vista en un celular.`}>
+<article class="w-[240px] lg:w-auto" data-reveal>
+  <!-- Celular -->
+  <div class="mock--phone phone mx-auto !w-[180px] !rounded-[32px] !border-[8px]" role="img" aria-label={`Maqueta de la web de ${name} vista en un celular.`}>
     <div class="flex h-full flex-col" aria-hidden="true">
       <div class="mt-7 flex items-center justify-between px-3 py-2 text-[10px] font-bold"><span>{name}</span><span class="h-2 w-5 rounded bg-carbon/20"></span></div>
-      <div class={`mx-2.5 rounded-xl p-3 ${bg[tone] ?? 'bg-arena'}`}>
+      <div class={`mx-2.5 rounded-xl p-3 ${banda}`}>
         <div class="h-2.5 w-4/5 rounded bg-current opacity-70"></div>
         <div class="mt-1.5 h-2.5 w-3/5 rounded bg-current opacity-70"></div>
         <div class="mt-4 h-6 w-20 rounded-full bg-carbon/80"></div>
@@ -18,6 +22,26 @@ const bg: Record<string, string> = { fuego: 'bg-fuego', chispa: 'bg-chispa', are
       <div class="mx-2.5 mb-3 mt-auto h-8 rounded-full bg-carbon/10"></div>
     </div>
   </div>
+
+  <!-- Computadora -->
+  <div class="mock--desk win" role="img" aria-label={`Maqueta de la web de ${name} vista en una computadora.`}>
+    <div class="win__bar" aria-hidden="true">
+      <span class="win__dot"></span><span class="win__dot"></span><span class="win__dot"></span>
+      <span class="win__addr"><Icon name="ph:lock-simple-bold" class="size-2.5 shrink-0" />{name}</span>
+    </div>
+    <div class="aspect-[16/11] p-3" aria-hidden="true">
+      <div class={`flex h-[46%] flex-col justify-center rounded-lg px-3 ${banda}`}>
+        <div class="h-2.5 w-3/5 rounded bg-current opacity-70"></div>
+        <div class="mt-1.5 h-2.5 w-2/5 rounded bg-current opacity-70"></div>
+        <div class="mt-3 h-5 w-24 rounded-full bg-carbon/80"></div>
+      </div>
+      <div class="mt-2.5 grid grid-cols-3 gap-2">
+        <div class="h-12 rounded-md bg-carbon/10"></div><div class="h-12 rounded-md bg-carbon/10"></div><div class="h-12 rounded-md bg-carbon/10"></div>
+      </div>
+      <div class="mt-2.5 h-5 w-1/2 rounded-full bg-carbon/10"></div>
+    </div>
+  </div>
+
   <h3 class="mt-5 text-xl lg:text-2xl">{name}</h3>
   <p class="label mt-1.5 text-chispa">{kind}</p>
   {metric && <p class="mt-3 text-sm opacity-85">{metric}</p>}

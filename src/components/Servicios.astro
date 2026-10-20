@@ -1,0 +1,34 @@
+---
+import { Icon } from 'astro-icon/components';
+import WaButton from './WaButton.astro';
+import { servicios } from '../site';
+---
+<div class="grid gap-6 lg:grid-cols-3 lg:items-stretch">
+  {servicios.map((sv, i) => (
+    <article id={sv.id} class:list={['svc', sv.featured && 'svc--featured']} data-reveal style={`--d:${i * 90}ms`}>
+      <Icon name={sv.icon} class="svc__icon size-10" aria-hidden="true" />
+      <h3 class="mt-6 font-display text-2xl font-extrabold leading-tight md:text-3xl">{sv.name}</h3>
+      <p class:list={['mt-3', sv.featured ? 'text-arena/80' : 'text-carbon/75']}>{sv.summary}</p>
+
+      <p class="svc__price mt-6">{sv.price}</p>
+      {sv.priceNote && <p class:list={['mt-2 text-sm', sv.featured ? 'text-arena/70' : 'text-carbon/65']}>{sv.priceNote}</p>}
+
+      <ul class="mt-6 flex-1 space-y-3">
+        {sv.items.map((it) => (
+          <li class="flex gap-3">
+            <Icon name="ph:check-circle-bold" class:list={['mt-1 size-5 shrink-0', sv.featured ? 'text-fuego' : 'text-brasa']} aria-hidden="true" />
+            <span>{it}</span>
+          </li>
+        ))}
+      </ul>
+
+      <WaButton
+        message={sv.message}
+        label={sv.cta}
+        origin={`servicio-${sv.id}`}
+        variant={sv.featured ? 'fuego' : 'carbon'}
+        class="mt-8 w-full"
+      />
+    </article>
+  ))}
+</div>

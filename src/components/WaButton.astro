@@ -10,7 +10,7 @@ interface Props {
   origin: string;
   class?: string;
 }
-const { message, label = 'Escribinos por WhatsApp', variant = 'fuego', size = 'md', origin, class: cls = '' } = Astro.props;
+const { message, label = 'Quiero más información', variant = 'fuego', size = 'md', origin, class: cls = '' } = Astro.props;
 ---
 <a
   href={waHref(message)}

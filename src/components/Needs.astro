@@ -3,11 +3,13 @@ import { Icon } from 'astro-icon/components';
 import { needs, waHref } from '../site';
 ---
 <div class="needs">
-  <fieldset class="needs__options space-y-3">
+  <fieldset class="needs__options">
     <legend class="label mb-4">Elegí una opción</legend>
-    {needs.map((n, i) => (
+    <!-- Opción vacía: es la que permite cerrar el panel en celular, sin JavaScript. -->
+    <input class="needs__input" type="radio" name="need" id="need-none" aria-label="Ninguna opción, cierra el mensaje" checked />
+    {needs.map((n) => (
       <div class="relative">
-        <input class="needs__input" type="radio" name="need" id={`need-${n.id}`} checked={i === 0} />
+        <input class="needs__input" type="radio" name="need" id={`need-${n.id}`} />
         <label class="needs__opt" for={`need-${n.id}`}>
           <span class="needs__dot" aria-hidden="true"></span>
           <span>
@@ -20,7 +22,11 @@ import { needs, waHref } from '../site';
     ))}
   </fieldset>
 
-  <div class="lg:sticky lg:top-28">
+  <div class="needs__panel">
+    <label class="needs__close" for="need-none" role="button" tabindex="0" data-close-need>
+      <Icon name="ph:x-bold" class="size-3" aria-hidden="true" />Cerrar
+    </label>
+
     {needs.map((n) => (
       <div class="needs__preview" data-need={n.id}>
         <div class="chat">
@@ -30,23 +36,24 @@ import { needs, waHref } from '../site';
             </span>
             <span>
               <span class="block text-sm font-semibold">Traka</span>
-              <span class="chat__typing text-[11px] opacity-70"><i></i><i></i><i></i><span class="ml-1">escribiendo…</span></span>
+              <span class="chat__typing text-[11px] opacity-80"><i></i><i></i><i></i><span class="ml-1">escribiendo…</span></span>
             </span>
           </div>
           <p class="chat__bubble">{n.message}<span class="opacity-85">(contanos de tu negocio)</span></p>
           <p class="chat__meta"><span>Mensaje listo para enviar</span><Icon name="ph:checks-bold" class="size-3.5" aria-hidden="true" /></p>
         </div>
-        <a
-          href={waHref(n.message)}
-          data-wa={`selector-${n.id}`}
-          rel="noopener"
-          class="btn btn-fuego btn-lg mt-5 w-full"
-        >
+        <a href={waHref(n.message)} data-wa={`selector-${n.id}`} rel="noopener" class="btn btn-fuego btn-lg mt-4 w-full">
           <Icon name="ph:paper-plane-tilt-bold" class="size-5 shrink-0" aria-hidden="true" />
           <span>Enviar este mensaje</span>
         </a>
-        <p class="mt-3 text-center text-sm opacity-65">Te sugerimos el paquete <strong class="font-semibold">{n.pkg}</strong>. Lo charlamos sin compromiso.</p>
+        <p class="mt-3 text-center text-sm opacity-75">Para esto te sirve <strong class="font-semibold">{n.svc}</strong>. Lo charlamos sin compromiso.</p>
       </div>
     ))}
+
+    <div class="needs__hint">
+      <Icon name="ph:hand-tap-bold" class="mx-auto size-10 text-brasa" aria-hidden="true" />
+      <p class="mt-4 font-display text-xl font-bold">Elegí una opción</p>
+      <p class="mt-2 text-sm opacity-75">Te escribimos el mensaje de WhatsApp y lo ves acá antes de enviarlo.</p>
+    </div>
   </div>
 </div>

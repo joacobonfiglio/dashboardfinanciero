@@ -43,23 +43,57 @@ if (zone && !reduced) {
   nodes.forEach((n) => n.classList.add('is-lit'));
 }
 
-/* ------------------------------------------------- tres actos: barra de avance */
-const acts = document.querySelector<HTMLElement>('.snap-row--acts');
+/* ------------------------------------------------- carruseles que avanzan con el scroll */
+const rows = [...document.querySelectorAll<HTMLElement>('[data-scrollx]')];
 const bar = document.querySelector<HTMLElement>('.acts__progress');
-if (acts) {
-  const cards = [...acts.querySelectorAll<HTMLElement>('.act')];
-  const sync = () => {
-    const max = acts.scrollWidth - acts.clientWidth;
-    const p = max > 8 ? acts.scrollLeft / max : 1;
-    bar?.style.setProperty('--p', String(Math.max(p, 1 / Math.max(cards.length, 1))));
-  };
-  acts.addEventListener('scroll', sync, { passive: true });
-  addEventListener('resize', sync);
-  sync();
+const unaColumna = window.matchMedia('(max-width: 1023.98px)');
 
-  if (reduced) {
-    cards.forEach((c) => c.classList.add('is-lit'));
-  } else {
+for (const row of rows) {
+  const cards = [...row.children] as HTMLElement[];
+  let manual = false;
+
+  const progreso = () => {
+    const max = row.scrollWidth - row.clientWidth;
+    if (max > 8 && row.classList.contains('acts-row')) bar?.style.setProperty('--p', String(row.scrollLeft / max));
+  };
+  row.addEventListener('scroll', progreso, { passive: true });
+
+  // Si la persona lo desliza con el dedo, mandan sus manos: dejamos de moverlo.
+  const soltar = () => {
+    manual = true;
+    row.classList.remove('is-driven');
+  };
+  row.addEventListener('pointerdown', soltar);
+  row.addEventListener('wheel', soltar, { passive: true });
+  row.addEventListener('keydown', soltar);
+
+  const seccion = row.closest('section') ?? row.parentElement!;
+  const avanzar = () => {
+    if (manual || reduced || !unaColumna.matches) return;
+    const max = row.scrollWidth - row.clientWidth;
+    if (max <= 8) return;
+    row.classList.add('is-driven');
+    const r = seccion.getBoundingClientRect();
+    const desde = window.innerHeight * 0.85;
+    const hasta = Math.min(window.innerHeight * 0.1, window.innerHeight - r.height * 0.6);
+    const p = Math.min(Math.max((desde - r.top) / Math.max(desde - hasta, 1), 0), 1);
+    row.scrollLeft = max * p;
+    progreso();
+  };
+
+  let pedido = false;
+  const alScroll = () => {
+    if (pedido) return;
+    pedido = true;
+    requestAnimationFrame(() => { pedido = false; avanzar(); });
+  };
+  addEventListener('scroll', alScroll, { passive: true });
+  addEventListener('resize', alScroll);
+  avanzar();
+  progreso();
+
+  if (reduced) cards.forEach((c) => c.classList.add('is-lit'));
+  else {
     const io = new IntersectionObserver(
       (entries) => entries.forEach((e) => e.target.classList.toggle('is-lit', e.isIntersecting && e.intersectionRatio > 0.55)),
       { threshold: [0, 0.55, 1] },
@@ -68,9 +102,18 @@ if (acts) {
   }
 }
 
+/* ------------------------------------------------- cerrar el panel del selector con el teclado */
+const cerrar = document.querySelector<HTMLElement>('[data-close-need]');
+cerrar?.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  e.preventDefault();
+  const none = document.getElementById('need-none') as HTMLInputElement | null;
+  if (none) { none.checked = true; document.getElementById('que-necesitas')?.scrollIntoView({ block: 'nearest' }); }
+});
+
 /* ------------------------------------------------- botón flotante de WhatsApp */
 const float = document.querySelector<HTMLElement>('.wa-float');
-const firstSection = document.querySelector<HTMLElement>('main > *, .mecha-zone > *');
+const firstSection = document.querySelector<HTMLElement>('#hero') ?? document.querySelector<HTMLElement>('main > *, .mecha-zone > *');
 if (float) {
   if (reduced) {
     float.classList.add('is-in');

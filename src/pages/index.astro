@@ -4,17 +4,16 @@ import Base from '../layouts/Base.astro';
 import Mecha from '../components/Mecha.astro';
 import Burn from '../components/Burn.astro';
 import Chispa from '../components/Chispa.astro';
-import Ribbon from '../components/Ribbon.astro';
 import SectionHead from '../components/SectionHead.astro';
 import WaButton from '../components/WaButton.astro';
 import PhoneSearch from '../components/PhoneSearch.astro';
 import Needs from '../components/Needs.astro';
 import CaseCard from '../components/CaseCard.astro';
-import Packages from '../components/Packages.astro';
+import Servicios from '../components/Servicios.astro';
 import Process from '../components/Process.astro';
 import Faq from '../components/Faq.astro';
 import FinalCta from '../components/FinalCta.astro';
-import { cases, faqs, packages, SITE_URL } from '../site';
+import { cases, faqs, servicios, notaPrecios, SITE_URL } from '../site';
 
 const acts = [
   { n: '01', t: 'Te encuentran', d: 'Alguien busca lo que hacés. Aparecés en Google, en Maps y en tu Perfil de Empresa, con horarios, fotos y reseñas al día.', tags: ['Google', 'Maps', 'Perfil de Empresa'], icon: 'ph:magnifying-glass-bold' },
@@ -24,50 +23,58 @@ const acts = [
 
 const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
-  { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Paquetes de Traka', itemListElement: packages.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: `Traka ${p.name}`, url: `${SITE_URL}/servicios/#${p.id}` })) },
-  ...packages.map((p) => ({ '@context': 'https://schema.org', '@type': 'Service', name: `Traka ${p.name}`, description: `${p.tag}. ${p.summary}`, provider: { '@id': `${SITE_URL}/#org` }, areaServed: ['AR', 'ES'], url: `${SITE_URL}/servicios/#${p.id}` })),
+  { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Servicios de Traka', itemListElement: servicios.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.name, url: `${SITE_URL}/#${s.id}` })) },
+  ...servicios.map((s) => ({
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: s.name,
+    description: s.summary,
+    provider: { '@id': `${SITE_URL}/#org` },
+    areaServed: ['AR', 'ES'],
+    url: `${SITE_URL}/#${s.id}`,
+  })),
 ];
 ---
 <Base
   title="Webs y posicionamiento en Google para negocios | Traka"
-  description="Webs simples y Perfil de Empresa en Google para comercios y pymes. Precio cerrado, plazos por escrito y una persona que te responde por WhatsApp."
+  description="Webs desde $200.000 y Perfil de Empresa en Google para comercios y pymes. Precio por escrito y una persona que te responde por WhatsApp."
   path="/"
   jsonLd={jsonLd}
 >
   <Mecha>
     <!-- 1 · HERO -->
-    <section class="section s-noche relative overflow-hidden pb-16 pt-12 md:pt-20" aria-labelledby="hero-title">
+    <section id="hero" class="section s-papel on-light relative overflow-hidden pb-14 pt-10 md:pt-16" aria-labelledby="hero-title">
       <span class="node" aria-hidden="true"></span>
-      <div class="glow glow--fuego left-[-14%] top-[-16%] size-[42rem]" aria-hidden="true"></div>
-      <div class="glow glow--chispa right-[-6%] top-[32%] size-[26rem] opacity-25" aria-hidden="true"></div>
+      <div class="glow glow--fuego left-[-16%] top-[-18%] size-[40rem]" aria-hidden="true"></div>
+      <div class="glow glow--chispa right-[-8%] top-[34%] size-[26rem]" aria-hidden="true"></div>
 
-      <div class="wrap relative grid items-center gap-14 lg:grid-cols-[1.15fr_.85fr]">
+      <div class="wrap relative grid items-center gap-12 lg:grid-cols-[1.15fr_.85fr]">
         <div>
-          <p class="label flex items-center gap-2.5 text-chispa">
+          <p class="label flex items-center gap-2.5">
             <span class="pulse-dot" aria-hidden="true"></span>Webs y Google para negocios reales
           </p>
           <h1 id="hero-title" class="h-hero mt-6 font-display font-extrabold">
             <span class="hero__line" style="--d:.05s"><span>Que te</span></span>
-            <span class="hero__line" style="--d:.16s"><span class="text-fuego">encuentren</span></span>
-            <span class="hero__line" style="--d:.27s"><span>en Google<Chispa class="hero__spark ml-3 inline-block size-[.34em] -translate-y-[.38em] text-chispa" stroke={46} /></span></span>
+            <span class="hero__line" style="--d:.16s"><span class="text-brasa">encuentren</span></span>
+            <span class="hero__line" style="--d:.27s"><span>en Google<Chispa class="hero__spark ml-3 inline-block size-[.34em] -translate-y-[.38em] text-fuego" stroke={46} /></span></span>
           </h1>
-          <p class="lede mt-8 max-w-xl opacity-85">
+          <p class="lede mt-8 max-w-xl text-carbon/80">
             Armamos tu Perfil de Empresa en Google y una web clara para el celular. El objetivo no son las visitas: son los mensajes.
           </p>
 
           <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <WaButton message="Hola, vengo desde la home de Traka y quiero que me encuentren en Google." origin="hero" size="lg" />
-            <a href="#que-necesitas" class="btn btn-ghost btn-lg">¿Qué necesitás?</a>
+            <WaButton message="Hola, quiero una web para mi negocio. Vi que arrancan en $200.000." label="Quiero mi web" origin="hero" size="lg" />
+            <a href="#servicios" class="btn btn-ghost btn-lg">Ver precios</a>
           </div>
 
-          <ul class="hairline mt-10 grid max-w-xl gap-x-6 gap-y-4 pt-7 sm:grid-cols-3">
+          <ul class="hairline mt-10 grid max-w-2xl gap-x-8 gap-y-4 pt-7 sm:grid-cols-3">
             {[
-              { k: 'Precio', v: 'Cerrado' },
+              { k: 'Webs', v: 'Desde $200.000' },
               { k: 'Plazos', v: 'Por escrito' },
               { k: 'Quién atiende', v: 'Una persona' },
             ].map((s) => (
               <li>
-                <p class="label opacity-55">{s.k}</p>
+                <p class="label opacity-70">{s.k}</p>
                 <p class="mt-1 font-display text-xl font-bold md:text-2xl">{s.v}</p>
               </li>
             ))}
@@ -78,12 +85,8 @@ const jsonLd = [
       </div>
     </section>
 
-    <Ribbon />
-
-    <div class="s-fuego"><Burn to="papel" /></div>
-
     <!-- 2 · SELECTOR -->
-    <section id="que-necesitas" class="section s-papel on-light" aria-labelledby="need-title">
+    <section id="que-necesitas" class="section s-arena on-light" aria-labelledby="need-title">
       <span class="node" aria-hidden="true"></span>
       <div class="wrap">
         <SectionHead
@@ -92,11 +95,11 @@ const jsonLd = [
           title="¿Qué necesitás?"
           lede="Tocá tu caso y te mostramos el mensaje de WhatsApp ya escrito. Lo leés antes de enviarlo: si no te cierra, lo cambiás."
         />
-        <div class="mt-12"><Needs /></div>
+        <div class="mt-10"><Needs /></div>
       </div>
     </section>
 
-    <div class="s-papel"><Burn to="carbon" /></div>
+    <div class="s-arena"><Burn to="carbon" /></div>
 
     <!-- 3 · TRES ACTOS -->
     <section id="mecha" class="section s-carbon" aria-labelledby="acts-title">
@@ -110,7 +113,7 @@ const jsonLd = [
         />
       </div>
       <div class="wrap mt-12">
-        <div class="snap-row snap-row--acts" tabindex="0" role="group" aria-label="Los tres pasos, deslizá para ver más">
+        <div class="snap-row snap-row--acts acts-row" data-scrollx tabindex="0" role="group" aria-label="Los tres pasos, deslizá para ver más">
           {acts.map((a) => (
             <article class="act" data-reveal>
               <div class="flex items-center justify-between">
@@ -129,56 +132,56 @@ const jsonLd = [
       </div>
     </section>
 
-    <!-- 4 · PAQUETES -->
-    <section id="paquetes" class="section s-noche" aria-labelledby="pkg-title">
+    <div class="s-carbon"><Burn to="papel" /></div>
+
+    <!-- 4 · SERVICIOS Y PRECIOS -->
+    <section id="servicios" class="section s-papel on-light" aria-labelledby="svc-title">
       <span class="node" aria-hidden="true"></span>
       <div class="wrap">
         <SectionHead
-          kicker="Paquetes con precio cerrado"
-          id="pkg-title"
-          title="Elegí hasta dónde querés llegar."
-          lede="Tres paquetes con nombre de fuego. Sabés qué incluye y cuánto tarda antes de empezar; el precio te llega por escrito después de la primera charla."
+          kicker="Servicios y precios"
+          id="svc-title"
+          title="Lo que hacemos, con el precio a la vista."
+          lede="Sabés desde dónde arranca cada cosa antes de escribirnos. Nada de pedir presupuesto para enterarte."
         />
-        <div class="mt-14"><Packages /></div>
-        <p class="mt-10 text-sm opacity-70">
-          No hacemos tiendas online ni desarrollos complejos. <a class="link" href="/servicios/">Ver el detalle de cada paquete</a>.
-        </p>
+        <div class="mt-12"><Servicios /></div>
+        <p class="mt-8 text-sm opacity-75">{notaPrecios}</p>
       </div>
     </section>
 
-    <div class="s-noche"><Burn to="mar" /></div>
+    <div class="s-papel"><Burn to="mar" /></div>
 
     <!-- 5 · CASOS -->
     <section id="casos" class="section s-mar" aria-labelledby="casos-title">
       <span class="node" aria-hidden="true"></span>
       <div class="wrap">
-        <SectionHead kicker="Casos" id="casos-title" title="Negocios reales, vistos desde el celular." lede="Así es como los ve un cliente cuando te busca." />
-        <div class="snap-row snap-row--cases mt-12" tabindex="0" role="group" aria-label="Casos de clientes, deslizá para ver más">
+        <SectionHead kicker="Casos" id="casos-title" title="Negocios reales, vistos como los ve tu cliente." />
+        <div class="snap-row snap-row--cases mt-12" data-scrollx tabindex="0" role="group" aria-label="Casos de clientes, deslizá para ver más">
           {cases.map((c) => <CaseCard name={c.name} kind={c.kind} tone={c.tone} url={c.url} metric={c.metric} />)}
         </div>
       </div>
     </section>
 
-    <div class="s-mar"><Burn to="carbon" /></div>
+    <div class="s-mar"><Burn to="arena" /></div>
 
     <!-- 6 · PROCESO -->
-    <section id="proceso" class="section s-carbon" aria-labelledby="proc-title">
+    <section id="proceso" class="section s-arena on-light" aria-labelledby="proc-title">
       <span class="node" aria-hidden="true"></span>
       <div class="wrap">
         <SectionHead kicker="Cómo trabajamos" id="proc-title" title="De la charla a las consultas, en cuatro pasos." />
-        <div class="mt-14"><Process /></div>
+        <div class="mt-12"><Process /></div>
       </div>
     </section>
 
     <!-- 7 · SIN VUELTAS -->
-    <section id="sin-vueltas" class="section s-noche" aria-labelledby="sv-title">
+    <section id="sin-vueltas" class="section s-papel on-light" aria-labelledby="sv-title">
       <span class="node" aria-hidden="true"></span>
       <div class="wrap grid gap-12 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
         <div>
           <SectionHead kicker="Sin vueltas" id="sv-title" title="Lo que prometemos es lo que podemos cumplir." />
           <ul class="mt-10 space-y-5">
-            {['Precio cerrado.', 'Plazos por escrito.', 'Una persona que responde.', 'Resultados medidos en consultas, no en likes.'].map((t, i) => (
-              <li class="flex items-center gap-4 border-b border-arena/15 pb-5 font-display text-2xl font-bold md:text-3xl" data-reveal style={`--d:${i * 80}ms`}>
+            {['Precio a la vista.', 'Plazos por escrito.', 'Una persona que responde.', 'Resultados medidos en consultas, no en likes.'].map((t, i) => (
+              <li class="flex items-center gap-4 border-b border-carbon/15 pb-5 font-display text-2xl font-bold md:text-3xl" data-reveal style={`--d:${i * 80}ms`}>
                 <Chispa class="size-7 shrink-0 text-fuego" stroke={50} />{t}
               </li>
             ))}
@@ -193,10 +196,8 @@ const jsonLd = [
       </div>
     </section>
 
-    <div class="s-noche"><Burn to="papel" /></div>
-
     <!-- 8 · PREGUNTAS -->
-    <section id="preguntas" class="section s-papel on-light" aria-labelledby="faq-title">
+    <section id="preguntas" class="section s-arena on-light" aria-labelledby="faq-title">
       <span class="node" aria-hidden="true"></span>
       <div class="wrap wrap-narrow">
         <SectionHead kicker="Preguntas frecuentes" id="faq-title" title="Lo que casi todos preguntan." />
@@ -207,8 +208,8 @@ const jsonLd = [
       </div>
     </section>
 
-    <div class="s-papel"><Burn to="fuego" /></div>
+    <div class="s-arena"><Burn to="fuego" /></div>
   </Mecha>
 
-  <FinalCta message="Hola, quiero empezar con Traka." origin="cta-final-home" />
+  <FinalCta message="Hola, quiero empezar con Traka. Te cuento de mi negocio: " origin="cta-final-home" />
 </Base>

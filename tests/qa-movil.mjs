@@ -58,15 +58,31 @@ const needs = await page.$$('.needs__input');
 console.log(`\nSelector: ${needs.length} opciones`);
 for (const n of needs) {
   const id = await n.getAttribute('id');
+  const want = id.replace('need-', '');
   const before = await page.evaluate(() => window.scrollY);
   await page.evaluate((i) => document.getElementById(i).click(), id);
-  await page.waitForTimeout(220);
+  await page.waitForTimeout(260);
   const vis = await page.$$eval('.needs__preview', (els) => els.filter((e) => getComputedStyle(e).display !== 'none').map((e) => e.dataset.need));
   const after = await page.evaluate(() => window.scrollY);
-  const want = id.replace('need-', '');
-  if (vis.length !== 1 || vis[0] !== want) bad(`${id}: vista previa visible = ${JSON.stringify(vis)}`);
-  else if (Math.abs(after - before) > 4) bad(`${id}: la pantalla saltó ${after - before}px`);
-  else ok(`${id}: muestra solo su mensaje, sin salto`);
+
+  if (want === 'none') {
+    // Es la opción vacía: cierra el panel, no muestra ningún mensaje.
+    if (vis.length !== 0) bad(`${id}: debería cerrar el panel y muestra ${JSON.stringify(vis)}`);
+    else ok(`${id}: cierra el panel`);
+    continue;
+  }
+  if (vis.length !== 1 || vis[0] !== want) { bad(`${id}: vista previa visible = ${JSON.stringify(vis)}`); continue; }
+  if (Math.abs(after - before) > 4) { bad(`${id}: la pantalla saltó ${after - before}px`); continue; }
+
+  // Lo importante en celular: el mensaje se ve sin tener que buscarlo con scroll.
+  const caja = await page.$eval('.needs__panel', (el) => {
+    const r = el.getBoundingClientRect();
+    return { top: r.top, bottom: r.bottom, alto: r.height, ventana: window.innerHeight };
+  });
+  const visibleAhora = caja.top < caja.ventana && caja.bottom > 0;
+  if (!visibleAhora) bad(`${id}: el mensaje queda fuera de pantalla (top ${Math.round(caja.top)} de ${caja.ventana})`);
+  else if (caja.alto > caja.ventana * 0.8) bad(`${id}: el panel ocupa ${Math.round((caja.alto / caja.ventana) * 100)}% de la pantalla`);
+  else ok(`${id}: el mensaje se ve sin scroll (${Math.round((caja.alto / caja.ventana) * 100)}% de la pantalla)`);
 }
 
 // acordeones FAQ

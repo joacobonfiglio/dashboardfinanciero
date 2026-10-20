@@ -1,6 +1,6 @@
 ---
 /** Borde quemado entre dos secciones. `to` es el color de la sección que viene abajo. */
-interface Props { to: 'noche' | 'carbon' | 'papel' | 'mar' | 'fuego' | 'humo' }
+ interface Props { to: 'noche' | 'arena' | 'carbon' | 'papel' | 'mar' | 'fuego' | 'humo' }
 const { to } = Astro.props;
 ---
 <div class="burn" style={`color: var(--color-${to})`} aria-hidden="true">

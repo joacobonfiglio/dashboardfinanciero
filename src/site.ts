@@ -113,6 +113,83 @@ export const packages: readonly Pkg[] = [
   },
 ];
 
+/* -------------------------------------------------------- barra superior */
+
+/** Barra de oferta arriba de todo: lo primero que se ve y lleva al WhatsApp. */
+export const topbar = {
+  text: 'Webs a partir de $200.000',
+  cta: 'Quiero más información',
+  message: 'Hola, vi que las webs de Traka arrancan en $200.000 y quiero más información.',
+};
+
+/* ---------------------------------------------------------------- servicios */
+
+export type Servicio = {
+  id: string;
+  name: string;
+  price: string;
+  /** Aclaración debajo del precio, cuando hace falta explicarlo. */
+  priceNote?: string;
+  summary: string;
+  items: readonly string[];
+  cta: string;
+  message: string;
+  icon: string;
+  featured?: boolean;
+};
+
+export const servicios: readonly Servicio[] = [
+  {
+    id: 'web',
+    name: 'Desarrollo de páginas web',
+    price: 'Desde $200.000',
+    summary: 'Tu web propia, pensada primero para el celular y para que te escriban.',
+    items: [
+      'Diseño y desarrollo a medida',
+      'Textos y estructura incluidos',
+      'Botón de WhatsApp en cada sección',
+      'Medición de las consultas que entran',
+    ],
+    cta: 'Quiero mi web',
+    message: 'Hola, quiero una web para mi negocio. Vi que arrancan en $200.000.',
+    icon: 'ph:browsers-bold',
+    featured: true,
+  },
+  {
+    id: 'google',
+    name: 'Google y redes sociales',
+    price: 'Desde $100.000',
+    summary: 'Mejora y optimización de tu Perfil de Empresa en Google (Google My Business) y de tus redes.',
+    items: [
+      'Perfil de Empresa en Google optimizado',
+      'Fotos, horarios y servicios al día',
+      'Plan de reseñas',
+      'Puesta a punto de tus redes',
+    ],
+    cta: 'Quiero mejorar mi Google',
+    message: 'Hola, quiero mejorar mi Perfil de Empresa en Google y mis redes. Vi que arranca en $100.000.',
+    icon: 'ph:map-pin-bold',
+  },
+  {
+    id: 'medida',
+    name: 'Herramientas y plataformas a medida',
+    price: 'A presupuesto',
+    priceNote: 'Depende del tamaño y del tiempo que lleve hacerlo, por eso lo charlamos antes.',
+    summary: 'Sistemas internos, paneles y plataformas propias para lo que tu negocio necesita.',
+    items: [
+      'Relevamiento de lo que hacés hoy',
+      'Presupuesto cerrado antes de empezar',
+      'Desarrollo a medida',
+      'Soporte después de entregar',
+    ],
+    cta: 'Pedir presupuesto',
+    message: 'Hola, necesito una herramienta o plataforma a medida y quiero pedir un presupuesto.',
+    icon: 'ph:squares-four-bold',
+  },
+];
+
+export const notaPrecios = 'Precios en pesos argentinos. El precio final te llega por escrito antes de empezar.';
+
 /* ------------------------------------------------- selector ¿Qué necesitás? */
 
 export const needs = [
@@ -121,7 +198,7 @@ export const needs = [
     label: 'Que me encuentren en Google',
     hint: 'No aparecés en Maps o tu ficha está desactualizada.',
     icon: 'ph:map-pin-bold',
-    pkg: 'Chispa',
+    svc: 'Google y redes sociales',
     message: 'Hola, quiero que mi negocio aparezca en Google y en Maps. Te cuento: ',
   },
   {
@@ -129,7 +206,7 @@ export const needs = [
     label: 'Una web nueva',
     hint: 'No tenés web, o la que tenés ya no te representa.',
     icon: 'ph:browsers-bold',
-    pkg: 'Fuego',
+    svc: 'Desarrollo de páginas web',
     message: 'Hola, quiero una web nueva para mi negocio. Te cuento: ',
   },
   {
@@ -137,7 +214,7 @@ export const needs = [
     label: 'Que mi web traiga consultas',
     hint: 'Tenés web, pero no te escribe nadie.',
     icon: 'ph:chat-circle-dots-bold',
-    pkg: 'Fuego',
+    svc: 'Desarrollo de páginas web',
     message: 'Hola, tengo web pero casi no recibo consultas. Te cuento: ',
   },
   {
@@ -145,7 +222,7 @@ export const needs = [
     label: 'Mantener y medir lo que ya tengo',
     hint: 'Querés que alguien se ocupe todos los meses.',
     icon: 'ph:chart-line-up-bold',
-    pkg: 'Brasa',
+    svc: 'Google y redes sociales',
     message: 'Hola, quiero mantener y medir la web y el Perfil de Empresa que ya tengo. Te cuento: ',
   },
 ] as const;
@@ -174,7 +251,7 @@ export const steps = [
 export const faqs = [
   {
     q: '¿Cuánto cuesta?',
-    a: 'Cada paquete tiene precio cerrado: lo que te pasamos al empezar es lo que pagás. Te lo mandamos por escrito después de la primera charla, cuando sabemos qué necesitás.',
+    a: 'Las webs arrancan en $200.000 y la mejora de tu Perfil de Empresa en Google y tus redes, en $100.000. Las herramientas a medida van a presupuesto, porque dependen del tamaño y del tiempo de desarrollo. En todos los casos el precio final te llega por escrito antes de empezar.',
   },
   {
     q: '¿Me prometen aparecer primeros en Google?',

@@ -1,15 +1,21 @@
 ---
 import { steps } from '../site';
 ---
-<ol class="grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-4">
-  {steps.map((s, i) => (
-    <li data-reveal style={`--d:${i * 90}ms`}>
-      <div class="flex items-center gap-4">
-        <span class="num grid size-12 shrink-0 place-items-center rounded-full border-2 border-current text-sm font-medium">0{i + 1}</span>
-        <span class="hidden h-1.5 flex-1 lg:block" style="background: radial-gradient(circle, var(--color-fuego) 2.4px, transparent 3px) 0 0 / 16px 6px repeat-x;" aria-hidden="true"></span>
-      </div>
-      <h3 class="mt-6 text-2xl">{s.t}</h3>
-      <p class="mt-2 opacity-80">{s.d}</p>
-    </li>
-  ))}
-</ol>
+<div class="proc">
+  <svg class="proc__wave" viewBox="0 0 1200 420" preserveAspectRatio="none" aria-hidden="true">
+    <path
+      d="M0,70 C180,70 180,170 360,170 C540,170 540,265 720,265 C900,265 900,350 1080,350 C1140,350 1170,350 1200,350"
+      fill="none" stroke="var(--color-fuego)" stroke-width="4" stroke-linecap="round"
+      stroke-dasharray="2 15" opacity=".8"
+    />
+  </svg>
+  <ol class="proc__steps snap-row lg:!grid" data-scrollx aria-label="Los cuatro pasos, deslizá para ver más">
+    {steps.map((s, i) => (
+      <li class="proc__step" data-reveal style={`--d:${i * 80}ms`}>
+        <span class="proc__num">0{i + 1}</span>
+        <h3 class="mt-4 text-xl md:text-2xl">{s.t}</h3>
+        <p class="mt-2 text-sm opacity-80 md:text-base">{s.d}</p>
+      </li>
+    ))}
+  </ol>
+</div>
