@@ -1,13 +1,15 @@
 ---
 import { Icon } from 'astro-icon/components';
 import WaButton from './WaButton.astro';
+import { servicios } from '../site';
 const path = Astro.url.pathname;
 const links = [
-  { href: '/#servicios', label: 'Servicios' },
+  { href: '/guias/', label: 'Guías' },
   { href: '/sobre-nosotros/', label: 'Sobre nosotros' },
-  { href: '/#que-necesitas', label: '¿Qué necesitás?' },
 ];
 const isOn = (href: string) => (href.startsWith('/#') ? false : path.startsWith(href));
+const enServicios = path.startsWith('/servicios');
+const conPagina = servicios.filter((s) => s.page);
 ---
 <div class="sticky top-0 z-[70]">
   <header class="on-light border-b border-carbon/10 bg-papel/90 backdrop-blur-md">
@@ -15,19 +17,60 @@ const isOn = (href: string) => (href.startsWith('/#') ? false : path.startsWith(
       <a href="/" aria-label="Traka, ir al inicio" class="flex items-center">
         <img src="/brand/traka-logo-color.svg" alt="Traka" width="106" height="36" class="h-8 w-auto md:h-9" />
       </a>
+
       <nav aria-label="Principal" class="hidden items-center gap-7 md:flex">
+        <details class="nav-drop" data-drop>
+          <summary class="nav-drop__trigger" aria-current={enServicios ? 'page' : undefined}>
+            Servicios<Icon name="ph:caret-down-bold" class="nav-drop__caret size-3.5" aria-hidden="true" />
+          </summary>
+          <div class="nav-drop__panel">
+            <ul>
+              {conPagina.map((s) => (
+                <li>
+                  <a href={s.page} class="nav-drop__item" aria-current={path === s.page ? 'page' : undefined}>
+                    <Icon name={s.icon} class="size-5 shrink-0 text-brasa" aria-hidden="true" />
+                    <span>
+                      <span class="block font-medium leading-tight">{s.name}</span>
+                      <span class="meta mt-1 block ">{s.price}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a href="/#servicios" class="nav-drop__all">Ver los tres servicios<Icon name="ph:arrow-right-bold" class="size-3.5" aria-hidden="true" /></a>
+          </div>
+        </details>
+
         {links.map((l) => (
           <a href={l.href} class="font-medium underline-offset-8 hover:underline" aria-current={isOn(l.href) ? 'page' : undefined}>{l.label}</a>
         ))}
         <WaButton message="Hola, vengo desde la web de Traka y quiero hacer una consulta." label="Hablemos" origin="header" />
       </nav>
+
       <button type="button" id="menu-btn" class="grid size-11 place-items-center rounded-full border-2 border-carbon/30 md:hidden" aria-expanded="false" aria-controls="menu-panel" aria-label="Abrir menú">
         <Icon name="ph:list-bold" class="size-6" id="menu-open" aria-hidden="true" />
         <Icon name="ph:x-bold" class="hidden size-6" id="menu-close" aria-hidden="true" />
       </button>
     </div>
+
     <nav id="menu-panel" aria-label="Menú" hidden class="border-t border-carbon/10 bg-papel px-5 pb-6 pt-2 md:hidden">
       <ul class="flex flex-col">
+        <li>
+          <details class="nav-acc">
+            <summary class="flex min-h-14 items-center justify-between border-b border-carbon/10 font-display text-2xl font-bold">
+              Servicios<Icon name="ph:plus-bold" class="faq__plus size-5 text-brasa" aria-hidden="true" />
+            </summary>
+            <ul class="border-b border-carbon/10 py-2">
+              {conPagina.map((s) => (
+                <li>
+                  <a href={s.page} class="flex min-h-12 items-center justify-between gap-3 py-1" aria-current={path === s.page ? 'page' : undefined}>
+                    <span>{s.name}</span><span class="meta shrink-0 ">{s.price}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </li>
         {links.map((l) => (
           <li><a href={l.href} class="flex min-h-14 items-center border-b border-carbon/10 font-display text-2xl font-bold" aria-current={isOn(l.href) ? 'page' : undefined}>{l.label}</a></li>
         ))}
@@ -48,5 +91,15 @@ const isOn = (href: string) => (href.startsWith('/#') ? false : path.startsWith(
   };
   btn.addEventListener('click', () => set(btn.getAttribute('aria-expanded') !== 'true'));
   panel.addEventListener('click', (e) => { if ((e.target as Element).closest('a')) set(false); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) { set(false); btn.focus(); } });
+
+  // El desplegable de servicios se cierra al hacer clic afuera o con Escape.
+  const drop = document.querySelector<HTMLDetailsElement>('[data-drop]');
+  document.addEventListener('click', (e) => {
+    if (drop?.open && !drop.contains(e.target as Node)) drop.open = false;
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (drop?.open) drop.open = false;
+    if (!panel.hidden) { set(false); btn.focus(); }
+  });
 </script>

@@ -6,10 +6,10 @@ const { message = 'Hola, quiero empezar con Traka.', origin = 'cta-final' } = As
 ---
 <section class="s-fuego relative overflow-hidden" aria-labelledby="cta-title">
   <div class="wrap relative py-24 md:py-36">
-    <Chispa class="pointer-events-none absolute -top-16 right-[-4rem] size-64 text-carbon/10 md:size-96" stroke={30} />
+    <Chispa class="cta-spark pointer-events-none absolute -top-16 right-[-4rem] size-64 text-carbon/10 md:size-96" stroke={30} data-reveal />
     <div class="relative">
       <p class="label">Que te encuentren · Que te elijan · Que te escriban</p>
-      <h2 id="cta-title" class="h-xl mt-5">¿Prendemos la mecha?</h2>
+      <h2 id="cta-title" class="h-xl mt-5" data-reveal style="--d:60ms">¿Prendemos la mecha?</h2>
       <p class="lede mt-6 max-w-xl">Contanos qué negocio tenés. Te responde una persona por WhatsApp, sin vueltas.</p>
       <WaButton message={message} label="Quiero empezar" origin={origin} variant="carbon" size="lg" class="mt-9" />
     </div>

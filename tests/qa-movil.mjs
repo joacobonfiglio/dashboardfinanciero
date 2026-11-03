@@ -8,7 +8,11 @@ const CHROMIUM = process.env.CHROMIUM || '/opt/pw-browsers/chromium-1194/chrome-
 import { chromium, devices } from 'playwright';
 
 const BASE = 'http://127.0.0.1:4321';
-const PAGES = ['/', '/servicios/desarrollo-web/', '/sobre-nosotros/', '/legales/privacidad/', '/legales/cookies/', '/legales/terminos/', '/404.html'];
+const PAGES = [
+  '/', '/servicios/desarrollo-web/', '/servicios/google-y-redes/', '/servicios/herramientas-a-medida/',
+  '/guias/', '/guias/perfil-de-empresa-en-google/', '/guias/antes-de-contratar-una-web/',
+  '/sobre-nosotros/', '/legales/privacidad/', '/legales/cookies/', '/legales/terminos/', '/404.html',
+];
 const PHONES = [
   ['iPhone SE', { width: 375, height: 667 }],
   ['iPhone 13', { width: 390, height: 844 }],

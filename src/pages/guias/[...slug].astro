@@ -1,0 +1,119 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Chispa from '../../components/Chispa.astro';
+import WaButton from '../../components/WaButton.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import Burn from '../../components/Burn.astro';
+import { SITE_URL, site, servicios } from '../../site';
+
+export async function getStaticPaths() {
+  const guias = await getCollection('guias');
+  return guias.map((g) => ({ params: { slug: g.id }, props: { g, todas: guias } }));
+}
+
+const { g, todas } = Astro.props;
+const { Content, headings } = await render(g);
+const d = g.data;
+const sv = servicios.find((s) => s.id === d.servicio);
+const otras = todas.filter((x) => x.id !== g.id).slice(0, 2);
+const url = `${SITE_URL}/guias/${g.id}/`;
+const fmt = (date: Date) => new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
+const indice = headings.filter((h) => h.depth === 2);
+
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE_URL}/` },
+    { '@type': 'ListItem', position: 2, name: 'Guías', item: `${SITE_URL}/guias/` },
+    { '@type': 'ListItem', position: 3, name: d.h1, item: url },
+  ] },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: d.h1,
+    description: d.description,
+    datePublished: d.fecha.toISOString(),
+    dateModified: (d.actualizada ?? d.fecha).toISOString(),
+    author: { '@id': `${SITE_URL}/#org` },
+    publisher: { '@id': `${SITE_URL}/#org` },
+    mainEntityOfPage: url,
+    inLanguage: 'es-AR',
+    about: site.description,
+  },
+];
+---
+<Base title={d.title} description={d.description} path={`/guias/${g.id}/`} jsonLd={jsonLd} ogSlug={`guia-${g.id}`}>
+  <div class="lectura" aria-hidden="true"><i></i></div>
+
+  <article class="s-papel on-light">
+    <header class="section relative overflow-hidden pb-10 pt-10 md:pt-14">
+      <div class="glow glow--fuego left-[-14%] top-[-22%] size-[34rem]" aria-hidden="true"></div>
+      <div class="wrap wrap-narrow relative">
+        <nav aria-label="Migas de pan" class="meta mb-7 ">
+          <a href="/" class="hover:underline">Inicio</a> / <a href="/guias/" class="hover:underline">Guías</a> / <span aria-current="page">{d.kicker}</span>
+        </nav>
+        <p class="label flex items-center gap-2.5"><span class="pulse-dot" aria-hidden="true"></span>{d.kicker}</p>
+        <h1 class="h-lg mt-5">{d.h1}</h1>
+        <p class="lede mt-6 text-carbon/80">{d.resumen}</p>
+        <p class="meta mt-7 flex flex-wrap items-center gap-3 ">
+          <span>{fmt(d.fecha)}</span><span aria-hidden="true">·</span><span>{d.lectura} min de lectura</span>
+          {d.actualizada && <><span aria-hidden="true">·</span><span>Actualizada el {fmt(d.actualizada)}</span></>}
+        </p>
+      </div>
+    </header>
+
+    <div class="wrap pb-20">
+      <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
+        <div class="prosa">
+          <Content />
+        </div>
+
+        <aside class="guia-aside">
+          {indice.length > 1 && (
+            <nav class="guia-toc" aria-labelledby="toc-title">
+              <p id="toc-title" class="meta mb-3 ">En esta guía</p>
+              <ul>
+                {indice.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+              </ul>
+            </nav>
+          )}
+
+          {sv && (
+            <div class="guia-cta">
+              <Chispa class="size-8 text-fuego" stroke={50} />
+              <p class="mt-4 font-display text-xl font-bold leading-tight">¿Lo hacemos nosotros?</p>
+              <p class="mt-2 text-sm opacity-80">{sv.summary}</p>
+              <p class="svc__price mt-4" style="font-size:1.5rem">{sv.price}</p>
+              <WaButton message={sv.message} label={sv.cta} origin={`guia-${g.id}`} class="mt-5 w-full" />
+              {sv.page && <a href={sv.page} class="mt-3 block text-center text-sm underline underline-offset-4">Ver el servicio</a>}
+            </div>
+          )}
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  {otras.length > 0 && (
+    <section class="section s-arena on-light" aria-labelledby="otras-title">
+      <div class="wrap">
+        <h2 id="otras-title" class="h-lg">Seguí leyendo.</h2>
+        <ul class="mt-10 grid gap-6 md:grid-cols-2">
+          {otras.map((o) => (
+            <li class="guia-card">
+              <a href={`/guias/${o.id}/`} class="guia-card__link">
+                <p class="label text-brasa">{o.data.kicker}</p>
+                <h3 class="mt-3 font-display text-2xl font-extrabold leading-tight">{o.data.h1}</h3>
+                <p class="mt-3 opacity-80">{o.data.resumen}</p>
+                <span class="guia-card__cta">Leer la guía<Icon name="ph:arrow-right-bold" class="size-4" aria-hidden="true" /></span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <div class="s-arena"><Burn to="fuego" /></div>
+  <FinalCta message={`Hola, leí la guía "${d.h1}" y quiero que lo veamos juntos.`} origin={`cta-final-guia-${g.id}`} />
+</Base>

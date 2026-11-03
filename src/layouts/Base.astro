@@ -11,6 +11,7 @@ import Footer from '../components/Footer.astro';
 import WaFloat from '../components/WaFloat.astro';
 import Analytics from '../components/Analytics.astro';
 import CookieConsent from '../components/CookieConsent.astro';
+import { existsSync } from 'node:fs';
 import { site, SITE_URL } from '../site';
 
 interface Props {
@@ -19,10 +20,14 @@ interface Props {
   path: string;
   jsonLd?: object[];
   noindex?: boolean;
+  /** Nombre de la imagen de Open Graph propia de la página, sin extensión. */
+  ogSlug?: string;
 }
-const { title, description, path, jsonLd = [], noindex = false } = Astro.props;
+const { title, description, path, jsonLd = [], noindex = false, ogSlug } = Astro.props;
 const url = new URL(path, SITE_URL).href;
-const og = new URL('/og.png', SITE_URL).href;
+// Si todavía no se corrió `npm run og` para esta página, cae en la imagen genérica.
+const ogRel = ogSlug && existsSync(`public/og/${ogSlug}.png`) ? `/og/${ogSlug}.png` : '/og.png';
+const og = new URL(ogRel, SITE_URL).href;
 
 const sameAs = [site.instagram, site.googleBusiness].filter(Boolean);
 

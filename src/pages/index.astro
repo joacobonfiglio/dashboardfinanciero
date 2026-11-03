@@ -13,7 +13,10 @@ import Servicios from '../components/Servicios.astro';
 import Process from '../components/Process.astro';
 import Faq from '../components/Faq.astro';
 import FinalCta from '../components/FinalCta.astro';
+import { getCollection } from 'astro:content';
 import { cases, faqs, servicios, notaPrecios, SITE_URL } from '../site';
+
+const guias = (await getCollection('guias')).sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime()).slice(0, 2);
 
 const acts = [
   { n: '01', t: 'Te encuentran', d: 'Alguien busca lo que hacés. Aparecés en Google, en Maps y en tu Perfil de Empresa, con horarios, fotos y reseñas al día.', tags: ['Google', 'Maps', 'Perfil de Empresa'], icon: 'ph:magnifying-glass-bold' },
@@ -207,7 +210,33 @@ const jsonLd = [
       </div>
     </section>
 
-    <div class="s-arena"><Burn to="fuego" /></div>
+    <!-- 9 · GUÍAS -->
+    <section id="guias" class="section s-papel on-light" aria-labelledby="guias-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <SectionHead
+          kicker="Guías"
+          id="guias-title"
+          title="Si lo querés hacer vos, te contamos cómo."
+          lede="Lo que sabemos, escrito sin tecnicismos. Si después preferís que lo hagamos nosotros, ya sabés dónde estamos."
+        />
+        <ul class="mt-12 grid gap-6 md:grid-cols-2">
+          {guias.map((g, i) => (
+            <li class="guia-card" data-reveal style={`--d:${i * 80}ms`}>
+              <a href={`/guias/${g.id}/`} class="guia-card__link">
+                <p class="label text-brasa">{g.data.kicker}</p>
+                <h3 class="mt-4 font-display text-2xl font-extrabold leading-tight md:text-3xl">{g.data.h1}</h3>
+                <p class="mt-3 opacity-80">{g.data.resumen}</p>
+                <span class="guia-card__cta">Leer la guía<Icon name="ph:arrow-right-bold" class="size-4" aria-hidden="true" /></span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-8"><a class="link font-medium" href="/guias/">Ver todas las guías</a></p>
+      </div>
+    </section>
+
+    <div class="s-papel"><Burn to="fuego" /></div>
   </Mecha>
 
   <FinalCta message="Hola, quiero empezar con Traka. Te cuento de mi negocio: " origin="cta-final-home" />

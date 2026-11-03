@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "test": "node --test tests/*.test.mjs",
-    "qa": "node tests/qa-movil.mjs"
+    "qa": "node tests/qa-movil.mjs",
+    "og": "node --experimental-strip-types scripts/og.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
@@ -20,5 +21,9 @@
     "astro": "^7.4.0",
     "astro-icon": "^1.2.0",
     "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "satori": "^0.63.2"
   }
 }

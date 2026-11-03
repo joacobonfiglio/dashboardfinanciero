@@ -1,8 +1,10 @@
 import type { APIRoute } from 'astro';
+import { getCollection } from 'astro:content';
 import { site, servicios, faqs, steps } from '../site';
 
 /** Resumen del negocio en texto plano, generado desde src/site.ts. */
-export const GET: APIRoute = () => {
+export const GET: APIRoute = async () => {
+  const guias = (await getCollection('guias')).sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
   const L: string[] = [];
   L.push(`# ${site.name}`, '');
   L.push(`> ${site.description}`, '');
@@ -42,9 +44,17 @@ export const GET: APIRoute = () => {
   L.push('## Preguntas frecuentes');
   for (const f of faqs) L.push(`- ${f.q} ${f.a}`);
   L.push('');
+  L.push('## Guías');
+  for (const g of guias) {
+    L.push(`- ${g.data.h1}: ${g.data.resumen} (${site.url}/guias/${g.id}/)`);
+  }
+  L.push('');
   L.push('## Páginas');
   L.push(`- ${site.url}/ — Inicio: servicios con precio y selector de necesidades.`);
-  L.push(`- ${site.url}/servicios/desarrollo-web/ — Desarrollo de páginas web: qué incluye, precio y plazo.`);
+  for (const sv of servicios) {
+    if (sv.page) L.push(`- ${site.url}${sv.page} — ${sv.name}: qué incluye, precio y plazo.`);
+  }
+  L.push(`- ${site.url}/guias/ — Guías prácticas sobre Google, webs y medición.`);
   L.push(`- ${site.url}/sobre-nosotros/ — Origen, el nombre y cómo se trabaja.`);
   L.push('');
 

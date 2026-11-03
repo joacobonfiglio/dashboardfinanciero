@@ -1,0 +1,79 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Mecha from '../../components/Mecha.astro';
+import Burn from '../../components/Burn.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import { SITE_URL, servicios } from '../../site';
+
+const guias = (await getCollection('guias')).sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+const fmt = (d: Date) => new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+const servicioDe = (id?: string) => servicios.find((s) => s.id === id);
+
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE_URL}/` },
+    { '@type': 'ListItem', position: 2, name: 'Guías', item: `${SITE_URL}/guias/` },
+  ] },
+  { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Guías de Traka', url: `${SITE_URL}/guias/`,
+    hasPart: guias.map((g) => ({ '@type': 'Article', headline: g.data.h1, url: `${SITE_URL}/guias/${g.id}/` })) },
+];
+---
+<Base
+  title="Guías para que te encuentren en internet | Traka"
+  description="Guías prácticas sobre Perfil de Empresa en Google, webs que traen consultas y cómo medir lo que funciona. Escritas para dueños de negocios."
+  path="/guias/"
+  jsonLd={jsonLd}
+  ogSlug="guias"
+>
+  <Mecha>
+    <section id="hero" class="section s-papel on-light relative overflow-hidden pb-12 pt-10 md:pt-14" aria-labelledby="g-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="glow glow--chispa right-[-10%] top-[-20%] size-[32rem]" aria-hidden="true"></div>
+      <div class="wrap relative">
+        <nav aria-label="Migas de pan" class="meta mb-7 ">
+          <a href="/" class="hover:underline">Inicio</a> / <span aria-current="page">Guías</span>
+        </nav>
+        <p class="label flex items-center gap-2.5"><span class="pulse-dot" aria-hidden="true"></span>Guías</p>
+        <h1 id="g-title" class="h-xl mt-5 max-w-4xl">Lo que sabemos, escrito para que lo hagas vos.</h1>
+        <p class="lede mt-7 max-w-2xl text-carbon/80">
+          Guías prácticas sobre Google, webs y medición. Sin tecnicismos y sin vender humo: si podés resolverlo solo, acá está cómo.
+        </p>
+      </div>
+    </section>
+
+    <section class="section s-arena on-light pt-4" aria-labelledby="lista-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <h2 id="lista-title" class="sr-only">Todas las guías</h2>
+        <ul class="grid gap-6 md:grid-cols-2">
+          {guias.map((g, i) => {
+            const sv = servicioDe(g.data.servicio);
+            return (
+              <li class:list={['guia-card', g.data.destacada && 'guia-card--destacada']} data-reveal style={`--d:${i * 80}ms`}>
+                <a href={`/guias/${g.id}/`} class="guia-card__link">
+                  <p class="label text-brasa">{g.data.kicker}</p>
+                  <h3 class="mt-4 font-display text-2xl font-extrabold leading-tight md:text-3xl">{g.data.h1}</h3>
+                  <p class="mt-3 opacity-80">{g.data.resumen}</p>
+                  <p class="meta mt-6 flex items-center gap-3 ">
+                    <span>{fmt(g.data.fecha)}</span><span aria-hidden="true">·</span><span>{g.data.lectura} min de lectura</span>
+                  </p>
+                  <span class="guia-card__cta">Leer la guía<Icon name="ph:arrow-right-bold" class="size-4" aria-hidden="true" /></span>
+                </a>
+                {sv?.page && (
+                  <p class="mt-4 border-t border-carbon/10 pt-4 text-sm">
+                    ¿Preferís que lo hagamos nosotros? <a class="link" href={sv.page}>{sv.name}</a>.
+                  </p>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+
+    <div class="s-arena"><Burn to="fuego" /></div>
+  </Mecha>
+  <FinalCta message="Hola, leí las guías de Traka y quiero que lo hagamos juntos." origin="cta-final-guias" />
+</Base>

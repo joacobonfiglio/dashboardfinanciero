@@ -4,14 +4,13 @@ import Base from '../../layouts/Base.astro';
 import Mecha from '../../components/Mecha.astro';
 import Burn from '../../components/Burn.astro';
 import Chispa from '../../components/Chispa.astro';
-import Ribbon from '../../components/Ribbon.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import WaButton from '../../components/WaButton.astro';
 import FinalCta from '../../components/FinalCta.astro';
-import { SITE_URL, site } from '../../site';
+import { SITE_URL, site, servicios } from '../../site';
 
 const values = [
-  { t: 'Precio cerrado', d: 'Lo que te decimos al empezar es lo que pagás. Sin letra chica.', icon: 'ph:lock-simple-bold' },
+  { t: 'Precio a la vista', d: 'Los precios están publicados. Lo que te decimos al empezar es lo que pagás.', icon: 'ph:tag-bold' },
   { t: 'Plazos por escrito', d: 'Alcance y fechas antes de arrancar, para que sepas qué esperar.', icon: 'ph:calendar-check-bold' },
   { t: 'Una persona que responde', d: 'Hablás siempre con la misma persona, por WhatsApp.', icon: 'ph:chat-circle-dots-bold' },
   { t: 'Consultas, no likes', d: 'Medimos llamadas, mensajes y consultas. Y te mostramos los números.', icon: 'ph:chart-line-up-bold' },
@@ -22,7 +21,6 @@ const chain = [
   { t: 'Te escribe', d: 'Por WhatsApp o llamada.' },
 ];
 // TODO(cliente): foto real del equipo o de la ciudad, y nombre de quien atiende.
-// Mientras no estén, estas secciones usan una pieza gráfica propia en vez de un hueco.
 const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE_URL}/` },
@@ -36,41 +34,32 @@ const jsonLd = [
   description="Traka es un estudio de Mar del Plata que ayuda a comercios y pymes de Argentina y España a aparecer en Google y recibir consultas. Conocé cómo trabajamos."
   path="/sobre-nosotros/"
   jsonLd={jsonLd}
+  ogSlug="sobre-nosotros"
 >
   <Mecha>
-    <section class="section s-noche relative overflow-hidden pt-12 md:pt-20" aria-labelledby="sn-title">
+    <section id="hero" class="section s-papel on-light relative overflow-hidden pt-10 md:pt-14" aria-labelledby="sn-title">
       <span class="node" aria-hidden="true"></span>
-      <div class="glow glow--fuego right-[-10%] top-[-18%] size-[36rem]" aria-hidden="true"></div>
-      <div class="wrap relative">
-        <nav aria-label="Migas de pan" class="label mb-8 opacity-65"><a href="/" class="hover:underline">Inicio</a> / <span aria-current="page">Sobre nosotros</span></nav>
-        <p class="label flex items-center gap-2.5 text-chispa"><span class="pulse-dot" aria-hidden="true"></span>Sobre nosotros</p>
-        <h1 id="sn-title" class="h-xl mt-5 max-w-5xl">Webs que traen consultas, no adornos.</h1>
-        <p class="lede mt-7 max-w-2xl opacity-85">
-          Traka ayuda a comercios y pymes a aparecer en Google y a que, cuando alguien los encuentra, les escriba.
-        </p>
-      </div>
-    </section>
-
-    <Ribbon items={['Una traca', 'Cada chispa enciende la siguiente']} class="s-fuego" />
-
-    <section class="section s-carbon" aria-labelledby="origen-title">
-      <span class="node" aria-hidden="true"></span>
-      <div class="wrap grid items-center gap-12 lg:grid-cols-[1.15fr_.85fr]">
+      <div class="glow glow--fuego right-[-12%] top-[-20%] size-[36rem]" aria-hidden="true"></div>
+      <div class="wrap relative grid items-center gap-12 lg:grid-cols-[1.1fr_.9fr]">
         <div>
-          <SectionHead kicker="Origen" id="origen-title" title="Nacimos en una ciudad de temporada." />
-          <p class="lede mt-7 max-w-2xl opacity-85">
-            Donde un comercio se juega el año en tres meses, una web que no trae consultas no sirve. Por eso hacemos webs que traen consultas, no adornos.
+          <nav aria-label="Migas de pan" class="meta mb-7 ">
+            <a href="/" class="hover:underline">Inicio</a> / <span aria-current="page">Sobre nosotros</span>
+          </nav>
+          <p class="label flex items-center gap-2.5"><span class="pulse-dot" aria-hidden="true"></span>Sobre nosotros</p>
+          <h1 id="sn-title" class="h-xl mt-5">Webs que traen consultas, no adornos.</h1>
+          <p class="lede mt-7 max-w-xl text-carbon/80">
+            Traka ayuda a comercios y pymes a aparecer en Google y a que, cuando alguien los encuentra, les escriba.
           </p>
-          <p class="label mt-8 inline-flex items-center gap-2 text-chispa">
-            <Icon name="ph:map-pin-bold" class="size-5" aria-hidden="true" />Desde {site.city}, para negocios de {site.areaServed.join(' y ')}.
+          <p class="label mt-8 inline-flex items-center gap-2 text-brasa">
+            <Icon name="ph:map-pin-bold" class="size-5" aria-hidden="true" />Desde {site.city}, para negocios de {site.areaServed.join(' y ')}
           </p>
         </div>
-        <div class="relative grid aspect-[4/5] place-items-center overflow-hidden rounded-[32px] border-2 border-arena/15 bg-noche" data-reveal>
-          <div class="glow glow--fuego left-1/2 top-1/2 size-[22rem] -translate-x-1/2 -translate-y-1/2" aria-hidden="true"></div>
-          <div class="relative grid gap-7 px-8">
+        <div class="relative mx-auto grid aspect-square w-full max-w-sm place-items-center overflow-hidden rounded-[32px] border-2 border-carbon/12 bg-arena" data-reveal>
+          <div class="glow glow--chispa left-1/2 top-1/2 size-[20rem] -translate-x-1/2 -translate-y-1/2" aria-hidden="true"></div>
+          <div class="relative grid gap-6 px-10">
             {[0, 1, 2, 3].map((i) => (
               <div class="flex items-center gap-4">
-                <Chispa class:list={['size-10 shrink-0', i === 3 ? 'text-chispa' : 'text-fuego']} stroke={46} />
+                <Chispa class:list={['size-9 shrink-0', i === 3 ? 'text-chispa' : 'text-fuego']} stroke={46} />
                 <span class="h-1 flex-1" style="background: radial-gradient(circle, var(--color-fuego) 2.4px, transparent 3px) 0 0 / 14px 5px repeat-x;"></span>
               </div>
             ))}
@@ -79,18 +68,25 @@ const jsonLd = [
       </div>
     </section>
 
-    <div class="s-carbon"><Burn to="papel" /></div>
-
-    <section class="section s-papel on-light" aria-labelledby="nombre-title">
+    <section class="section s-arena on-light" aria-labelledby="origen-title">
       <span class="node" aria-hidden="true"></span>
-      <div class="wrap">
-        <SectionHead
-          kicker="El nombre"
-          id="nombre-title"
-          title="Una traca: cada petardo enciende al siguiente."
-          lede="En Valencia, una traca es una cadena de petardos unidos por una mecha. Así funciona un cliente: cada paso enciende el siguiente hasta el estallido final."
-        />
-        <ol class="mt-14 grid gap-8 md:grid-cols-3">
+      <div class="wrap grid items-start gap-12 lg:grid-cols-2">
+        <div>
+          <SectionHead kicker="Origen" id="origen-title" title="Nacimos en una ciudad de temporada." />
+          <p class="lede mt-7 text-carbon/80">
+            Donde un comercio se juega el año en tres meses, una web que no trae consultas no sirve. Por eso hacemos webs que traen consultas, no adornos.
+          </p>
+        </div>
+        <div>
+          <SectionHead kicker="El nombre" id="nombre-title" title="Una traca: cada petardo enciende al siguiente." />
+          <p class="lede mt-7 text-carbon/80">
+            En Valencia, una traca es una cadena de petardos unidos por una mecha. Así funciona un cliente: cada paso enciende el siguiente hasta el estallido final.
+          </p>
+        </div>
+      </div>
+
+      <div class="wrap mt-16">
+        <ol class="grid gap-8 md:grid-cols-3">
           {chain.map((c, i) => (
             <li data-reveal style={`--d:${i * 90}ms`}>
               <div class="flex items-center gap-3">
@@ -105,15 +101,15 @@ const jsonLd = [
       </div>
     </section>
 
-    <div class="s-papel"><Burn to="mar" /></div>
+    <div class="s-arena"><Burn to="carbon" /></div>
 
-    <section class="section s-mar" aria-labelledby="val-title">
+    <section class="section s-carbon" aria-labelledby="val-title">
       <span class="node" aria-hidden="true"></span>
       <div class="wrap">
         <SectionHead kicker="Cómo trabajamos" id="val-title" title="Sin vueltas." />
         <ul class="mt-12 grid gap-6 sm:grid-cols-2">
           {values.map((v, i) => (
-            <li class="rounded-[28px] border-2 border-arena/20 p-7" data-reveal style={`--d:${i * 70}ms`}>
+            <li class="rounded-[26px] border-2 border-arena/15 bg-arena/[.04] p-7" data-reveal style={`--d:${i * 70}ms`}>
               <Icon name={v.icon} class="size-9 text-chispa" aria-hidden="true" />
               <h3 class="mt-5 text-2xl">{v.t}</h3>
               <p class="mt-2 opacity-85">{v.d}</p>
@@ -126,26 +122,45 @@ const jsonLd = [
       </div>
     </section>
 
-    <div class="s-mar"><Burn to="noche" /></div>
+    <div class="s-carbon"><Burn to="papel" /></div>
 
-    <section class="section s-noche" aria-labelledby="quien-title">
+    <section class="section s-papel on-light" aria-labelledby="quien-title">
       <span class="node" aria-hidden="true"></span>
       <div class="wrap grid items-center gap-10 lg:grid-cols-[.85fr_1.15fr]">
-        <div class="relative grid aspect-square max-w-sm place-items-center overflow-hidden rounded-[32px] border-2 border-arena/15" data-reveal>
-          <div class="glow glow--chispa left-1/2 top-1/2 size-[18rem] -translate-x-1/2 -translate-y-1/2 opacity-30" aria-hidden="true"></div>
-          <Icon name="ph:chat-circle-dots-bold" class="relative size-24 text-chispa" aria-hidden="true" />
+        <div class="relative grid aspect-square max-w-sm place-items-center overflow-hidden rounded-[32px] border-2 border-carbon/12 bg-arena" data-reveal>
+          <div class="glow glow--fuego left-1/2 top-1/2 size-[18rem] -translate-x-1/2 -translate-y-1/2" aria-hidden="true"></div>
+          <Icon name="ph:chat-circle-dots-bold" class="relative size-24 text-brasa" aria-hidden="true" />
         </div>
         <div>
           <SectionHead kicker="Quién te atiende" id="quien-title" title="Una persona, por WhatsApp." />
-          <p class="lede mt-6 max-w-xl opacity-85">
+          <p class="lede mt-6 max-w-xl text-carbon/80">
             La misma persona te escucha, arma el plan y responde cada mensaje. No hay call center, ni tickets, ni un equipo distinto cada vez.
           </p>
-          <WaButton message="Hola, vengo de la página Sobre nosotros de Traka y quiero hacer una consulta." origin="sobre-nosotros" class="mt-8" />
+          <WaButton message="Hola, vengo de la página Sobre nosotros de Traka y quiero hacer una consulta." label="Hablemos" origin="sobre-nosotros" class="mt-8" />
         </div>
       </div>
     </section>
 
-    <div class="s-noche"><Burn to="fuego" /></div>
+    <section class="section s-arena on-light pt-0" aria-labelledby="que-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <SectionHead kicker="Qué hacemos" id="que-title" title="Tres servicios, con el precio publicado." />
+        <ul class="mt-10 grid gap-6 md:grid-cols-3">
+          {servicios.map((s) => (
+            <li class="svc" data-reveal>
+              <Icon name={s.icon} class="svc__icon size-9" aria-hidden="true" />
+              <h3 class="mt-5 text-xl md:text-2xl">{s.name}</h3>
+              <p class="svc__price mt-4" style="font-size:1.5rem">{s.price}</p>
+              <a href={s.page ?? `/#${s.id}`} class="mt-5 inline-flex items-center gap-1.5 font-medium underline underline-offset-4">
+                Ver más<Icon name="ph:arrow-right-bold" class="size-4" aria-hidden="true" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <div class="s-arena"><Burn to="fuego" /></div>
   </Mecha>
   <FinalCta message="Hola, conocí Traka y quiero empezar." origin="cta-final-sobre-nosotros" />
 </Base>

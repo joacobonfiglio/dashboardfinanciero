@@ -1,0 +1,213 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+import Mecha from '../../components/Mecha.astro';
+import Burn from '../../components/Burn.astro';
+import Chispa from '../../components/Chispa.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import WaButton from '../../components/WaButton.astro';
+import WebMock from '../../components/WebMock.astro';
+import Process from '../../components/Process.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import { SITE_URL, site, servicios, notaPrecios } from '../../site';
+
+export function getStaticPaths() {
+  return servicios
+    .filter((s) => s.detalle && s.page)
+    .map((s) => ({ params: { slug: s.page!.replace(/^\/servicios\/|\/$/g, '') }, props: { svc: s } }));
+}
+
+const { svc } = Astro.props;
+const d = svc.detalle!;
+const otros = servicios.filter((s) => s.id !== svc.id);
+const precioNumero = svc.price.match(/[\d.]+/)?.[0]?.replace(/\./g, '');
+
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE_URL}/` },
+    { '@type': 'ListItem', position: 2, name: 'Servicios', item: `${SITE_URL}/#servicios` },
+    { '@type': 'ListItem', position: 3, name: svc.name, item: `${SITE_URL}${svc.page}` },
+  ] },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: svc.name,
+    serviceType: svc.name,
+    description: svc.summary,
+    provider: { '@id': `${SITE_URL}/#org` },
+    areaServed: site.areaServed.map((name) => ({ '@type': 'Country', name })),
+    url: `${SITE_URL}${svc.page}`,
+    ...(precioNumero
+      ? { offers: {
+          '@type': 'Offer',
+          url: `${SITE_URL}${svc.page}`,
+          availability: 'https://schema.org/InStock',
+          priceSpecification: { '@type': 'PriceSpecification', minPrice: Number(precioNumero), priceCurrency: 'ARS', valueAddedTaxIncluded: false },
+        } }
+      : {}),
+  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: d.faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+];
+---
+<Base title={d.title} description={d.description} path={svc.page!} jsonLd={jsonLd} ogSlug={svc.id}>
+  <Mecha>
+    <!-- 1 · HERO -->
+    <section id="hero" class="section s-papel on-light relative overflow-hidden pb-14 pt-10 md:pt-14" aria-labelledby="svc-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="glow glow--fuego left-[-16%] top-[-18%] size-[38rem]" aria-hidden="true"></div>
+
+      <div class="wrap relative grid items-center gap-12 lg:grid-cols-[1.05fr_.95fr]">
+        <div>
+          <nav aria-label="Migas de pan" class="meta mb-7 ">
+            <a href="/" class="hover:underline">Inicio</a> / <a href="/#servicios" class="hover:underline">Servicios</a> / <span aria-current="page">{d.kicker}</span>
+          </nav>
+          <p class="label flex items-center gap-2.5"><span class="pulse-dot" aria-hidden="true"></span>{d.kicker}</p>
+          <h1 id="svc-title" class="h-xl mt-5">{d.h1}</h1>
+          <p class="lede mt-7 max-w-xl text-carbon/80">{d.intro}</p>
+
+          <div class="hairline mt-9 grid max-w-xl gap-x-8 gap-y-5 pt-7 sm:grid-cols-3">
+            <div>
+              <p class="label">Precio</p>
+              <p class="svc__price mt-1" style="font-size:clamp(1.5rem,1.05rem + 1.3vw,2rem)">{svc.price}</p>
+            </div>
+            <div>
+              <p class="label">Plazo</p>
+              <p class="mt-1 font-display text-xl font-bold md:text-2xl">{d.plazo}</p>
+            </div>
+            <div>
+              <p class="label">Alcance</p>
+              <p class="mt-1 font-display text-xl font-bold md:text-2xl">{d.alcance}</p>
+            </div>
+          </div>
+
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <WaButton message={svc.message} label={svc.cta} origin={`${svc.id}-hero`} size="lg" />
+            <a href="#incluye" class="btn btn-ghost btn-lg">Ver qué incluye</a>
+          </div>
+        </div>
+
+        <WebMock variant={svc.id === 'google' ? 'mapa' : svc.id === 'medida' ? 'panel' : 'web'} />
+      </div>
+    </section>
+
+    <!-- 2 · QUÉ INCLUYE -->
+    <section id="incluye" class="section s-arena on-light" aria-labelledby="inc-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <SectionHead
+          kicker="Qué incluye"
+          id="inc-title"
+          title="Todo lo que hace falta para que funcione."
+          lede="No es una entrega linda y nada más: es la pieza que convierte una búsqueda en un mensaje."
+        />
+        <ul class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {d.incluye.map((i, n) => (
+            <li class="tilt rounded-[26px] border-2 border-carbon/12 bg-papel p-7" data-reveal style={`--d:${n * 70}ms`}>
+              <Icon name={i.icon} class="size-9 text-brasa" aria-hidden="true" />
+              <h3 class="mt-5 text-xl md:text-2xl">{i.t}</h3>
+              <p class="mt-2 opacity-80">{i.d}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <div class="s-arena"><Burn to="carbon" /></div>
+
+    <!-- 3 · CUÁNDO TE SIRVE -->
+    <section id="casos" class="section s-carbon" aria-labelledby="casos-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <SectionHead kicker="Cuándo te sirve" id="casos-title" title="Si te pasa alguna de estas, es por acá." />
+        <ul class="mt-12 grid gap-6 md:grid-cols-2">
+          {d.casos.map((c, n) => (
+            <li class="flex gap-4 rounded-[26px] border-2 border-arena/15 bg-arena/[.04] p-7" data-reveal style={`--d:${n * 70}ms`}>
+              <Chispa class="mt-1 size-7 shrink-0 text-fuego" stroke={50} />
+              <div>
+                <h3 class="text-xl md:text-2xl">{c.t}</h3>
+                <p class="mt-2 opacity-85">{c.d}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <div class="s-carbon"><Burn to="papel" /></div>
+
+    <!-- 4 · CÓMO FUNCIONA -->
+    <section id="como" class="section s-papel on-light" aria-labelledby="como-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <SectionHead kicker="Cómo funciona" id="como-title" title="De la charla a la entrega, en cuatro pasos." />
+        <div class="mt-12"><Process /></div>
+      </div>
+    </section>
+
+    <!-- 5 · PRECIO -->
+    <section id="precio" class="section s-arena on-light" aria-labelledby="precio-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap grid items-center gap-10 lg:grid-cols-[1fr_.85fr]">
+        <div>
+          <SectionHead kicker="Precio" id="precio-title" title={`${svc.price}, y sabés por qué.`} />
+          <p class="lede mt-6 max-w-xl text-carbon/80">{d.precioNota}</p>
+          <p class="mt-5 text-sm opacity-75">{notaPrecios}</p>
+        </div>
+        <div class="svc svc--featured" data-reveal>
+          <p class="label text-chispa">{svc.name}</p>
+          <p class="svc__price mt-3">{svc.price}</p>
+          <ul class="mt-6 space-y-3">
+            {svc.items.map((it) => (
+              <li class="flex gap-3"><Icon name="ph:check-circle-bold" class="mt-1 size-5 shrink-0 text-fuego" aria-hidden="true" /><span>{it}</span></li>
+            ))}
+          </ul>
+          <WaButton message={svc.message} label={svc.cta} origin={`${svc.id}-precio`} class="mt-8 w-full" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · PREGUNTAS -->
+    <section id="preguntas" class="section s-papel on-light" aria-labelledby="faq-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap wrap-narrow">
+        <SectionHead kicker="Preguntas frecuentes" id="faq-title" title="Lo que preguntan antes de arrancar." />
+        <div class="mt-10 divide-y divide-current/15 border-y border-current/15">
+          {d.faqs.map((f) => (
+            <details class="faq group py-1">
+              <summary class="flex items-center justify-between gap-6 py-5 font-display text-xl font-bold md:text-2xl">
+                <span>{f.q}</span>
+                <Icon name="ph:plus-bold" class="faq__plus size-6 shrink-0 text-fuego" aria-hidden="true" />
+              </summary>
+              <p class="max-w-2xl pb-6 opacity-80">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 · OTROS SERVICIOS -->
+    <section id="otros" class="section s-arena on-light" aria-labelledby="otros-title">
+      <span class="node" aria-hidden="true"></span>
+      <div class="wrap">
+        <SectionHead kicker="Otros servicios" id="otros-title" title="Lo demás que hacemos." />
+        <ul class="mt-10 grid gap-6 md:grid-cols-2">
+          {otros.map((o) => (
+            <li class="svc" data-reveal>
+              <Icon name={o.icon} class="svc__icon size-9" aria-hidden="true" />
+              <h3 class="mt-5 text-2xl">{o.name}</h3>
+              <p class="mt-2 opacity-80">{o.summary}</p>
+              <p class="svc__price mt-5">{o.price}</p>
+              <a href={o.page ?? `/#${o.id}`} class="mt-6 inline-flex items-center gap-1.5 font-medium underline underline-offset-4">
+                Ver más<Icon name="ph:arrow-right-bold" class="size-4" aria-hidden="true" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <div class="s-arena"><Burn to="fuego" /></div>
+  </Mecha>
+
+  <FinalCta message={`Hola, vengo de la página de ${svc.name.toLowerCase()} y quiero avanzar. Te cuento: `} origin={`cta-final-${svc.id}`} />
+</Base>

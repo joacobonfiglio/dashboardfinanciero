@@ -94,6 +94,27 @@ for (const row of rows) {
   }
 }
 
+/* ------------------------------------------------- barra de progreso de lectura */
+const lectura = document.querySelector<HTMLElement>('.lectura');
+const texto = document.querySelector<HTMLElement>('.prosa');
+if (lectura && texto) {
+  let pedido = false;
+  const medir = () => {
+    const r = texto.getBoundingClientRect();
+    const recorrido = r.height - window.innerHeight * 0.6;
+    const hecho = window.innerHeight * 0.6 - r.top;
+    lectura.style.setProperty('--p', String(Math.min(Math.max(hecho / Math.max(recorrido, 1), 0), 1)));
+  };
+  const alScroll = () => {
+    if (pedido) return;
+    pedido = true;
+    requestAnimationFrame(() => { pedido = false; medir(); });
+  };
+  addEventListener('scroll', alScroll, { passive: true });
+  addEventListener('resize', alScroll);
+  medir();
+}
+
 /* ------------------------------------------------- cerrar el panel del selector con el teclado */
 const cerrar = document.querySelector<HTMLElement>('[data-close-need]');
 cerrar?.addEventListener('keydown', (e) => {
