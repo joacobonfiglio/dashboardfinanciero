@@ -270,11 +270,40 @@ export const needs = [
 /* ------------------------------------------------------------------- casos */
 
 export const cases = [
-  // TODO(cliente): URL pública y métrica verificada de cada caso. Sin dato confirmado no se publica ninguno.
-  { name: 'Aquabon', kind: 'Lavandería', tone: 'chispa', url: '', metric: '' },
-  { name: 'Tintorería Constitución', kind: 'Tintorería', tone: 'arena', url: '', metric: '' },
-  { name: 'Llama Divina', kind: 'Bienestar', tone: 'fuego', url: '', metric: '' },
-  { name: 'Aquabon Gestión', kind: 'Software propio', tone: 'mar', url: '', metric: '' },
+  // TODO(cliente): URL pública y métrica verificada de cada caso. Sin dato confirmado no se publica.
+  { name: 'Aquabon', kind: 'Página web', servicio: 'web', tone: 'chispa', url: '', metric: '' },
+  { name: 'Tintorería Constitución', kind: 'Página web', servicio: 'web', tone: 'arena', url: '', metric: '' },
+  { name: 'Lavi', kind: 'Plataforma a medida', servicio: 'medida', tone: 'mar', url: '', metric: '' },
+] as const;
+
+/* ------------------------------------------------------- los tres pasos */
+
+/** Cada paso del recorrido de un cliente, con el servicio que lo resuelve. */
+export const pasos = [
+  {
+    n: '01',
+    t: 'Te encuentran',
+    servicio: 'google',
+    d: 'Alguien busca lo que hacés. Aparecés en Google, en Maps y en tu Perfil de Empresa, con horarios, fotos y reseñas al día.',
+    tags: ['Google', 'Maps', 'Perfil de Empresa'],
+    icon: 'ph:magnifying-glass-bold',
+  },
+  {
+    n: '02',
+    t: 'Te eligen y te escriben',
+    servicio: 'web',
+    d: 'Entran a tu web desde el celular, entienden en segundos qué hacés y te escriben por WhatsApp de un toque.',
+    tags: ['Web clara', 'Para celular', 'WhatsApp'],
+    icon: 'ph:device-mobile-bold',
+  },
+  {
+    n: '03',
+    t: 'Te ordenás por dentro',
+    servicio: 'medida',
+    d: 'Cuando entran más consultas de las que podés seguir en un cuaderno, armamos la herramienta que lo ordena.',
+    tags: ['Panel propio', 'Sin planillas', 'A medida'],
+    icon: 'ph:squares-four-bold',
+  },
 ] as const;
 
 /* ----------------------------------------------------------------- proceso */

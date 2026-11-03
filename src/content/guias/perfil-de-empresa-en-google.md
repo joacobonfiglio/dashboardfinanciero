@@ -8,6 +8,21 @@ fecha: 2026-11-03
 lectura: 8
 servicio: google
 destacada: true
+clave:
+  - "La categoría principal es el campo que más decide en qué búsquedas aparecés."
+  - "Los horarios especiales de feriados y temporada evitan la peor reseña de todas: la de quien fue y estaba cerrado."
+  - "Las reseñas se piden en el momento, con un link corto, y se responden todas."
+  - "Nunca metas palabras clave en el nombre del negocio: va contra las políticas de Google."
+faqs:
+  - q: "¿Cuánto tarda en verificarse una ficha nueva?"
+    a: "El plazo lo maneja Google, no vos ni quien te ayude: según el rubro y el país verifica por video, teléfono, correo postal o documentación, y puede salir en días o demorar semanas."
+  - q: "¿Puedo tener ficha si atiendo a domicilio?"
+    a: "Sí. Google admite negocios sin local a la calle: en vez de mostrar una dirección se configura una zona de cobertura."
+  - q: "¿Conviene responder las reseñas malas?"
+    a: "Sí, siempre, y sin discutir: qué pasó, qué hacés al respecto y cómo seguir la conversación por fuera. Lo lee mucha más gente que la que dejó la reseña."
+  - q: "¿Cada cuánto hay que actualizar la ficha?"
+    a: "Alcanza con fotos y alguna publicación cada tanto, más los horarios especiales antes de cada feriado o temporada. Una ficha quieta durante meses se nota."
+temas: ["Perfil de Empresa en Google", "Google Maps", "SEO local", "Reseñas"]
 ---
 
 Si tenés un negocio con clientes de tu zona, el Perfil de Empresa en Google (antes Google Mi Negocio) es probablemente tu página más visitada, aunque no la hayas armado vos. Es lo que aparece a la derecha cuando alguien te busca por el nombre, y lo que sale en el mapa cuando alguien busca tu rubro cerca.
@@ -21,6 +36,8 @@ Google crea fichas solo, a partir de datos públicos. Que exista no quiere decir
 Entrá a Google con la cuenta que vaya a quedar como dueña —usá una cuenta del negocio, no la personal de alguien que algún día se va— y pedí la verificación. Según el rubro y el país, Google verifica por video, por teléfono, por correo postal o pidiendo documentación. **El plazo lo maneja Google**, no vos: puede salir en días o demorar semanas.
 
 > Si el negocio atiende a domicilio o en una zona, no hace falta mostrar una dirección: se configura como área de cobertura.
+
+Si preferís no hacerlo vos, esto es exactamente lo que incluye nuestro servicio de [Perfil de Empresa en Google y redes](/servicios/google-y-redes/).
 
 ## 2. Elegí bien la categoría principal
 
@@ -80,6 +97,10 @@ Dos números para mirar todos los meses: **llamadas** y **solicitudes de cómo l
 - **Tener el negocio cargado dos veces** con direcciones viejas. Las fichas duplicadas se pelean entre sí: hay que unificarlas.
 - **Datos distintos en cada lado**: el teléfono de la ficha, otro en la web, otro en Instagram. Que el nombre, la dirección y el teléfono sean idénticos en todos lados es de lo poco que se puede controlar al cien por ciento.
 - **Dejarla quieta**. Una ficha sin movimiento se nota.
+
+## Y después de la ficha, la web
+
+La ficha trae a la gente; la web es lo que lee cuando hace clic. Si tu web todavía no está o ya no te representa, el paso siguiente es ese: te dejamos [qué mirar antes de contratar una web](/guias/antes-de-contratar-una-web/) para que no te vendan humo.
 
 ## Checklist
 

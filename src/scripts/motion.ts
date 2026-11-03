@@ -140,6 +140,15 @@ if (float) {
   }
 }
 
+/* ------------------------------------------------- el flotante no estorba el pie */
+const pie = document.querySelector<HTMLElement>('footer');
+if (float && pie) {
+  new IntersectionObserver(
+    ([e]) => float.classList.toggle('is-tapado', e.isIntersecting),
+    { threshold: 0 },
+  ).observe(pie);
+}
+
 /* ------------------------------------------------- medición y links sin número */
 const servicioDesdeUrl = () => {
   const p = location.pathname;

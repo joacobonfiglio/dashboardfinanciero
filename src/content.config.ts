@@ -13,6 +13,12 @@ const guias = defineCollection({
     fecha: z.coerce.date(),
     actualizada: z.coerce.date().optional(),
     lectura: z.number(),
+    /** Tres o cuatro ideas en una línea: salen arriba, en el bloque "En resumen". */
+    clave: z.array(z.string()).min(2).max(5),
+    /** Preguntas al final de la guía. Van también como FAQPage en el JSON-LD. */
+    faqs: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
+    /** Temas de la guía, para articleSection y keywords. */
+    temas: z.array(z.string()).default([]),
     servicio: z.enum(['web', 'google', 'medida']).optional(),
     destacada: z.boolean().default(false),
   }),

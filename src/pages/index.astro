@@ -14,15 +14,11 @@ import Process from '../components/Process.astro';
 import Faq from '../components/Faq.astro';
 import FinalCta from '../components/FinalCta.astro';
 import { getCollection } from 'astro:content';
-import { cases, faqs, servicios, notaPrecios, SITE_URL } from '../site';
+import { cases, faqs, pasos, servicios, notaPrecios, SITE_URL } from '../site';
+
+const servicioDe = (id: string) => servicios.find((s) => s.id === id)!;
 
 const guias = (await getCollection('guias')).sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime()).slice(0, 2);
-
-const acts = [
-  { n: '01', t: 'Te encuentran', d: 'Alguien busca lo que hacés. Aparecés en Google, en Maps y en tu Perfil de Empresa, con horarios, fotos y reseñas al día.', tags: ['Google', 'Maps', 'Perfil de Empresa'], icon: 'ph:magnifying-glass-bold' },
-  { n: '02', t: 'Te eligen', d: 'Entra a tu web desde el celular y entiende en segundos qué hacés, dónde estás y por qué elegirte.', tags: ['Web clara', 'Rápida', 'Para celular'], icon: 'ph:device-mobile-bold' },
-  { n: '03', t: 'Te escriben', d: 'Un toque y te escribe por WhatsApp o te llama. Sin formularios eternos, sin vueltas.', tags: ['WhatsApp', 'Llamada'], icon: 'ph:chat-circle-dots-bold' },
-];
 
 const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
@@ -111,25 +107,29 @@ const jsonLd = [
         <SectionHead
           kicker="Cómo funciona"
           id="acts-title"
-          title="Un cliente, tres chispas."
-          lede="Cada paso enciende al siguiente. Si uno falla, la mecha se corta: por eso trabajamos los tres."
+          title="Un cliente, tres pasos."
+          lede="Cada paso enciende al siguiente, y cada uno tiene su servicio. Si uno falla, la mecha se corta: por eso los trabajamos los tres."
         />
       </div>
       <div class="wrap mt-12">
         <div class="snap-row snap-row--acts acts-row" data-scrollx tabindex="0" role="group" aria-label="Los tres pasos, deslizá para ver más">
-          {acts.map((a) => (
-            <article class="act" data-reveal>
-              <div class="flex items-center justify-between">
-                <span class="act__num label">Acto {a.n}</span>
-                <Icon name={a.icon} class="size-9 text-chispa" aria-hidden="true" />
-              </div>
-              <h3 class="mt-8 font-display text-4xl font-extrabold md:text-5xl" style="font-variation-settings:'opsz' 96">{a.t}</h3>
-              <p class="mt-4 text-lg opacity-85">{a.d}</p>
-              <ul class="mt-auto flex flex-wrap gap-2 pt-8">
-                {a.tags.map((t) => <li class="label rounded-full border border-chispa/50 px-3 py-1.5 text-chispa">{t}</li>)}
-              </ul>
-            </article>
-          ))}
+          {pasos.map((a) => {
+            const sv = servicioDe(a.servicio);
+            return (
+              <a class="act act--link" href={sv.page} data-reveal>
+                <div class="flex items-center justify-between gap-4">
+                  <span class="act__num label">{a.n} · {sv.name}</span>
+                  <Icon name={a.icon} class="size-9 shrink-0 text-chispa" aria-hidden="true" />
+                </div>
+                <h3 class="mt-8 font-display text-4xl font-extrabold md:text-5xl" style="font-variation-settings:'opsz' 96">{a.t}</h3>
+                <p class="mt-4 text-lg opacity-85">{a.d}</p>
+                <ul class="mt-auto flex flex-wrap gap-2 pt-8">
+                  {a.tags.map((t) => <li class="meta rounded-full border border-chispa/50 px-3 py-1.5 text-chispa">{t}</li>)}
+                </ul>
+                <span class="act__cta">{sv.price} · Ver el servicio<Icon name="ph:arrow-right-bold" class="size-4" aria-hidden="true" /></span>
+              </a>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -157,9 +157,9 @@ const jsonLd = [
     <section id="casos" class="section s-mar" aria-labelledby="casos-title">
       <span class="node" aria-hidden="true"></span>
       <div class="wrap">
-        <SectionHead kicker="Casos" id="casos-title" title="Negocios reales, vistos como los ve tu cliente." />
+        <SectionHead kicker="Proyectos" id="casos-title" title="Negocios reales, vistos como los ve tu cliente." />
         <div class="snap-row snap-row--cases mt-12" data-scrollx tabindex="0" role="group" aria-label="Casos de clientes, deslizá para ver más">
-          {cases.map((c) => <CaseCard name={c.name} kind={c.kind} tone={c.tone} url={c.url} metric={c.metric} />)}
+          {cases.map((c) => <CaseCard name={c.name} kind={c.kind} tone={c.tone} servicio={c.servicio} url={c.url} metric={c.metric} />)}
         </div>
       </div>
     </section>

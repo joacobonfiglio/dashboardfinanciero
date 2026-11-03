@@ -360,7 +360,7 @@ a.link { color: var(--color-chispa); text-decoration: underline; text-underline-
 .snap-row > * { scroll-snap-align: start; flex: 0 0 auto; }
 .snap-row--acts > * { width: min(84vw, 420px); }
 @media (min-width: 1024px) {
-  .snap-row--cases { display: grid; grid-template-columns: repeat(4, 1fr); overflow: visible; margin-right: 0; padding-right: 0; }
+  .snap-row--cases { display: grid; grid-template-columns: repeat(3, 1fr); overflow: visible; margin-right: 0; padding-right: 0; }
   .snap-row--acts { display: grid; grid-template-columns: repeat(3, 1fr); overflow: visible; margin-right: 0; padding-right: 0; }
   .snap-row--acts > * { width: auto; }
 }
@@ -373,6 +373,16 @@ a.link { color: var(--color-chispa); text-decoration: underline; text-underline-
 }
 @media (min-width: 768px) { .act { padding: 2.25rem; min-height: 360px; } }
 .act.is-lit { border-color: rgba(255, 91, 36, .55); background: rgba(255, 91, 36, .06); }
+.act--link { text-decoration: none; color: inherit; transition: border-color .3s ease, background-color .3s ease, transform .3s var(--ease-out); }
+.act--link:hover { border-color: var(--color-fuego); transform: translateY(-4px); }
+.act--link:active { transform: scale(.99); }
+.act__cta {
+  display: inline-flex; align-items: center; gap: .4rem; margin-top: 1.5rem;
+  font-family: var(--font-mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--color-chispa);
+}
+.act--link:hover .act__cta { text-decoration: underline; text-underline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) { .act--link:hover { transform: none; } }
 .act__num { transition: color .4s ease; }
 .act.is-lit .act__num { color: var(--color-fuego); }
 
@@ -399,6 +409,7 @@ details.faq[open] summary { color: var(--color-chispa); }
   transition: transform .25s var(--ease-out), box-shadow .25s ease;
 }
 .wa-float:hover { transform: translateY(-3px) scale(1.03); }
+.wa-float.is-tapado, .motion-ok .wa-float.is-in.is-tapado { opacity: 0; pointer-events: none; transform: translateY(14px); }
 @media (min-width: 640px) { .wa-float { right: 1.5rem; bottom: 1.5rem; } }
 /* Mientras el panel del selector está abierto en celular, el flotante estorba. */
 @media (max-width: 1023.98px) {
@@ -617,6 +628,14 @@ details.faq[open] summary { color: var(--color-chispa); }
   background: var(--color-arena); padding: 1.5rem;
 }
 
+.resumen {
+  border-radius: 22px; border: 2px solid rgba(255, 91, 36, .3);
+  background: linear-gradient(150deg, rgba(255, 184, 51, .14), transparent 60%), var(--color-arena);
+  padding: 1.5rem; max-width: 68ch;
+}
+.resumen ul { display: grid; gap: .6rem; }
+.resumen li { display: flex; gap: .6rem; align-items: flex-start; line-height: 1.5; }
+
 /* ---------- Prosa de las guías ---------- */
 .prosa { max-width: 68ch; font-size: 1.08rem; line-height: 1.7; }
 .prosa > * + * { margin-top: 1.15rem; }
@@ -655,4 +674,17 @@ details.faq[open] summary { color: var(--color-chispa); }
   transform: none;
   transition: opacity .7s var(--ease-out), transform .9s var(--ease-spark);
 }
+
+/* ---------- Pie ---------- */
+.pie-link {
+  display: flex; flex-direction: column; align-items: flex-start; gap: .1rem;
+  padding-block: .35rem; font-size: .95rem; line-height: 1.3; text-decoration: none;
+  transition: color .2s ease;
+}
+.pie-link:hover { color: var(--color-chispa); }
+.pie-precio { font-family: var(--font-mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; opacity: .6; }
+/* Con ícono, el enlace vuelve a ser una sola línea. */
+.pie-link:has(svg) { flex-direction: row; align-items: center; gap: .45rem; }
+/* En celular, área de toque cómoda. */
+@media (max-width: 767.98px) { .pie-link { min-height: 2.6rem; justify-content: center; } }
 }

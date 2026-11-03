@@ -7,6 +7,21 @@ resumen: "Diez preguntas concretas para hacerle a quien te va a hacer la web, y 
 fecha: 2026-11-03
 lectura: 7
 servicio: web
+clave:
+  - "Antes de pedir presupuestos, definí en una frase qué tiene que pasar cuando alguien entra."
+  - "El dominio tiene que quedar a tu nombre, no al de quien te hace la web."
+  - "Si la redacción no está incluida, el proyecto se frena esperando tus textos."
+  - "Nadie puede garantizar el primer puesto en Google: desconfiá del que lo prometa."
+faqs:
+  - q: "¿Cómo comparo dos presupuestos de web que dan números muy distintos?"
+    a: "Por partes, no por el total: diseño, desarrollo, redacción, carga de contenidos, medición, dominio y alojamiento, y soporte posterior. Puestos en columnas, las diferencias aparecen solas."
+  - q: "¿Quién tiene que ser el dueño del dominio?"
+    a: "Vos. Es el problema más común cuando alguien quiere cambiar de proveedor años después: si el dominio está a nombre del que hizo la web, recuperarlo puede ser largo."
+  - q: "¿Necesito poder editar la web yo mismo?"
+    a: "No siempre conviene, pero sí conviene saberlo de entrada: qué vas a poder cambiar solo (horarios, fotos, precios) y qué va a necesitar que alguien lo toque."
+  - q: "¿Qué pasa si la web se rompe después de publicada?"
+    a: "Preguntalo antes de firmar: quién lo arregla, en cuánto tiempo y si tiene costo. Es la parte que casi nunca está escrita y la que más discusiones genera."
+temas: ["Contratar una web", "Presupuestos", "Dominio y hosting", "SEO"]
 ---
 
 Contratar una web es raro: la mayoría de la gente lo hace una vez cada varios años, con presupuestos que no se parecen entre sí y vocabulario que no maneja. Esta guía es lo que conviene preguntar antes de decidir.
@@ -49,6 +64,7 @@ Una web pesada se paga en consultas perdidas. No hace falta que te den una clase
 
 ### 8. ¿Cómo se mide si funciona?
 
+
 Que la web esté publicada no es el final. Preguntá si deja instalado algo para medir —Analytics, Search Console— y si los botones de contacto se van a poder contar. Sin eso, dentro de seis meses no vas a poder saber si sirvió.
 
 ### 9. ¿Qué pasa después de publicarla?
@@ -65,7 +81,7 @@ La pregunta más útil de todas. Un presupuesto honesto tiene una lista de lo qu
 
 **Un precio sin alcance escrito.** "Web desde $X" sin decir cuántas secciones, qué incluye y en cuánto tiempo no es un presupuesto: es un número.
 
-**"SEO garantizado" como extra mensual.** Preguntá qué se hace exactamente cada mes y qué informe vas a recibir. Si la respuesta es vaga, el trabajo también lo va a ser.
+**"SEO garantizado" como extra mensual.** Preguntá qué se hace exactamente cada mes y qué informe vas a recibir. Si la respuesta es vaga, el trabajo también lo va a ser. Antes de pagar por SEO, fijate si tenés la base hecha: te dejamos la guía de [cómo optimizar tu Perfil de Empresa en Google](/guias/perfil-de-empresa-en-google/), que es gratis y mueve más la aguja en un negocio local.
 
 ## Y el precio, ¿cuánto debería ser?
 
@@ -73,7 +89,7 @@ Varía muchísimo, y comparar dos presupuestos por el número final casi nunca s
 
 Compará por partes: diseño, desarrollo, redacción, carga, medición, dominio y alojamiento, y soporte posterior. Cuando los ponés uno al lado del otro en columnas, las diferencias aparecen solas.
 
-Para que tengas una referencia nuestra: en Traka una web arranca en $200.000, con los textos, el botón de WhatsApp y la medición incluidos, y el precio final sale del alcance que acordamos antes de empezar.
+Para que tengas una referencia nuestra: en Traka el [desarrollo de páginas web](/servicios/desarrollo-web/) arranca en $200.000, con los textos, el botón de WhatsApp y la medición incluidos, y el precio final sale del alcance que acordamos antes de empezar.
 
 ## Checklist antes de firmar
 

@@ -1,65 +1,75 @@
 ---
 import { Icon } from 'astro-icon/components';
 import WaButton from './WaButton.astro';
-import { site } from '../site';
+import { site, servicios } from '../site';
 const year = new Date().getFullYear();
+const conPagina = servicios.filter((s) => s.page);
+const legales = [
+  { href: '/legales/privacidad/', label: 'Privacidad' },
+  { href: '/legales/cookies/', label: 'Cookies' },
+  { href: '/legales/terminos/', label: 'Términos' },
+];
 ---
-<footer class="s-carbon relative z-10 border-t border-arena/10">
-  <div class="mx-auto grid max-w-[1480px] gap-10 px-5 py-14 md:grid-cols-[1.4fr_1fr_1fr] md:px-8 md:py-20">
-    <div>
-      <img src="/brand/traka-logo-negativo.svg" alt="Traka" width="141" height="48" class="h-12 w-auto" loading="lazy" />
-      <p class="mt-5 max-w-sm opacity-80">Webs y Google para negocios reales.</p>
-      <p class="label mt-6 text-chispa">Desde {site.city}, para negocios de {site.areaServed.join(' y ')}</p>
-      {site.hours.length > 0 && (
-        <ul class="mt-5 space-y-1 text-sm opacity-80">
-          {site.hours.map((h) => <li>{h.d}: {h.h}</li>)}
+<footer class="pie s-carbon relative z-10 border-t border-arena/10">
+  <div class="mx-auto max-w-[1480px] px-5 py-12 md:px-8">
+    <div class="grid gap-x-10 gap-y-9 md:grid-cols-[1.4fr_1fr_1fr_1.1fr]">
+      <div>
+        <img src="/brand/traka-logo-negativo.svg" alt="Traka" width="118" height="40" class="h-9 w-auto" loading="lazy" />
+        <p class="mt-4 max-w-xs text-sm opacity-80">Webs y Google para negocios reales.</p>
+        <p class="meta mt-4 text-chispa">Desde {site.city}, para {site.areaServed.join(' y ')}</p>
+        {site.hours.length > 0 && (
+          <ul class="mt-3 text-sm opacity-75">
+            {site.hours.map((h) => <li>{h.d}: {h.h}</li>)}
+          </ul>
+        )}
+      </div>
+
+      <nav aria-labelledby="pie-serv">
+        <h2 id="pie-serv" class="meta mb-3 text-chispa">Servicios</h2>
+        <ul>
+          {conPagina.map((s) => (
+            <li>
+              <a class="pie-link" href={s.page}>
+                {s.name}
+                <span class="pie-precio">{s.price}</span>
+              </a>
+            </li>
+          ))}
         </ul>
-      )}
+      </nav>
+
+      <nav aria-labelledby="pie-traka">
+        <h2 id="pie-traka" class="meta mb-3 text-chispa">Traka</h2>
+        <ul>
+          <li><a class="pie-link" href="/guias/">Guías</a></li>
+          <li><a class="pie-link" href="/sobre-nosotros/">Sobre nosotros</a></li>
+          <li><a class="pie-link" href="/#que-necesitas">¿Qué necesitás?</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <h2 class="meta mb-3 text-chispa">Contacto</h2>
+        <ul>
+          {site.email && (
+            <li><a class="pie-link" href={`mailto:${site.email}`}><Icon name="ph:envelope-simple-bold" class="size-4 shrink-0" aria-hidden="true" />{site.email}</a></li>
+          )}
+          {site.instagram && (
+            <li><a class="pie-link" href={site.instagram} rel="noopener"><Icon name="ph:instagram-logo-bold" class="size-4 shrink-0" aria-hidden="true" />Instagram</a></li>
+          )}
+          {site.googleBusiness && (
+            <li><a class="pie-link" href={site.googleBusiness} data-ga="click_como_llegar" rel="noopener"><Icon name="ph:map-pin-bold" class="size-4 shrink-0" aria-hidden="true" />Perfil de Empresa</a></li>
+          )}
+        </ul>
+        <p class="max-w-[22ch] text-sm opacity-80">Te responde una persona, por WhatsApp.</p>
+        <WaButton message="Hola, te escribo desde la web de Traka y quiero más información." label="Hablemos" origin="footer" class="mt-4 w-full sm:w-auto" />
+      </div>
     </div>
-    <div>
-      <h2 class="label mb-4 text-chispa">Navegar</h2>
-      <ul>
-        <li><a class="inline-flex min-h-11 items-center hover:underline" href="/servicios/">Servicios</a></li>
-        <li><a class="inline-flex min-h-11 items-center hover:underline" href="/sobre-nosotros/">Sobre nosotros</a></li>
-        <li><a class="inline-flex min-h-11 items-center hover:underline" href="/#que-necesitas">¿Qué necesitás?</a></li>
-      </ul>
-      <h2 class="label mb-2 mt-6 text-chispa">Legales</h2>
-      <ul>
-        <li><a class="inline-flex min-h-11 items-center hover:underline" href="/legales/privacidad/">Política de privacidad</a></li>
-        <li><a class="inline-flex min-h-11 items-center hover:underline" href="/legales/cookies/">Política de cookies</a></li>
-        <li><a class="inline-flex min-h-11 items-center hover:underline" href="/legales/terminos/">Términos y condiciones</a></li>
+
+    <div class="mt-10 flex flex-col gap-3 border-t border-arena/10 pt-5 text-sm opacity-70 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {site.name}. {site.tagline}</p>
+      <ul class="flex flex-wrap items-center gap-x-5 gap-y-1">
+        {legales.map((l) => <li><a class="hover:underline" href={l.href}>{l.label}</a></li>)}
       </ul>
     </div>
-    <div>
-      <h2 class="label mb-4 text-chispa">Contacto</h2>
-      <ul class="space-y-1">
-        {site.email && (
-          <li class="flex min-h-11 items-center gap-2">
-            <Icon name="ph:envelope-simple-bold" class="size-5 shrink-0" aria-hidden="true" />
-            <a class="hover:underline" href={`mailto:${site.email}`}>{site.email}</a>
-          </li>
-        )}
-        {site.instagram && (
-          <li class="flex min-h-11 items-center gap-2">
-            <Icon name="ph:instagram-logo-bold" class="size-5 shrink-0" aria-hidden="true" />
-            <a class="hover:underline" href={site.instagram} rel="noopener">Instagram</a>
-          </li>
-        )}
-        {site.googleBusiness && (
-          <li class="flex min-h-11 items-center gap-2">
-            <Icon name="ph:map-pin-bold" class="size-5 shrink-0" aria-hidden="true" />
-            <a class="hover:underline" href={site.googleBusiness} data-ga="click_como_llegar" rel="noopener">Perfil de Empresa en Google</a>
-          </li>
-        )}
-        <li class="flex min-h-11 items-center gap-2">
-          <Icon name="ph:map-trifold-bold" class="size-5 shrink-0" aria-hidden="true" />
-          <span>{site.city}, {site.region}</span>
-        </li>
-      </ul>
-      <WaButton message="Hola, te escribo desde la web de Traka y quiero más información." label="Hablemos" origin="footer" class="mt-5" />
-    </div>
-  </div>
-  <div class="border-t border-arena/10 px-5 py-5 md:px-8">
-    <p class="mx-auto max-w-[1480px] text-sm opacity-60">© {year} {site.name}. {site.tagline}</p>
   </div>
 </footer>
